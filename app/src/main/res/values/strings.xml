@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Univents</string>
+
+    <string-array name="app_creator_members">
+        <item>Tim Eichinger</item>
+    </string-array>
 </resources>
