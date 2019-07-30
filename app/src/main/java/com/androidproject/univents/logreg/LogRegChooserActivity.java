@@ -14,7 +14,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     private static final int REGISTER_REQUEST_CODE = 201;
 
     //buttons the user can choose between register and login
-    private Button btnChooseRegister, btnChooseLogIn;
+    private Button btnChooseRegisterPrivate, btnChooseRegisterOrga, btnChooseLogIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +29,13 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
      * function where all registerLayouts from the layout are initialized.
      */
     private void initViews() {
-        btnChooseRegister = findViewById(R.id.btn_choose_register);
+        btnChooseRegisterPrivate = findViewById(R.id.btn_choose_register_private);
+        btnChooseRegisterOrga = findViewById(R.id.btn_choose_register_orga);
         btnChooseLogIn = findViewById(R.id.btn_choose_log_in);
 
         //set OnClick Listeners
-        btnChooseRegister.setOnClickListener(this);
+        btnChooseRegisterPrivate.setOnClickListener(this);
+        btnChooseRegisterOrga.setOnClickListener(this);
         btnChooseLogIn.setOnClickListener(this);
     }
 
@@ -42,8 +44,11 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         int viewID = v.getId();
 
         switch (viewID) {
-            case R.id.btn_choose_register:
-                openRegisterActivity();
+            case R.id.btn_choose_register_private:
+                openRegisterActivity(false);
+                break;
+            case R.id.btn_choose_register_orga:
+                openRegisterActivity(true);
                 break;
             case R.id.btn_choose_log_in:
                 openLogInLayout();
@@ -61,9 +66,11 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     /**
      * hands off to registration process {@link RegisterActivity} with result.
+     * @param b
      */
-    private void openRegisterActivity() {
+    private void openRegisterActivity(boolean b) {
         Intent regIntent = new Intent(this, RegisterActivity.class);
+        regIntent.putExtra(getString(R.string.BOOLEAN_ORGA), b);
         startActivityForResult(regIntent, REGISTER_REQUEST_CODE);
     }
 

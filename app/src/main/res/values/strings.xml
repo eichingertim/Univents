@@ -70,4 +70,14 @@
     <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
     <string name="close">Schliessen</string>
     <string name="confirm_data_protection">Der Datenschutzerklärung muss zugestimmt werden</string>
+    <string name="firstname">Vorname</string>
+    <string name="lastname">Nachname</string>
+    <string name="email">E-Mail</string>
+    <string name="repeat_email">E-Mail wiederholen</string>
+    <string name="password">Passwort</string>
+    <string name="repeat_password">Passwort wiederholen</string>
+    <string name="orga_name">Organisationsname</string>
+
+    <!--Intent Keys-->
+    <string name="BOOLEAN_ORGA">isOrga</string>
 </resources>
