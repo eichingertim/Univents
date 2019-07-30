@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".logreg.LogRegChooserActivity">
+
+    <!--Button: Create new account; Opens RegisterActivity-->
+    <Button
+        android:id="@+id/btn_choose_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/form_round_corners_orange"
+        android:text="@string/text_btn_register"
+        android:textColor="@color/colorLightText"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_choose_log_in"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
+    <Button
+        android:id="@+id/btn_choose_log_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/form_round_corners_dark_stroke"
+        android:text="@string/text_btn_login"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/colorDarkText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>
