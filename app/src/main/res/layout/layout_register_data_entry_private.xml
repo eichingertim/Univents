@@ -19,7 +19,8 @@
                 android:id="@+id/txt_first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/firstname" />
+                android:hint="@string/first_name"
+                android:inputType="textPersonName"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -32,7 +33,8 @@
                 android:id="@+id/txt_last_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/lastname" />
+                android:hint="@string/last_name"
+                android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
