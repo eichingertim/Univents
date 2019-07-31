@@ -14,6 +14,17 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_login_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:onClick="onFbButtonClick"
+            app:layout_constraintBottom_toTopOf="@id/btn_choose_log_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
         <Button
             android:id="@+id/btn_choose_log_in"

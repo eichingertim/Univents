@@ -21,12 +21,30 @@ import android.widget.Toast;
 
 import com.androidproject.univents.MainActivity;
 import com.androidproject.univents.R;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.CallbackManager.Factory;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class LogRegChooserActivity extends AppCompatActivity implements View.OnClickListener {
@@ -35,9 +53,13 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     //FireBase Tools
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private CollectionReference refUsers;
 
     //buttons the user can choose between register and login
     private Button btnChooseRegisterPrivate, btnChooseRegisterOrga, btnChooseLogIn;
+    private LoginButton btnFbLogIn;
+    private CallbackManager callbackManager;
 
     //Welcome-Layout and Login-Layout as views
     private View layout_welcome, layout_login;
@@ -53,8 +75,19 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_log_reg_chooser);
 
         initFireBase();
+        initFacebook();
         initViews();
 
+    }
+
+    /**
+     * Initialize FacebookSDK and Login
+     */
+    private void initFacebook() {
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        btnFbLogIn = findViewById(R.id.facebook_login_button);
+        callbackManager = CallbackManager.Factory.create();
+        btnFbLogIn.setReadPermissions("email", "public_profile");
     }
 
     /**
@@ -62,6 +95,8 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
      */
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        refUsers = db.collection(getString(R.string.KEY_FB_USERS));
     }
 
     /**
@@ -74,6 +109,8 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         btnChooseRegisterPrivate = findViewById(R.id.btn_choose_register_private);
         btnChooseRegisterOrga = findViewById(R.id.btn_choose_register_orga);
         btnChooseLogIn = findViewById(R.id.btn_choose_log_in);
+
+
 
         //set OnClick Listeners for welcome-screen views
         btnChooseRegisterPrivate.setOnClickListener(this);
@@ -94,6 +131,79 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    /**
+     * Function that is called when the Facebook-Login-Button is clicked
+     * @param v button
+     */
+    public void onFbButtonClick(View v) {
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        handleFacebookToken(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        showToast("Anmeldung abgebrochen");
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        showToast(exception.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * handles the connection between facebook-login and firebase authentication
+     * @param accessToken facebook-access-token
+     */
+    private void handleFacebookToken(AccessToken accessToken) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
+                    assert firebaseUser != null;
+                    uploadDataToFbAndFinish(firebaseUser);
+                } else {
+                    showToast(Objects.requireNonNull(task.getException()).getMessage());
+                }
+            }
+        });
+
+    }
+
+    /**
+     * Uploads data to Firebase Firestore database
+     * @param firebaseUser current user
+     */
+    private void uploadDataToFbAndFinish(FirebaseUser firebaseUser) {
+        String[] name = Objects.requireNonNull(firebaseUser.getDisplayName()).split(" ");
+
+        Map<String, Object> newUser = new HashMap<>();
+        if (name.length < 2) {
+            newUser.put(getString(R.string.KEY_FB_LAST_NAME), "...");
+        } else {
+            newUser.put(getString(R.string.KEY_FB_LAST_NAME), name[1]);
+        }
+        newUser.put(getString(R.string.KEY_FB_FIRST_NAME), name[0]);
+        newUser.put(getString(R.string.KEY_FB_USER_ID), firebaseUser.getUid());
+        newUser.put(getString(R.string.KEY_FB_IS_ORGA), false);
+        newUser.put(getString(R.string.KEY_FB_EMAIL), Objects.requireNonNull(firebaseUser.getEmail()));
+
+        refUsers.document(firebaseUser.getUid()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                startActivity(new Intent(LogRegChooserActivity.this
+                        , MainActivity.class));
+                finish();
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         int viewID = v.getId();
@@ -110,12 +220,14 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.btn_close_log_in:
                 changeLayout();
+                break;
             case R.id.btn_log_in:
                 String email = txtEmail.getText().toString();
                 String password = txtPassword.getText().toString();
                 if (email.isEmpty() || password.isEmpty())
                     showToast(getString(R.string.enter_log_in_data));
                 else logIn(email, password);
+                break;
 
         }
 
@@ -178,6 +290,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == REGISTER_REQUEST_CODE) {
