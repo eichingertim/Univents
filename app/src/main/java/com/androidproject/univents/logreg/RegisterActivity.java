@@ -1,6 +1,7 @@
 package com.androidproject.univents.logreg;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -27,14 +28,28 @@ import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.customviews.NoSwipeViewPager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //Constants for viewpager positions
     private static final int POS_DATA_ENTRY = 0;
     private static final int POS_DATA_PROTECT = 1;
+
+    //Regular Expressions for password- and email-checking
     private static final String REGEX_PASSWORD_NUMBERS = ".*[0-9].*";
     private static final String REGEX_PASSWORD_SMALL_LETTER = ".*[a-zäöüß].*";
     private static final String REGEX_PASSWORD_BIG_LETTER = ".*[A-ZÄÖÜ].*";
@@ -43,27 +58,38 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private ActionBar actionBar;
 
+    //FireBase-tools
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private CollectionReference refUsers;
+
+    //ViewPager and its views + array-list that contains the views
     private NoSwipeViewPager layout_pager;
     private View layoutDataEntry, layoutDataProtection;
     private ArrayList<View> registerLayouts = new ArrayList<>();
 
+    private FloatingActionButton fab;
+
+    //Views from the data-protection layout
     private CheckBox checkDataProtection;
     private ScrollView scrollView;
+    private FloatingActionButton fab_scroll;
 
-    private FloatingActionButton fab, fab_scroll;
-
+    //Views from data-entry layout
     private EditText txtFirstName, txtLastName, txtOrgaName, txtEmail, txtEmailConfirm
             , txtPassword, txtPasswordConfirm;
-
-    private boolean isEmailConfirm, isPwNumbers, isPwLetters, isPwNumCount, isPwConfirm;
-
     private ImageView imgConfirmEmail, imgConfirmPassword, imgMinLetter
             , imgMinNumber, imgMinChars;
 
+    //containing whether a condition of password/email is true or false
+    private boolean isEmailConfirm, isPwNumbers, isPwLetters, isPwNumCount, isPwConfirm;
+
+    //contains whether a organisation or a private-person wants to register
     boolean isOrga = false;
 
+    //states for the color-state-list which changes the vector-asset color
     int[][] states = new int[][] {
-            new int[] { android.R.attr.state_enabled}  // pressed
+            new int[] { android.R.attr.state_enabled}
     };
 
     @Override
@@ -75,8 +101,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .getBoolean(getString(R.string.BOOLEAN_ORGA));
 
         initToolbar();
+        initFireBase();
         initViews();
 
+    }
+
+    /**
+     * Initializes FireBase-Tools
+     */
+    private void initFireBase() {
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        refUsers = db.collection(getString(R.string.KEY_FB_USERS));
     }
 
     /**
@@ -375,7 +411,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             }
         } else {
             if (checkDataProtection.isChecked()) {
-                signIn(firstName, lastName, orgaName, email, password);
+                signUp(firstName, lastName, orgaName, email, password);
             } else {
                 showToast(getString(R.string.confirm_data_protection));
             }
@@ -414,11 +450,67 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //TODO sign in via firebase and finish activity with result ok
-    private void signIn(String firstName, String lastName, String orgaName, String email
-            , String password) {
+    /**
+     * Signs up the user with fireBase email-authentication
+     * @param firstName user first-name
+     * @param lastName user last-name
+     * @param orgaName user orga-name
+     * @param email user email
+     * @param password user password
+     */
+    private void signUp(String firstName, String lastName, String orgaName
+            , String email, String password) {
+
+        final Map<String, Object> newUser = new HashMap<>();
+        newUser.put(getString(R.string.KEY_FB_FIRST_NAME), firstName);
+        newUser.put(getString(R.string.KEY_FB_LAST_NAME), lastName);
+        newUser.put(getString(R.string.KEY_FB_EMAIL), email);
+        if (isOrga) {
+            newUser.put(getString(R.string.KEY_FB_ORGA_NAME), orgaName);
+            newUser.put(getString(R.string.KEY_FB_IS_ORGA), true);
+        } else newUser.put(getString(R.string.KEY_FB_IS_ORGA), false);
+
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                newUser.put(getString(R.string.KEY_FB_USER_ID), user.getUid());
+                                uploadDataToFbAndFinish(newUser, user);
+                            }
+                        } else {
+                            String exceptionMessage = Objects.requireNonNull(task.getException())
+                                    .getMessage();
+                            showToast(exceptionMessage);
+                        }
+                    }
+                });
 
     }
+
+    /**
+     * Uploads user-data to Firebase, sends verification-email
+     * and finishes the activity with a result+intent
+     * @param newUser Hashmap with user-data
+     * @param user firebase-user
+     */
+    private void uploadDataToFbAndFinish(Map<String, Object> newUser, final FirebaseUser user) {
+        refUsers.document(user.getUid()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Intent finishRegister = new Intent();
+                finishRegister.putExtra(getString(R.string.KEY_USER_EMAIL)
+                        , user.getEmail());
+                setResult(RESULT_OK, finishRegister);
+                user.sendEmailVerification();
+                auth.signOut();
+                finish();
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

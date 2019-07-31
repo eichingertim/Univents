@@ -94,5 +94,19 @@
     <string name="emails_are_not_same">E-Mail Adressen stimmen nicht überein</string>
     <string name="password_not_valid">Passwort entspricht nicht den Vorgaben</string>
     <string name="passwords_not_same">Passwörter stimmen nicht überein</string>
+    <string name="email_not_yet_confirmed">E-Mail Adresse noch nicht bestätigt</string>
+
+    <!--FireBase Keys-->
+    <string name="KEY_USER_EMAIL">user_email</string>
+    <string name="KEY_FB_USERS">users</string>
+    <string name="KEY_FB_FIRST_NAME">firstName</string>
+    <string name="KEY_FB_LAST_NAME">lastName</string>
+    <string name="KEY_FB_EMAIL">email</string>
+    <string name="KEY_FB_ORGA_NAME">orgaName</string>
+    <string name="KEY_FB_IS_ORGA">isOrga</string>
+    <string name="enter_log_in_data">Du musst deine Login-Daten eingeben um dich anzumelden.</string>
+    <string name="KEY_FB_USER_ID">userId</string>
+    <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
+    <string name="check_inbox">Überprüfe deinen Posteingang und bestätige deine Mail-Adresse</string>
 
 </resources>
