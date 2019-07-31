@@ -8,58 +8,77 @@
     tools:context=".logreg.LogRegChooserActivity">
 
 
-    <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
-    <Button
-        android:id="@+id/btn_choose_log_in"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_welcome"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/form_round_corners_orange"
-        android:text="@string/text_btn_login"
-        android:layout_marginBottom="17dp"
-        android:textColor="@color/colorLightText"
-        app:layout_constraintBottom_toTopOf="@id/tv_create_account"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-    <TextView
-        android:id="@+id/tv_create_account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Account erstellen"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@id/btn_choose_register_private"
-        app:layout_constraintStart_toStartOf="parent"
+        <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
+        <Button
+            android:id="@+id/btn_choose_log_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_orange"
+            android:text="@string/text_btn_login"
+            android:layout_marginBottom="17dp"
+            android:textColor="@color/colorLightText"
+            app:layout_constraintBottom_toTopOf="@id/tv_create_account"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_create_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Account erstellen"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_choose_register_private"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/colorDarkText"
+            android:layout_margin="8dp"
+            android:gravity="center"/>
+
+        <!--Button: Create new account; Opens RegisterActivity-->
+        <Button
+            android:id="@+id/btn_choose_register_private"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_dark_stroke"
+            android:text="Privat"
+            android:textColor="@color/colorDarkText"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_goneMarginEnd="10dp"
+            />
+
+        <Button
+            android:id="@+id/btn_choose_register_orga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_dark_stroke"
+            android:text="Organisation"
+            android:textColor="@color/colorDarkText"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_choose_register_private"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <include
+        android:id="@+id/layout_login"
+        layout="@layout/layout_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:textColor="@color/colorDarkText"
-        android:layout_margin="8dp"
-        android:gravity="center"/>
-
-    <!--Button: Create new account; Opens RegisterActivity-->
-    <Button
-        android:id="@+id/btn_choose_register_private"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/form_round_corners_dark_stroke"
-        android:text="Privat"
-        android:textColor="@color/colorDarkText"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_goneMarginEnd="10dp"
-        />
-
-    <Button
-        android:id="@+id/btn_choose_register_orga"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/form_round_corners_dark_stroke"
-        android:text="Organisation"
-        android:textColor="@color/colorDarkText"
-        android:layout_marginBottom="5dp"
-        android:layout_marginStart="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/btn_choose_register_private"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

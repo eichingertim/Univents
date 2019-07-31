@@ -1,5 +1,6 @@
 package com.androidproject.univents.logreg;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -46,13 +47,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private View layoutDataEntry, layoutDataProtection;
     private ArrayList<View> registerLayouts = new ArrayList<>();
 
-    private TextView tvdataProtectDecl;
     private CheckBox checkDataProtection;
     private ScrollView scrollView;
 
     private FloatingActionButton fab, fab_scroll;
 
-    private EditText txtFirstName, txtLastname, txtOrgaName, txtEmail, txtEmailConfirm
+    private EditText txtFirstName, txtLastName, txtOrgaName, txtEmail, txtEmailConfirm
             , txtPassword, txtPasswordConfirm;
 
     private boolean isEmailConfirm, isPwNumbers, isPwLetters, isPwNumCount, isPwConfirm;
@@ -92,6 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     /**
      * initializes all views and setup viewpager with layout-views
      */
+    @SuppressLint("InflateParams")
     private void initViews() {
         layout_pager = findViewById(R.id.register_process_layout_container);
 
@@ -100,9 +101,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         LayoutInflater inflater = RegisterActivity.this.getLayoutInflater();
         if (isOrga) {
-            layoutDataEntry = inflater.inflate(R.layout.layout_register_data_entry_orga, null);
+            layoutDataEntry = inflater.inflate(R.layout.layout_register_data_entry_orga
+                    , null);
         } else {
-            layoutDataEntry = inflater.inflate(R.layout.layout_register_data_entry_private, null);
+            layoutDataEntry = inflater.inflate(R.layout.layout_register_data_entry_private,
+                    null);
         }
         layoutDataProtection = inflater.inflate(R.layout.layout_register_data_protection_declaration
                 ,null);
@@ -164,8 +167,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      * scroll-view container.
      */
     private void initDataProtectionViews() {
-        tvdataProtectDecl = layoutDataProtection.findViewById(R.id.tv_data_protection_declaration);
-        tvdataProtectDecl.setText(Html.fromHtml(getString(R.string.data_protection)));
+        TextView tvDataProtectDecl = layoutDataProtection
+                .findViewById(R.id.tv_data_protection_declaration);
+        tvDataProtectDecl.setText(Html.fromHtml(getString(R.string.data_protection)));
 
         checkDataProtection = layoutDataProtection.findViewById(R.id.check_data_protection);
 
@@ -192,7 +196,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
     private void initDataEntryViews() {
         txtFirstName = layoutDataEntry.findViewById(R.id.txt_first_name);
-        txtLastname = layoutDataEntry.findViewById(R.id.txt_last_name);
+        txtLastName = layoutDataEntry.findViewById(R.id.txt_last_name);
         txtEmail = layoutDataEntry.findViewById(R.id.txt_email);
         txtEmailConfirm = layoutDataEntry.findViewById(R.id.txt_email_confirm);
         txtPassword = layoutDataEntry.findViewById(R.id.txt_password);
@@ -228,7 +232,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         txtPasswordConfirm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -241,12 +244,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
     }
-
-
 
     /**
      * Text-Watcher for EditText password
@@ -362,7 +362,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void handleFabRegisterClick() {
 
         String firstName = txtFirstName.getText().toString();
-        String lastName = txtLastname.getText().toString();
+        String lastName = txtLastName.getText().toString();
         String email = txtEmail.getText().toString();
         String password = txtPassword.getText().toString();
         String orgaName = "";

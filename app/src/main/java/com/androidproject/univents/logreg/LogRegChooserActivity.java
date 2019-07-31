@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.androidproject.univents.R;
 
@@ -15,6 +17,12 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     //buttons the user can choose between register and login
     private Button btnChooseRegisterPrivate, btnChooseRegisterOrga, btnChooseLogIn;
+
+    private View layout_welcome, layout_login;
+
+    private ImageView btnCloseLogIn;
+    private Button btnLogIn;
+    private EditText txtEmail, txtPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +37,8 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
      * function where all registerLayouts from the layout are initialized.
      */
     private void initViews() {
+
+        layout_welcome = findViewById(R.id.layout_welcome);
         btnChooseRegisterPrivate = findViewById(R.id.btn_choose_register_private);
         btnChooseRegisterOrga = findViewById(R.id.btn_choose_register_orga);
         btnChooseLogIn = findViewById(R.id.btn_choose_log_in);
@@ -37,6 +47,17 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         btnChooseRegisterPrivate.setOnClickListener(this);
         btnChooseRegisterOrga.setOnClickListener(this);
         btnChooseLogIn.setOnClickListener(this);
+
+        layout_login = findViewById(R.id.layout_login);
+        btnCloseLogIn = findViewById(R.id.btn_close_log_in);
+        btnLogIn = findViewById(R.id.btn_log_in);
+        txtEmail = findViewById(R.id.txt_email);
+        txtPassword = findViewById(R.id.txt_password);
+
+        btnCloseLogIn.setOnClickListener(this);
+        btnLogIn.setOnClickListener(this);
+
+
     }
 
     @Override
@@ -51,17 +72,33 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                 openRegisterActivity(true);
                 break;
             case R.id.btn_choose_log_in:
-                openLogInLayout();
+                changeLayout();
                 break;
+            case R.id.btn_close_log_in:
+                changeLayout();
+            case R.id.btn_log_in:
+                logIn();
         }
 
     }
 
-    /**
-     * makes the welcome screen invisible and opens login layout
-     */
-    private void openLogInLayout() {
+    //TODO: log in with firebase
+    private void logIn() {
+        String email = txtEmail.getText().toString();
+        String password = txtPassword.getText().toString();
+    }
 
+    /**
+     * changes layout between login- and welcome-layout
+     */
+    private void changeLayout() {
+        if (layout_login.getVisibility() == View.VISIBLE) {
+            layout_login.setVisibility(View.INVISIBLE);
+            layout_welcome.setVisibility(View.VISIBLE);
+        } else {
+            layout_login.setVisibility(View.VISIBLE);
+            layout_welcome.setVisibility(View.INVISIBLE);
+        }
     }
 
     /**
