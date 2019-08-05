@@ -3,9 +3,19 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#aaaaaa</color>
     <color name="colorAccent">#ffb300</color>
-
     <color name="colorDarkText">#424242</color>
+    <color name="backgroundColor">#ffffff</color>
     <color name="colorLightText">#ffffff</color>
+    <color name="buttonOutlineColorDark">#424242</color>
 
-    <color name="colorButtonOutlineStroke">#424242</color>
+
+    <!--Dark Theme Colors-->
+    <color name="colorPrimaryDarkTheme">#424242</color>
+    <color name="colorPrimaryDarkDarkTheme">#212121</color>
+    <color name="colorAccentDarkTheme">#ffb300</color>
+    <color name="colorDarkTextDarkTheme">#ffffff</color>
+    <color name="backgroundColorDarkTheme">#424242</color>
+    <color name="colorLightTextDarkTheme">#ffffff</color>
+    <color name="buttonOutlineColorDarkDarkTheme">#ffffff</color>
+
 </resources>

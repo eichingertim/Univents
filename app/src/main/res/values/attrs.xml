@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="backgroundColor" format="color"/>
+    <attr name="textColorDark" format="color" />
+    <attr name="textColorLight" format="color" />
+    <attr name="buttonOutlineColorDark" format="color"/>
+
+</resources>

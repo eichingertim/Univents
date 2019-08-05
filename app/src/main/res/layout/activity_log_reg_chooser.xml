@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
+    android:background="?attr/backgroundColor"
     tools:context=".logreg.LogRegChooserActivity">
 
 
@@ -12,6 +13,7 @@
         android:id="@+id/layout_welcome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
         android:visibility="visible">
 
         <com.facebook.login.widget.LoginButton
@@ -33,7 +35,7 @@
             android:background="@drawable/form_round_corners_orange"
             android:text="@string/text_btn_login"
             android:layout_marginBottom="17dp"
-            android:textColor="@color/colorLightText"
+            android:textColor="?attr/textColorLight"
             app:layout_constraintBottom_toTopOf="@id/tv_create_account"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
@@ -47,7 +49,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn_choose_register_private"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/colorDarkText"
+            android:textColor="?attr/textColorDark"
             android:layout_margin="8dp"
             android:gravity="center"/>
 
@@ -58,7 +60,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/form_round_corners_dark_stroke"
             android:text="Privat"
-            android:textColor="@color/colorDarkText"
+            android:textColor="?attr/textColorDark"
             android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +74,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/form_round_corners_dark_stroke"
             android:text="Organisation"
-            android:textColor="@color/colorDarkText"
+            android:textColor="?attr/textColorDark"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="10dp"
             app:layout_constraintBottom_toBottomOf="parent"

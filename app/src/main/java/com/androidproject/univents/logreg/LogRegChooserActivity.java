@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -71,6 +72,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_reg_chooser);
 
@@ -78,6 +80,12 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         initFacebook();
         initViews();
 
+    }
+
+    private void checkTheme() {
+        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.DarkTheme);
+        } else setTheme(R.style.AppTheme);
     }
 
     /**

@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="?attr/backgroundColor"
         android:padding="5dp">
 
         <android.support.design.widget.TextInputLayout
@@ -20,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/first_name"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textPersonName"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -34,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/last_name"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -47,6 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/orga_name"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -60,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -73,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/repeat_email"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -89,6 +95,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
+                android:tint="?attr/textColorDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -98,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:text="E-Mail stimmt überein"
                 android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
                 app:layout_constraintStart_toEndOf="@id/img_email_confirmed"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_email_confirmed"
@@ -115,6 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textPassword"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -131,6 +140,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
+                android:tint="?attr/textColorDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
@@ -139,6 +149,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mind. einen Groß- und Kleinbuchstaben"
                 android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
                 app:layout_constraintStart_toEndOf="@id/img_passw_big_small_letters"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_passw_big_small_letters"
@@ -150,6 +161,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
+                android:tint="?attr/textColorDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_passw_big_small_letters" />
 
@@ -158,6 +170,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mind. eine Ziffer"
                 android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
                 app:layout_constraintStart_toEndOf="@id/img_passw_number"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_passw_number"
@@ -169,6 +182,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
+                android:tint="?attr/textColorDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_passw_number" />
 
@@ -177,6 +191,7 @@
                 android:layout_height="wrap_content"
                 android:text="Mind. 8 Zeichen"
                 android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
                 app:layout_constraintStart_toEndOf="@id/img_count_chars"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/img_count_chars"
@@ -194,6 +209,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/repeat_password"
+                android:textColor="?attr/textColorDark"
                 android:inputType="textPassword"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -210,6 +226,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
+                android:tint="?attr/textColorDark"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -218,6 +235,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Passwörter stimmen überein"
+                android:textColor="?attr/textColorDark"
                 android:layout_margin="7dp"
                 app:layout_constraintStart_toEndOf="@id/img_password_confirmed"
                 app:layout_constraintEnd_toEndOf="parent"
