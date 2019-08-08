@@ -5,5 +5,8 @@
     <attr name="textColorDark" format="color" />
     <attr name="textColorLight" format="color" />
     <attr name="buttonOutlineColorDark" format="color"/>
+    <attr name="textColorHint" format="color" />
+
+    <attr name="closeIcon" format="reference"/>
 
 </resources>

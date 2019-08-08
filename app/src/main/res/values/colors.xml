@@ -7,6 +7,7 @@
     <color name="backgroundColor">#ffffff</color>
     <color name="colorLightText">#ffffff</color>
     <color name="buttonOutlineColorDark">#424242</color>
+    <color name="colorHintText">#888888</color>
 
 
     <!--Dark Theme Colors-->
@@ -17,5 +18,9 @@
     <color name="backgroundColorDarkTheme">#424242</color>
     <color name="colorLightTextDarkTheme">#ffffff</color>
     <color name="buttonOutlineColorDarkDarkTheme">#ffffff</color>
+    <color name="colorHintTextDarkTheme">#eeeeee</color>
+
+    <!--Facebook color-->
+    <color name="colorFacebook">#3C5A99</color>
 
 </resources>

@@ -2,6 +2,7 @@ package com.androidproject.univents.logreg;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -60,6 +61,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     //buttons the user can choose between register and login
     private Button btnChooseRegisterPrivate, btnChooseRegisterOrga, btnChooseLogIn;
     private LoginButton btnFbLogIn;
+    private Button btnFacebookCustom;
     private CallbackManager callbackManager;
 
     //Welcome-Layout and Login-Layout as views
@@ -70,16 +72,27 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     private Button btnLogIn;
     private EditText txtEmail, txtPassword;
 
+    //ProgressDialog
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         checkTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_reg_chooser);
 
+        initProgressDialog();
         initFireBase();
         initFacebook();
         initViews();
 
+    }
+
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage(getString(R.string.you_to_be_logged_in));
+        progressDialog.setCancelable(false);
     }
 
     private void checkTheme() {
@@ -94,6 +107,13 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     private void initFacebook() {
         FacebookSdk.sdkInitialize(getApplicationContext());
         btnFbLogIn = findViewById(R.id.facebook_login_button);
+        btnFacebookCustom = findViewById(R.id.btn_facebook_login);
+        btnFacebookCustom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnFbLogIn.performClick();
+            }
+        });
         callbackManager = CallbackManager.Factory.create();
         btnFbLogIn.setReadPermissions("email", "public_profile");
     }
@@ -148,6 +168,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
+                        progressDialog.show();
                         handleFacebookToken(loginResult.getAccessToken());
                     }
 
@@ -177,6 +198,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                     assert firebaseUser != null;
                     uploadDataToFbAndFinish(firebaseUser);
                 } else {
+                    progressDialog.dismiss();
                     showToast(Objects.requireNonNull(task.getException()).getMessage());
                 }
             }
@@ -205,6 +227,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         refUsers.document(firebaseUser.getUid()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                progressDialog.dismiss();
                 startActivity(new Intent(LogRegChooserActivity.this
                         , MainActivity.class));
                 finish();
@@ -247,7 +270,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
      * @param password user entered password
      */
     private void logIn(String email, String password) {
-
+        progressDialog.show();
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -256,14 +279,18 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                             FirebaseUser user = auth.getCurrentUser();
                             assert user != null;
                             if (user.isEmailVerified()) {
+                                progressDialog.dismiss();
                                 startActivity(new Intent(LogRegChooserActivity.this
                                         , MainActivity.class));
                                 finish();
                             } else {
+                                progressDialog.dismiss();
                                 auth.signOut();
                                 showToast(getString(R.string.email_not_yet_confirmed));
+                                //TODO: Show Dialog "Send Email again"
                             }
                         } else {
+                            progressDialog.dismiss();
                             String exceptionMessage = Objects.requireNonNull(task.getException())
                                     .getMessage();
                             showToast(exceptionMessage);
@@ -288,7 +315,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     /**
      * hands off to registration process {@link RegisterActivity} with result.
-     * @param b
+     * @param b true, if a organisation wants to sign up.
      */
     private void openRegisterActivity(boolean b) {
         Intent regIntent = new Intent(this, RegisterActivity.class);
@@ -302,6 +329,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == REGISTER_REQUEST_CODE) {
+            assert data != null;
             showConfirmEmailDialog(data.getStringExtra(getString(R.string.KEY_USER_EMAIL)));
         }
 
@@ -309,7 +337,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     /**
      * Creates and shows a dialog that notifies the user to confirm its email-address
-     * @param email
+     * @param email includes the users email where the verification was sent to
      */
     @SuppressLint("InflateParams")
     private void showConfirmEmailDialog(String email) {

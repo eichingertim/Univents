@@ -13,6 +13,8 @@
     <!--Button Text-Values-->
     <string name="text_btn_login">Anmelden</string>
     <string name="text_btn_register">Konto erstellen</string>
+    <string name="create_account">Account erstellen</string>
+    <string name="t_private">Privat</string>
 
     <string name="data_protection"><![CDATA[
 
@@ -110,5 +112,12 @@
     <!--Email-Sent Dialog-->
     <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
     <string name="check_inbox">Überprüfe deinen Posteingang und bestätige deine Mail-Adresse</string>
+
+    <!--Facebook log in-->
+    <string name="go_on_with_facebook">weiter mit Facebook</string>
+
+    <!--ProgressBar Messges-->
+    <string name="you_to_be_registered">Du wirst registriert....</string>
+    <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
 
 </resources>

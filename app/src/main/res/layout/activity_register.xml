@@ -13,8 +13,8 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/backgroundColor"
         android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        app:popupTheme="@style/Theme.AppCompat.DayNight"/>
 
     <com.androidproject.univents.customviews.NoSwipeViewPager
         android:paddingStart="10dp"

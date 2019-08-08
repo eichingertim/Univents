@@ -1,8 +1,12 @@
 package com.androidproject.univents.logreg;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -12,10 +16,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,18 +101,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             new int[] { android.R.attr.state_enabled}
     };
 
+    private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        checkTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
         isOrga = Objects.requireNonNull(getIntent().getExtras())
                 .getBoolean(getString(R.string.BOOLEAN_ORGA));
 
+        initProgressDialog();
         initToolbar();
         initFireBase();
         initViews();
 
+    }
+
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage(getString(R.string.you_to_be_registered));
+        progressDialog.setCancelable(false);
+    }
+
+    private void checkTheme() {
+        if (isDarkTheme()) {
+            setTheme(R.style.DarkTheme);
+        } else setTheme(R.style.AppTheme);
     }
 
     /**
@@ -363,10 +387,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         icon.setImageResource(R.drawable.ic_check_24dp);
     }
 
+
     private void setIconFalse(ImageView icon) {
-        icon.setImageTintList(new ColorStateList(states
-                , new int[]{getResources().getColor(R.color.colorDarkText)}));
-        icon.setImageResource(R.drawable.ic_close_24dp);
+        TypedValue typedValue = new TypedValue();
+        this.getTheme().resolveAttribute(R.attr.closeIcon, typedValue, true);
+        int drawableRes = typedValue.resourceId;
+        Drawable drawable = this.getResources().getDrawable(drawableRes);
+        icon.setImageDrawable(drawable);
+
     }
 
     @Override
@@ -472,6 +500,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             newUser.put(getString(R.string.KEY_FB_IS_ORGA), true);
         } else newUser.put(getString(R.string.KEY_FB_IS_ORGA), false);
 
+        progressDialog.show();
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -483,6 +512,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                 uploadDataToFbAndFinish(newUser, user);
                             }
                         } else {
+                            progressDialog.dismiss();
                             String exceptionMessage = Objects.requireNonNull(task.getException())
                                     .getMessage();
                             showToast(exceptionMessage);
@@ -508,6 +538,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 setResult(RESULT_OK, finishRegister);
                 user.sendEmailVerification();
                 auth.signOut();
+                progressDialog.dismiss();
                 finish();
             }
         });
@@ -570,6 +601,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private boolean isDarkTheme() {
+        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES;
     }
 
 }

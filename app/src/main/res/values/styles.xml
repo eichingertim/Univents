@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -10,9 +10,12 @@
         <item name="textColorDark">@color/colorDarkText</item>
         <item name="textColorLight">@color/colorLightText</item>
         <item name="buttonOutlineColorDark">@color/buttonOutlineColorDark</item>
+        <item name="textColorHint">@color/colorHintText</item>
+        <item name="android:textColorSecondary">@color/colorDarkText</item>
+        <item name="closeIcon">@drawable/ic_close_24dp</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDarkTheme</item>
@@ -21,6 +24,9 @@
         <item name="textColorDark">@color/colorDarkTextDarkTheme</item>
         <item name="textColorLight">@color/colorLightTextDarkTheme</item>
         <item name="buttonOutlineColorDark">@color/buttonOutlineColorDarkDarkTheme</item>
+        <item name="textColorHint">@color/colorHintTextDarkTheme</item>
+        <item name="android:textColorSecondary">@color/colorDarkTextDarkTheme</item>
+        <item name="closeIcon">@drawable/ic_close_white_24dp</item>
     </style>
 
 </resources>

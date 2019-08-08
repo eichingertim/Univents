@@ -14,7 +14,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_first_name"
@@ -22,6 +24,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/first_name"
                 android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
                 android:inputType="textPersonName"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -29,7 +33,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_last_name"
@@ -37,13 +43,17 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/last_name"
                 android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_orga_name"
@@ -51,13 +61,17 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/orga_name"
                 android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
                 android:inputType="textPersonName"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_email"
@@ -65,13 +79,17 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_email_confirm"
@@ -79,6 +97,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/repeat_email"
                 android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
                 android:inputType="textEmailAddress"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -116,7 +136,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_password"
@@ -124,6 +146,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
                 android:inputType="textPassword"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -202,7 +226,9 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp">
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
 
             <EditText
                 android:id="@+id/txt_password_confirm"
@@ -210,7 +236,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/repeat_password"
                 android:textColor="?attr/textColorDark"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"/>
         </android.support.design.widget.TextInputLayout>
 
         <!--Layout for live-checking password confirm-->

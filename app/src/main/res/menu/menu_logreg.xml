@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/close_log_reg_layout"
-        android:icon="@drawable/ic_close_24dp"
+        android:icon="?attr/closeIcon"
         android:title="@string/close"
         app:showAsAction="always"/>
 
