@@ -96,7 +96,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
-                android:tint="?attr/textColorDark"
+                android:tint="?attr/normalIconColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
@@ -144,7 +144,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
-                android:tint="?attr/textColorDark"
+                android:tint="?attr/normalIconColor"
                 android:layout_margin="7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -165,7 +165,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
-                android:tint="?attr/textColorDark"
+                android:tint="?attr/normalIconColor"
                 android:layout_margin="7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_passw_big_small_letters" />
@@ -186,7 +186,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
-                android:tint="?attr/textColorDark"
+                android:tint="?attr/normalIconColor"
                 android:layout_margin="7dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/img_passw_number" />
@@ -235,7 +235,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_close_24dp"
                 android:layout_margin="7dp"
-                android:tint="?attr/textColorDark"
+                android:tint="?attr/normalIconColor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>

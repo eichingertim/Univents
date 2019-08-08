@@ -120,4 +120,11 @@
     <string name="you_to_be_registered">Du wirst registriert....</string>
     <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
 
+    <!--Drawer Toggle-->
+    <string name="OPEN">open</string>
+    <string name="CLOSE">close</string>
+    <string name="account">Konto</string>
+    <string name="profile">Profil</string>
+    <string name="signout">Abmelden</string>
+
 </resources>

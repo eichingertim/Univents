@@ -13,6 +13,7 @@
         <item name="textColorHint">@color/colorHintText</item>
         <item name="android:textColorSecondary">@color/colorDarkText</item>
         <item name="closeIcon">@drawable/ic_close_24dp</item>
+        <item name="normalIconColor">@color/normalIconColor</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -27,6 +28,7 @@
         <item name="textColorHint">@color/colorHintTextDarkTheme</item>
         <item name="android:textColorSecondary">@color/colorDarkTextDarkTheme</item>
         <item name="closeIcon">@drawable/ic_close_white_24dp</item>
+        <item name="normalIconColor">@color/normalIconColorDarkTheme</item>
     </style>
 
 </resources>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Light Theme Colors-->
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#aaaaaa</color>
     <color name="colorAccent">#ffb300</color>
@@ -8,6 +10,7 @@
     <color name="colorLightText">#ffffff</color>
     <color name="buttonOutlineColorDark">#424242</color>
     <color name="colorHintText">#888888</color>
+    <color name="normalIconColor">#424242</color>
 
 
     <!--Dark Theme Colors-->
@@ -19,6 +22,7 @@
     <color name="colorLightTextDarkTheme">#ffffff</color>
     <color name="buttonOutlineColorDarkDarkTheme">#ffffff</color>
     <color name="colorHintTextDarkTheme">#eeeeee</color>
+    <color name="normalIconColorDarkTheme">#ffffff</color>
 
     <!--Facebook color-->
     <color name="colorFacebook">#3C5A99</color>

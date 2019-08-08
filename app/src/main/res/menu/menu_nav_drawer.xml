@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/account">
+        <menu>
+            <item
+                android:id="@+id/drawer_action_profile"
+                android:enabled="true"
+                android:icon="@drawable/ic_person_outline_24dp"
+                android:title="@string/profile" />
+            <item
+                android:id="@+id/drawer_action_logout"
+                android:enabled="true"
+                android:icon="@drawable/ic_exit_24dp"
+                android:title="@string/signout" />
+
+        </menu>
+    </item>
+
+</menu>
