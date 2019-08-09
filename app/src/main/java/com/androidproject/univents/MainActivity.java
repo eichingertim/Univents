@@ -1,20 +1,22 @@
 package com.androidproject.univents;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 
 import com.androidproject.univents.logreg.LogRegChooserActivity;
+import com.androidproject.univents.settings.SettingsActivity;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -47,19 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * initializes all content-views
      */
     private void initContent() {
-        Button btnchangeTheme = findViewById(R.id.btn_changeTheme);
-        btnchangeTheme.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                    restartApp();
-                } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                    restartApp();
-                }
-            }
-        });
+
     }
 
     /**
@@ -68,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -79,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 , R.string.CLOSE);
         mainDrawer.addDrawerListener(mainDrawerToggle);
         mainDrawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mainDrawerNavView = findViewById(R.id.drawer_nav_view);
         mainDrawerNavView.setNavigationItemSelectedListener(this);
     }
@@ -91,15 +82,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
     }
 
-    private void restartApp() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
-    }
 
+    /**
+     * checks if dark theme is on
+     */
     private void checkTheme() {
-        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES) {
+        if (isDarkTheme()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             setTheme(R.style.DarkTheme);
-        } else setTheme(R.style.AppTheme);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            setTheme(R.style.AppTheme);
+        }
     }
 
     @Override
@@ -111,8 +105,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_action_logout:
                 signOut();
                 break;
+            case R.id.drawer_action_settings:
+                goToSettings();
+                break;
         }
         return true;
+    }
+
+    private void goToSettings() {
+        startActivity(new Intent(this, SettingsActivity.class));
     }
 
     //TODO: Intent to profile page
@@ -141,4 +142,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private boolean isDarkTheme() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences
+                .getBoolean(getString(R.string.PREF_KEY_THEME), false);
+    }
+
 }
