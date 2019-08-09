@@ -14,23 +14,33 @@ import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.androidproject.univents.logreg.LogRegChooserActivity;
 import com.androidproject.univents.settings.SettingsActivity;
+import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
 
     private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private DocumentReference refUser;
 
     private DrawerLayout mainDrawer;
     private ActionBarDrawerToggle mainDrawerToggle;
     private NavigationView mainDrawerNavView;
 
-
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +51,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initToolbar();
         initFireBase();
         initNavigationDrawer();
-        initContent();
+        refUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                user = documentSnapshot.toObject(User.class);
+                initNavDrawerHeader();
+                initContent();
+            }
+        });
+
+
+    }
+
+    private void initNavDrawerHeader() {
+        TextView tvHeaderUserName = findViewById(R.id.tv_header_name);
+        TextView tvHeaderUserEmail = findViewById(R.id.tv_header_email);
+        tvHeaderUserName.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
+        tvHeaderUserEmail.setText(user.getEmail());
+
+        ImageView ivHeaderProfilePic = findViewById(R.id.iv_header_profile_pic);
+        try {
+            Picasso.get().load(auth.getCurrentUser().getPhotoUrl()).into(ivHeaderProfilePic);
+        } catch (Exception e) {
+            Log.e("PHOTO", e.getMessage());
+        }
 
     }
 
@@ -80,6 +113,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        refUser = db.collection(getString(R.string.KEY_FB_USERS))
+                .document(auth.getCurrentUser().getUid());
+
     }
 
 

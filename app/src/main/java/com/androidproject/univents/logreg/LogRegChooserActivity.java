@@ -3,6 +3,7 @@ package com.androidproject.univents.logreg;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -277,19 +278,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
-                            assert user != null;
-                            if (user.isEmailVerified()) {
-                                progressDialog.dismiss();
-                                startActivity(new Intent(LogRegChooserActivity.this
-                                        , MainActivity.class));
-                                finish();
-                            } else {
-                                progressDialog.dismiss();
-                                auth.signOut();
-                                showToast(getString(R.string.email_not_yet_confirmed));
-                                //TODO: Show Dialog "Send Email again"
-                            }
+                            checkSuccessfullLogin();
                         } else {
                             progressDialog.dismiss();
                             String exceptionMessage = Objects.requireNonNull(task.getException())
@@ -299,6 +288,48 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                     }
                 });
 
+    }
+
+    /**
+     * checks whether the user has confirmed his email
+     */
+    private void checkSuccessfullLogin() {
+        FirebaseUser user = auth.getCurrentUser();
+        assert user != null;
+        if (user.isEmailVerified()) {
+            progressDialog.dismiss();
+            startActivity(new Intent(LogRegChooserActivity.this
+                    , MainActivity.class));
+            finish();
+        } else {
+            progressDialog.dismiss();
+            showToast(getString(R.string.email_not_yet_confirmed));
+            showDialogSendEmailAgain();
+        }
+    }
+
+    private void showDialogSendEmailAgain() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Email bestätigen");
+        builder.setMessage("Sollen wie dir nochmal eine Bestätigungs-Emal senden?");
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                auth.getCurrentUser().sendEmailVerification();
+                showConfirmEmailDialog(auth.getCurrentUser().getEmail());
+                dialog.dismiss();
+                auth.signOut();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                auth.signOut();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
