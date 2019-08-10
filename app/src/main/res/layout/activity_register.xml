@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/backgroundColor"
+        android:background="?attr/actionBarColor"
         android:elevation="4dp"
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         app:popupTheme="@style/Theme.AppCompat.DayNight"/>
