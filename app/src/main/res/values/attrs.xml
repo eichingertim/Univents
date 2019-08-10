@@ -7,6 +7,7 @@
     <attr name="textColorHint" format="color" />
     <attr name="buttonOutlineColorDark" format="color"/>
     <attr name="normalIconColor" format="color"/>
+    <attr name="actionBarColor" format="color"/>
 
 
     <attr name="closeIcon" format="reference"/>
