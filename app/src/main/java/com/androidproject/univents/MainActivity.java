@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //TODO: Intent to profile page
     private void goToProfilePage() {
-        Intent profilePageIntent = new Intent(MainActivity.this, ProfilePageActivity.class);
+        startActivity(new Intent(this, ProfilePageActivity.class));
     }
 
     /**
