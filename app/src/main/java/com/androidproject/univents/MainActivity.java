@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.androidproject.univents.logreg.LogRegChooserActivity;
 import com.androidproject.univents.settings.SettingsActivity;
+import com.androidproject.univents.user.ProfilePageActivity;
 import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -155,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //TODO: Intent to profile page
     private void goToProfilePage() {
-
+        Intent profilePageIntent = new Intent(MainActivity.this, ProfilePageActivity.class);
     }
 
     /**
