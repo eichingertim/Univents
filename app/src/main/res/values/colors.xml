@@ -11,7 +11,7 @@
     <color name="buttonOutlineColorDark">#212121</color>
     <color name="colorHintText">#888888</color>
     <color name="normalIconColor">#212121</color>
-    <color name="actionBarColor">#424242</color>
+    <color name="actionBarColor">#ffffff</color>
 
 
     <!--Dark Theme Colors-->
@@ -24,7 +24,7 @@
     <color name="buttonOutlineColorDarkDarkTheme">#ffffff</color>
     <color name="colorHintTextDarkTheme">#eeeeee</color>
     <color name="normalIconColorDarkTheme">#ffffff</color>
-    <color name="actionBarColorDarkTheme">#ffffff</color>
+    <color name="actionBarColorDarkTheme">#424242</color>
 
     <!--Facebook color-->
     <color name="colorFacebook">#3C5A99</color>
