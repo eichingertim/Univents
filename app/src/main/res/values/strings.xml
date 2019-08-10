@@ -133,4 +133,9 @@
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
 
+    <!--Profile Strings-->
+    <string name="prof_name">Name</string>
+    <string name="prof_email">Email</string>
+    <string name="prof_number">Telefonnummer</string>
+
 </resources>
