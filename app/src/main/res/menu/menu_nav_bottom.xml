@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_action_home"
+        android:title="Home"
+        android:icon="@drawable/ic_home_24dp"/>
+
+    <item
+        android:id="@+id/bottom_action_map"
+        android:title="Karte"
+        android:icon="@drawable/ic_map_24dp"/>
+
+    <item
+        android:id="@+id/bottom_action_my_events"
+        android:title="Meine Events"
+        android:icon="@drawable/ic_event_24dp"/>
+
+
+</menu>

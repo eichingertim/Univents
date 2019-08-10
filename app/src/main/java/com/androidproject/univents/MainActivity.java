@@ -3,7 +3,12 @@ package com.androidproject.univents;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,7 +22,11 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidproject.univents.customviews.NoSwipeViewPager;
 import com.androidproject.univents.logreg.LogRegChooserActivity;
+import com.androidproject.univents.main_fragments.HomeFragment;
+import com.androidproject.univents.main_fragments.MapFragment;
+import com.androidproject.univents.main_fragments.MyEventsFragment;
 import com.androidproject.univents.settings.SettingsActivity;
 import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
@@ -28,7 +37,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+        , BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private static final int NUM_VIEW_PAGES = 3;
+    private static final int HOME = 0;
+    private static final int MAP = 1;
+    private static final int MY_EVENTS = 2;
 
     private Toolbar toolbar;
 
@@ -39,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout mainDrawer;
     private ActionBarDrawerToggle mainDrawerToggle;
     private NavigationView mainDrawerNavView;
+
+    private BottomNavigationView mainBottomNav;
+    private NoSwipeViewPager mainViewPager;
+    private PagerAdapter viewPagerAdapter;
 
     private User user;
 
@@ -82,7 +101,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * initializes all content-views
      */
     private void initContent() {
-
+        mainBottomNav = findViewById(R.id.bottom_nav_view);
+        mainViewPager = findViewById(R.id.main_view_pager);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mainViewPager.setAdapter(viewPagerAdapter);
+        mainBottomNav.setOnNavigationItemSelectedListener(this);
     }
 
     /**
@@ -145,8 +168,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_action_settings:
                 goToSettings();
                 break;
+            case R.id.bottom_action_home:
+                handleHomeClick();
+                break;
+            case R.id.bottom_action_map:
+                handleMapClick();
+                break;
+            case R.id.bottom_action_my_events:
+                handleMyEventsClick();
+                break;
         }
         return true;
+    }
+
+    private void handleHomeClick() {
+        mainViewPager.setCurrentItem(HOME);
+    }
+
+    private void handleMapClick() {
+        mainViewPager.setCurrentItem(MAP);
+    }
+
+    private void handleMyEventsClick() {
+        mainViewPager.setCurrentItem(MY_EVENTS);
     }
 
     private void goToSettings() {
@@ -185,6 +229,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPreferences
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
+    }
+
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            switch (i) {
+                case HOME:
+                    return new HomeFragment();
+                case MAP:
+                    return new MapFragment();
+                case MY_EVENTS:
+                    return new MyEventsFragment();
+            }
+            return new HomeFragment();
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_VIEW_PAGES;
+        }
     }
 
 }
