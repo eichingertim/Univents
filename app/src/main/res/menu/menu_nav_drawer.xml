@@ -17,4 +17,11 @@
         </menu>
     </item>
 
+    <group>
+        <item android:id="@+id/drawer_action_settings"
+            android:enabled="true"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="@string/settings"/>
+    </group>
+
 </menu>

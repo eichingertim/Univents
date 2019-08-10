@@ -123,8 +123,14 @@
     <!--Drawer Toggle-->
     <string name="OPEN">open</string>
     <string name="CLOSE">close</string>
+
+    <!--Menu Item titles-->
     <string name="account">Konto</string>
     <string name="profile">Profil</string>
     <string name="signout">Abmelden</string>
+    <string name="settings">Einstellungen</string>
+    <string name="PREF_KEY_THEME">theme_pref</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
 
 </resources>

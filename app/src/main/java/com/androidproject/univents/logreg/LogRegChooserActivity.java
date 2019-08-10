@@ -6,14 +6,15 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.preference.PreferenceManager;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,15 +26,12 @@ import com.androidproject.univents.MainActivity;
 import com.androidproject.univents.R;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.CallbackManager.Factory;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -96,9 +94,13 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     }
 
     private void checkTheme() {
-        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES) {
+        if (isDarkTheme()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             setTheme(R.style.DarkTheme);
-        } else setTheme(R.style.AppTheme);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            setTheme(R.style.AppTheme);
+        }
     }
 
     /**
@@ -196,7 +198,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                 if (task.isSuccessful()) {
                     FirebaseUser firebaseUser = auth.getCurrentUser();
                     assert firebaseUser != null;
-                    uploadDataToFbAndFinish(firebaseUser);
+                    uploadDataToFirebaseAndFinish(firebaseUser);
                 } else {
                     progressDialog.dismiss();
                     showToast(Objects.requireNonNull(task.getException()).getMessage());
@@ -210,7 +212,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
      * Uploads data to Firebase Firestore database
      * @param firebaseUser current user
      */
-    private void uploadDataToFbAndFinish(FirebaseUser firebaseUser) {
+    private void uploadDataToFirebaseAndFinish(FirebaseUser firebaseUser) {
         String[] name = Objects.requireNonNull(firebaseUser.getDisplayName()).split(" ");
 
         Map<String, Object> newUser = new HashMap<>();
@@ -276,19 +278,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
-                            assert user != null;
-                            if (user.isEmailVerified()) {
-                                progressDialog.dismiss();
-                                startActivity(new Intent(LogRegChooserActivity.this
-                                        , MainActivity.class));
-                                finish();
-                            } else {
-                                progressDialog.dismiss();
-                                auth.signOut();
-                                showToast(getString(R.string.email_not_yet_confirmed));
-                                //TODO: Show Dialog "Send Email again"
-                            }
+                            checkSuccessfullLogin();
                         } else {
                             progressDialog.dismiss();
                             String exceptionMessage = Objects.requireNonNull(task.getException())
@@ -298,6 +288,48 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                     }
                 });
 
+    }
+
+    /**
+     * checks whether the user has confirmed his email
+     */
+    private void checkSuccessfullLogin() {
+        FirebaseUser user = auth.getCurrentUser();
+        assert user != null;
+        if (user.isEmailVerified()) {
+            progressDialog.dismiss();
+            startActivity(new Intent(LogRegChooserActivity.this
+                    , MainActivity.class));
+            finish();
+        } else {
+            progressDialog.dismiss();
+            showToast(getString(R.string.email_not_yet_confirmed));
+            showDialogSendEmailAgain();
+        }
+    }
+
+    private void showDialogSendEmailAgain() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Email bestätigen");
+        builder.setMessage("Sollen wie dir nochmal eine Bestätigungs-Emal senden?");
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                auth.getCurrentUser().sendEmailVerification();
+                showConfirmEmailDialog(auth.getCurrentUser().getEmail());
+                dialog.dismiss();
+                auth.signOut();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                auth.signOut();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     /**
@@ -370,6 +402,13 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    private boolean isDarkTheme() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences
+                .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
 
 }
