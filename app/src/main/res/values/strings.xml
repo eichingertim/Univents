@@ -5,7 +5,7 @@
     <string name="fb_login_protocol_scheme">fb696143180856191</string>
 
     <string-array name="app_creator_members">
-        <item>Tim Eichinger</item>
+        <item>Tim Eichinger(2089449)</item>
         <item>Jonas Ernst</item>
         <item>Timon Lorenz</item>
     </string-array>
@@ -116,7 +116,7 @@
     <!--Facebook log in-->
     <string name="go_on_with_facebook">weiter mit Facebook</string>
 
-    <!--ProgressBar Messges-->
+    <!--ProgressBar Messages-->
     <string name="you_to_be_registered">Du wirst registriert....</string>
     <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
 
@@ -129,7 +129,15 @@
     <string name="profile">Profil</string>
     <string name="signout">Abmelden</string>
     <string name="settings">Einstellungen</string>
+    <string name="home">Home</string>
+    <string name="search">Suche</string>
+    <string name="map">Karte</string>
+    <string name="my_events">Meine Events</string>
+
+    <!--Keys for settings preferences-->
     <string name="PREF_KEY_THEME">theme_pref</string>
+
+    <!--Settings strings-->
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
 
