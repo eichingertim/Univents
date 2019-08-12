@@ -27,6 +27,7 @@ import com.androidproject.univents.logreg.LogRegChooserActivity;
 import com.androidproject.univents.main_fragments.HomeFragment;
 import com.androidproject.univents.main_fragments.MapFragment;
 import com.androidproject.univents.main_fragments.MyEventsFragment;
+import com.androidproject.univents.main_fragments.SearchFragment;
 import com.androidproject.univents.settings.SettingsActivity;
 import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
@@ -40,10 +41,11 @@ import com.squareup.picasso.Picasso;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
         , BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private static final int NUM_VIEW_PAGES = 3;
+    private static final int NUM_VIEW_PAGES = 4;
     private static final int HOME = 0;
-    private static final int MAP = 1;
-    private static final int MY_EVENTS = 2;
+    private static final int SEARCH = 1;
+    private static final int MAP = 2;
+    private static final int MY_EVENTS = 3;
 
     private Toolbar toolbar;
 
@@ -171,6 +173,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.bottom_action_home:
                 handleHomeClick();
                 break;
+            case R.id.bottom_action_search:
+                handleSearchClick();
+                break;
             case R.id.bottom_action_map:
                 handleMapClick();
                 break;
@@ -179,6 +184,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return true;
+    }
+
+    private void handleSearchClick() {
+        mainViewPager.setCurrentItem(SEARCH);
     }
 
     private void handleHomeClick() {
@@ -242,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             switch (i) {
                 case HOME:
                     return new HomeFragment();
+                case SEARCH:
+                    return new SearchFragment();
                 case MAP:
                     return new MapFragment();
                 case MY_EVENTS:

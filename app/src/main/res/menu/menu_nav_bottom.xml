@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_home_24dp"/>
 
     <item
+        android:id="@+id/bottom_action_search"
+        android:title="Suche"
+        android:icon="@drawable/ic_search_24dp"/>
+
+    <item
         android:id="@+id/bottom_action_map"
         android:title="Karte"
         android:icon="@drawable/ic_map_24dp"/>
