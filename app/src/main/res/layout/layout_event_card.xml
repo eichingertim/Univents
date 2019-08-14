@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/img_card_event_picture"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="150dp"
             android:src="@color/colorAccent" />
 
         <LinearLayout

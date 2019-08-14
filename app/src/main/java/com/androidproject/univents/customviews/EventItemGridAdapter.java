@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.List;
@@ -64,7 +65,7 @@ public class EventItemGridAdapter extends BaseAdapter {
         calendar.setTime(event.getBegin().toDate());
         String date = DateFormat.format("dd.MM.yyyy - hh.mm", calendar).toString() + " MESZ";
 
-        //Picasso.get().load(event.getPicture_url()).into(imgPicture);
+        Picasso.get().load(event.getPicture_url()).into(imgPicture);
         tvTitle.setText(event.getTitle());
         tvDateTime.setText(date);
         tvDescrLocation.setText(event.getDescr_location());
