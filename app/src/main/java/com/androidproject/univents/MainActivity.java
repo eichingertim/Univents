@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         initToolbar();
         initFireBase();
         initNavigationDrawer();
@@ -84,6 +86,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * Initializes all views of the navigation-drawer-header and
+     * fills relevant views with data
+     */
     private void initNavDrawerHeader() {
         TextView tvHeaderUserName = findViewById(R.id.tv_header_name);
         TextView tvHeaderUserEmail = findViewById(R.id.tv_header_email);

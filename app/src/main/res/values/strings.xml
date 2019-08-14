@@ -3,6 +3,7 @@
     <string name="app_name">Univents</string>
     <string name="facebook_app_id">696143180856191</string>
     <string name="fb_login_protocol_scheme">fb696143180856191</string>
+    <string name="updates_notification_channel_id">UPDATE3152ID</string>
 
     <string-array name="app_creator_members">
         <item>Tim Eichinger(2089449)</item>
@@ -140,5 +141,7 @@
     <!--Settings strings-->
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
+    <string name="KEY_FB_EVENTS">events</string>
+    <string name="KEY_FB_UPDATES">updates</string>
 
 </resources>

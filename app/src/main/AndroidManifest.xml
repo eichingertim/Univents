@@ -47,6 +47,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity" />
+
+        <service android:name=".cloudnotification.FirebaseMessageService" android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".cloudnotification.NotificationLikeReceiver" />
     </application>
 
 </manifest>
