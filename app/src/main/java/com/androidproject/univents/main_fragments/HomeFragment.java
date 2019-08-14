@@ -9,17 +9,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.customviews.EventItem;
+import com.androidproject.univents.customviews.EventItemGridAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private FirebaseFirestore db;
+
     private FloatingActionButton fabNewEvent;
-    private Button testButtonSubscribe;
+
+    private GridView gridViewHomeEvents;
+    private EventItemGridAdapter adapter;
+    private List<EventItem> items = new ArrayList<>();
 
     @Nullable
     @Override
@@ -30,7 +46,28 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        initFireBase();
         initViews(view);
+        getData();
+    }
+
+    private void getData() {
+        db.collection(getString(R.string.KEY_FB_EVENTS)).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                items.clear();
+                for (DocumentSnapshot document : queryDocumentSnapshots) {
+                    EventItem item = document.toObject(EventItem.class);
+                    items.add(item);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void initFireBase() {
+        db = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -45,23 +82,10 @@ public class HomeFragment extends Fragment {
                 goToNewEventActivity();
             }
         });
-        testButtonSubscribe = view.findViewById(R.id.testSubscribeButton);
-        testButtonSubscribe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseMessaging.getInstance().subscribeToTopic("W6NEOMEkp9ImT79NYedH")
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                String msg = "Abonniert";
-                                if (!task.isSuccessful()) {
-                                    msg = "Nicht Abonniert";
-                                }
-                                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        });
+        gridViewHomeEvents = (GridView) view.findViewById(R.id.grid_view_home_events);
+        adapter = new EventItemGridAdapter(getActivity(),  items);
+        gridViewHomeEvents.setAdapter(adapter);
+        gridViewHomeEvents.setSelector(android.R.color.transparent);
     }
 
     //TODO: Add Intent to Activity

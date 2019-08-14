@@ -1,18 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
 
-    <Button
-        android:id="@+id/testSubscribeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test Notification Abonnieren"
+    <ScrollView
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_location_pick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/tv_univerity_events"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Hochschulevents in"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textSize="18sp"
+                    android:textColor="?attr/textColorDark"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/txt_current_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Regensburg"
+                    app:layout_constraintStart_toEndOf="@id/btn_edit_location"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_univerity_events"
+                    android:textSize="36sp"
+                    android:textStyle="bold"
+                    android:textColor="?attr/textColorDark"/>
+
+                <ImageView
+                    android:id="@+id/btn_edit_location"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_location_24dp"
+                    android:tint="?attr/normalIconColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/txt_current_location"
+                    app:layout_constraintBottom_toBottomOf="@id/txt_current_location"/>
+            </android.support.constraint.ConstraintLayout>
+
+            <com.androidproject.univents.customviews.ExpandedGridView
+                android:id="@+id/grid_view_home_events"
+                android:layout_margin="4dp"
+                android:padding="4dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:numColumns="1"
+                android:isScrollContainer="false"
+                app:layout_constraintTop_toBottomOf="@id/cl_location_pick"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_home_new_event"
