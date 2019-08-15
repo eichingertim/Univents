@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-
+        <activity android:name=".ShowEventActivity"></activity>
         <activity android:name=".logreg.RegisterActivity" />
         <activity android:name=".logreg.LogRegChooserActivity">
             <intent-filter>
@@ -48,7 +48,9 @@
         </activity>
         <activity android:name=".settings.SettingsActivity" />
 
-        <service android:name=".cloudnotification.FirebaseMessageService" android:exported="false">
+        <service
+            android:name=".cloudnotification.FirebaseMessageService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

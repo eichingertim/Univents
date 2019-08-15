@@ -1,5 +1,8 @@
 package com.androidproject.univents.customviews;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -14,12 +17,13 @@ public class EventItem {
     private String picture_url;
     private GeoPoint exact_location;
     private String descr_location;
+    private String city;
 
     public EventItem() {}
 
     public EventItem(String title, String description, String organizer, String eventID
             , Timestamp begin, Timestamp end, String picture_url, GeoPoint exact_location,
-                     String descr_location) {
+                     String descr_location, String city) {
         this.title = title;
         this.description = description;
         this.organizer = organizer;
@@ -29,6 +33,7 @@ public class EventItem {
         this.picture_url = picture_url;
         this.exact_location = exact_location;
         this.descr_location = descr_location;
+        this.city = city;
     }
 
     public String getTitle() {
@@ -65,5 +70,9 @@ public class EventItem {
 
     public String getDescr_location() {
         return descr_location;
+    }
+
+    public String getCity() {
+        return city;
     }
 }
