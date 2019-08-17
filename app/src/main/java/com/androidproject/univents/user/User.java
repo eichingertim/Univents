@@ -13,7 +13,8 @@ public class User {
 
     }
 
-    public User(String foreName, String lastName, String email, String userId, boolean isOrga, String orgaName) {
+    public User(String foreName, String lastName, String email, String userId
+            , boolean isOrga, String orgaName) {
         this.firstName = foreName;
         this.lastName = lastName;
         this.email = email;

@@ -109,6 +109,8 @@
     <string name="KEY_FB_ORGA_NAME">orgaName</string>
     <string name="KEY_FB_IS_ORGA">isOrga</string>
     <string name="KEY_FB_USER_ID">userId</string>
+    <string name="KEY_FB_EVENTS">events</string>
+    <string name="KEY_FB_UPDATES">updates</string>
 
     <!--Email-Sent Dialog-->
     <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
@@ -141,9 +143,24 @@
     <!--Settings strings-->
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
-    <string name="KEY_FB_EVENTS">events</string>
-    <string name="KEY_FB_UPDATES">updates</string>
-    <string name="event_item">event_item</string>
+
+    <!--Intent KEYS-->
     <string name="event_id">event_id</string>
+    <string name="update_id">update_id</string>
+
+    <!--Notification text values-->
+    <string name="update_suffix">Update:</string>
+    <string name="like_it">Gefällt mir</string>
+    <string name="notification_channel_name">Channel for Event Updates</string>
+
+    <!--Firebase Cloud Messaging Keys-->
+    <string name="KEY_FCM_UPDATE_TITLE">title</string>
+    <string name="KEY_FCM_UPDATE_MESSAGE">message</string>
+    <string name="KEY_FCM_UPDATE_EVENT_ID">eventID</string>
+    <string name="KEY_FCM_UPDATE_ID">updateID</string>
+    <string name="KEY_FCM_UPDATE_EVENT_TITLE">eventTitle</string>
+    <string name="KEY_FB_UPDATE_LIKES">update_likes</string>
+    <string name="like_this_update">Dir gefällt dieses Update</string>
+
 
 </resources>

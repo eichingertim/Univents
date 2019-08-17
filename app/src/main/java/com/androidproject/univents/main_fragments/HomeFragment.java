@@ -52,6 +52,9 @@ public class HomeFragment extends Fragment {
         getData();
     }
 
+    /**
+     * initializes fireBase tools
+     */
     private void initFireBase() {
         db = FirebaseFirestore.getInstance();
     }
@@ -84,6 +87,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * retrieves the data from firebase and creates a "EventItem" for every document
+     * and adds it ot the item-list.
+     */
     private void getData() {
         String city = txtCurrentLocation.getText().toString();
         db.collection(getString(R.string.KEY_FB_EVENTS)).whereEqualTo("city", city)

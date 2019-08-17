@@ -42,6 +42,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         
     }
 
+    /**
+     * initializes the mapView and adds a callback
+     * @param view fragment layout
+     * @param savedInstanceState saved state
+     */
     private void initMap(View view, Bundle savedInstanceState) {
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);

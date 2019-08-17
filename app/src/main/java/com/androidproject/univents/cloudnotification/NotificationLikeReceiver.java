@@ -18,8 +18,8 @@ public class NotificationLikeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String eventID = intent.getStringExtra("event_id");
-        String updateID = intent.getStringExtra("update_id");
+        String eventID = intent.getStringExtra(context.getString(R.string.event_id));
+        String updateID = intent.getStringExtra(context.getString(R.string.update_id));
         initFireBase();
         executeLike(context, eventID, updateID);
     }
@@ -37,10 +37,12 @@ public class NotificationLikeReceiver extends BroadcastReceiver {
     private void executeLike(final Context context, String eventID, String updateID) {
         db.collection(context.getString(R.string.KEY_FB_EVENTS)).document(eventID)
                 .collection(context.getString(R.string.KEY_FB_UPDATES)).document(updateID)
-                .update("update_likes", FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .update(context.getString(R.string.KEY_FB_UPDATE_LIKES)
+                        , FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(context, "Dir gefällt dieses Update", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getString(R.string.like_this_update)
+                        , Toast.LENGTH_LONG).show();
                 dismissNotification(context);
             }
         });

@@ -30,13 +30,19 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
             Map<String, String> messageData = remoteMessage.getData();
 
-            sendNotification(messageData.get("title"), messageData.get("message")
-                    , messageData.get("eventID"), messageData.get("updateID")
-                    , messageData.get("eventTitle"));
+            sendNotification(messageData.get(getString(R.string.KEY_FCM_UPDATE_TITLE))
+                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_MESSAGE))
+                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_EVENT_ID))
+                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_ID))
+                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_EVENT_TITLE)));
 
         }
     }
 
+    /**
+     * produces the intent and pendingintent for notification-onclick and action-onclick.
+     * creates a channelid and a default sound for the notification
+     */
     private void sendNotification(String title, String messageBody, String eventId
             , String updateId, String eventTitle) {
 
@@ -49,8 +55,8 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         //OnActionClick
         Intent likeIntent = new Intent(this, NotificationLikeReceiver.class);
         likeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        likeIntent.putExtra("event_id", eventId);
-        likeIntent.putExtra("update_id", updateId);
+        likeIntent.putExtra(getString(R.string.event_id), eventId);
+        likeIntent.putExtra(getString(R.string.update_id), updateId);
         PendingIntent likePendingIntent = PendingIntent.getBroadcast(this
                 , PENDING_ACTION_REQUEST_CODE, likeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -61,19 +67,22 @@ public class FirebaseMessageService extends FirebaseMessagingService {
                 , defaultSoundUri, pendingIntent, eventTitle);
     }
 
+    /**
+     * Builds and shows the update-notification
+     */
     private void buildAndNotify(String channelId, String title, String messageBody
             , PendingIntent likePendingIntent, Uri defaultSoundUri, PendingIntent pendingIntent
             , String eventTitle) {
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.ic_event_24dp)
-                        .setContentTitle("Update: " + eventTitle)
+                        .setContentTitle(getString(R.string.update_suffix) + eventTitle)
                         .setContentText(Html.fromHtml("<b>"+title+"</b>"))
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(Html.fromHtml("<b>"+title+"</b><br>" + messageBody)))
                         .setColor(getResources().getColor(R.color.colorAccent))
                         .setAutoCancel(true)
-                        .addAction(R.drawable.ic_favorite_24dp, "Gefällt mir", likePendingIntent)
+                        .addAction(R.drawable.ic_favorite_24dp, getString(R.string.like_it), likePendingIntent)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
 
@@ -83,7 +92,7 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId,
-                    "Channel for Event Updates",
+                    getString(R.string.notification_channel_name),
                     NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
