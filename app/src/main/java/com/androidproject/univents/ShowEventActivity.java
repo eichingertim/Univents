@@ -1,10 +1,17 @@
 package com.androidproject.univents;
 
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.androidproject.univents.customviews.EventItem;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -41,6 +48,7 @@ public class ShowEventActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 eventItem = documentSnapshot.toObject(EventItem.class);
+                Toast.makeText(getApplicationContext(), eventItem.getTitle(), Toast.LENGTH_LONG).show();
             }
         });
     }

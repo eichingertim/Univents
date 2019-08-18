@@ -2,6 +2,7 @@ package com.androidproject.univents;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidproject.univents.customviews.NoSwipeViewPager;
 import com.androidproject.univents.logreg.LogRegChooserActivity;
@@ -31,8 +33,11 @@ import com.androidproject.univents.main_fragments.SearchFragment;
 import com.androidproject.univents.settings.SettingsActivity;
 import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        initDynamicLinks();
         initToolbar();
         initFireBase();
         initNavigationDrawer();
@@ -272,5 +277,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             return NUM_VIEW_PAGES;
         }
     }
+
+    /**
+     * receive dynamic links and send the eventID from URL to ShowEventActivity
+     */
+    private void initDynamicLinks() {
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
+                .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            String eventID = deepLink.getPath();
+                            Intent intent = new Intent(MainActivity.this, ShowEventActivity.class);
+                            intent.putExtra(getString(R.string.event_id), eventID);
+                            startActivity(intent);
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("DEEP_LINK_FAIL", "getDynamicLink:onFailure", e);
+                    }
+                });
+    }
+
+
 
 }

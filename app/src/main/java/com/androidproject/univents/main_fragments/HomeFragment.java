@@ -20,9 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.ShowEventActivity;
@@ -82,7 +84,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    //TODO handle geocoder exceptions
     /**
      * gets the current location and sets the current city name
      * to the specified editText Field.
@@ -105,7 +106,8 @@ public class HomeFragment extends Fragment {
                                 txtCurrentLocation.setText(address.getLocality());
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                txtCurrentLocation.setText("Regensburg");
+                                showToast(getString(R.string.cannot_encode_address));
+                                txtCurrentLocation.setText(getString(R.string.regensburg));
                             }
                             getData();
                         }
@@ -178,9 +180,16 @@ public class HomeFragment extends Fragment {
                     EventItem item = document.toObject(EventItem.class);
                     items.add(item);
                 }
+                if (items.isEmpty()) {
+                    showToast(getString(R.string.no_events_city_found));
+                }
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    private void showToast(String s) {
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -212,7 +221,7 @@ public class HomeFragment extends Fragment {
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     receiveLocation();
                 } else {
-                    txtCurrentLocation.setText("Regensburg");
+                    txtCurrentLocation.setText(getString(R.string.regensburg));
                 }
                 return;
             }

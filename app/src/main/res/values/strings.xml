@@ -161,6 +161,9 @@
     <string name="KEY_FCM_UPDATE_EVENT_TITLE">eventTitle</string>
     <string name="KEY_FB_UPDATE_LIKES">update_likes</string>
     <string name="like_this_update">Dir gefällt dieses Update</string>
+    <string name="regensburg">Regensburg</string>
+    <string name="cannot_encode_address">Deinem aktuellen Standort konnte kein Ort zugewiesen werden</string>
+    <string name="no_events_city_found">Keine Events in diesem Ort gefunden</string>
 
 
 </resources>
