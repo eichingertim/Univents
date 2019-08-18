@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="Regensburg"
+                    android:inputType="textPersonName"
                     app:layout_constraintStart_toEndOf="@id/btn_edit_location"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_univerity_events"

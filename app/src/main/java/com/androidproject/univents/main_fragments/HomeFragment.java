@@ -1,32 +1,47 @@
 package com.androidproject.univents.main_fragments;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.ShowEventActivity;
 import com.androidproject.univents.customviews.EventItem;
 import com.androidproject.univents.customviews.EventItemGridAdapter;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private static final int PERMISSIONS_REQUEST_LOCATION = 122;
     private FirebaseFirestore db;
 
     private FloatingActionButton fabNewEvent;
@@ -35,6 +50,9 @@ public class HomeFragment extends Fragment {
     private GridView gridViewHomeEvents;
     private EventItemGridAdapter adapter;
     private List<EventItem> items = new ArrayList<>();
+
+    //Location things
+    private FusedLocationProviderClient flProviderClient;
 
     @Nullable
     @Override
@@ -48,8 +66,55 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initFireBase();
+        initFlProviderClient();
         initViews(view);
-        getData();
+        getPermissions();
+        receiveLocation();
+    }
+
+    //requests permissions.
+    private void getPermissions() {
+        if (!checkLocationPermission()) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
+                            , Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_LOCATION);
+        }
+    }
+
+    //TODO handle geocoder exceptions
+    /**
+     * gets the current location and sets the current city name
+     * to the specified editText Field.
+     */
+    private void receiveLocation() {
+        if (!checkLocationPermission()) {
+            return;
+        }
+        flProviderClient.getLastLocation()
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            double latitude = location.getLatitude();
+                            double longitude = location.getLongitude();
+                            Geocoder geocoder = new Geocoder(getActivity());
+                            try {
+                                Address address = geocoder.getFromLocation(latitude, longitude, 1).get(0);
+                                txtCurrentLocation.setText(address.getLocality());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                txtCurrentLocation.setText("Regensburg");
+                            }
+                            getData();
+                        }
+                    }
+                });
+    }
+
+    private void initFlProviderClient() {
+        flProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
     }
 
     /**
@@ -73,6 +138,17 @@ public class HomeFragment extends Fragment {
         });
 
         txtCurrentLocation = view.findViewById(R.id.txt_current_location);
+        //TODO Save entered city in preferences.
+        txtCurrentLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    getData();
+                }
+                return false;
+            }
+        });
 
         gridViewHomeEvents = view.findViewById(R.id.grid_view_home_events);
         adapter = new EventItemGridAdapter(getActivity(),  items);
@@ -120,5 +196,26 @@ public class HomeFragment extends Fragment {
     //TODO: Add Intent to Activity
     private void goToNewEventActivity() {
 
+    }
+
+    private boolean checkLocationPermission() {
+        return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    receiveLocation();
+                } else {
+                    txtCurrentLocation.setText("Regensburg");
+                }
+                return;
+            }
+        }
     }
 }
