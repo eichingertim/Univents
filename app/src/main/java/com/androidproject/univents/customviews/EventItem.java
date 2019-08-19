@@ -1,78 +1,75 @@
 package com.androidproject.univents.customviews;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
 public class EventItem {
 
-    private String title;
-    private String description;
-    private String organizer;
-    private String eventID;
-    private Timestamp begin;
-    private Timestamp end;
-    private String picture_url;
-    private GeoPoint exact_location;
-    private String descr_location;
-    private String city;
+    private String eventTitle;
+    private String eventDescription;
+    private String eventOrganizer;
+    private String eventId;
+    private Timestamp eventBegin;
+    private Timestamp eventEnd;
+    private String eventPictureUrl;
+    private GeoPoint eventExactLocation;
+    private String eventDetailLocation;
+    private String eventCity;
 
     public EventItem() {}
 
-    public EventItem(String title, String description, String organizer, String eventID
-            , Timestamp begin, Timestamp end, String picture_url, GeoPoint exact_location,
-                     String descr_location, String city) {
-        this.title = title;
-        this.description = description;
-        this.organizer = organizer;
-        this.eventID = eventID;
-        this.begin = begin;
-        this.end = end;
-        this.picture_url = picture_url;
-        this.exact_location = exact_location;
-        this.descr_location = descr_location;
-        this.city = city;
+    public EventItem(String eventTitle, String eventDescription, String eventOrganizer, String eventId
+            , Timestamp eventBegin, Timestamp eventEnd, String eventPictureUrl, GeoPoint eventExactLocation,
+                     String eventDetailLocation, String eventCity) {
+        this.eventTitle = eventTitle;
+        this.eventDescription = eventDescription;
+        this.eventOrganizer = eventOrganizer;
+        this.eventId = eventId;
+        this.eventBegin = eventBegin;
+        this.eventEnd = eventEnd;
+        this.eventPictureUrl = eventPictureUrl;
+        this.eventExactLocation = eventExactLocation;
+        this.eventDetailLocation = eventDetailLocation;
+        this.eventCity = eventCity;
     }
 
-    public String getTitle() {
-        return title;
+    public String getEventTitle() {
+        return eventTitle;
     }
 
-    public String getDescription() {
-        return description;
+    public String getEventDescription() {
+        return eventDescription;
     }
 
-    public String getOrganizer() {
-        return organizer;
+    public String getEventOrganizer() {
+        return eventOrganizer;
     }
 
-    public String getEventID() {
-        return eventID;
+    public String getEventId() {
+        return eventId;
     }
 
-    public Timestamp getBegin() {
-        return begin;
+    public Timestamp getEventBegin() {
+        return eventBegin;
     }
 
-    public Timestamp getEnd() {
-        return end;
+    public Timestamp getEventEnd() {
+        return eventEnd;
     }
 
-    public String getPicture_url() {
-        return picture_url;
+    public String getEventPictureUrl() {
+        return eventPictureUrl;
     }
 
-    public GeoPoint getExact_location() {
-        return exact_location;
+    public GeoPoint getEventExactLocation() {
+        return eventExactLocation;
     }
 
-    public String getDescr_location() {
-        return descr_location;
+    public String getEventDetailLocation() {
+        return eventDetailLocation;
     }
 
-    public String getCity() {
-        return city;
+    public String getEventCity() {
+        return eventCity;
     }
 }

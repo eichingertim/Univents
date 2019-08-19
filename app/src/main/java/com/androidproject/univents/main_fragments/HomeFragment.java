@@ -1,7 +1,6 @@
 package com.androidproject.univents.main_fragments;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -13,14 +12,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -171,7 +168,7 @@ public class HomeFragment extends Fragment {
      */
     private void getData() {
         String city = txtCurrentLocation.getText().toString();
-        db.collection(getString(R.string.KEY_FB_EVENTS)).whereEqualTo("city", city)
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).whereEqualTo(getString(R.string.KEY_FIREBASE_EVENT_CITY), city)
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -198,7 +195,7 @@ public class HomeFragment extends Fragment {
      */
     private void goToShowEventActivity(EventItem item) {
         Intent showEventIntent = new Intent(getActivity(), ShowEventActivity.class);
-        showEventIntent.putExtra(getString(R.string.event_id), item.getEventID());
+        showEventIntent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), item.getEventId());
         startActivity(showEventIntent);
     }
 

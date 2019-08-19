@@ -30,11 +30,11 @@ public class FirebaseMessageService extends FirebaseMessagingService {
 
             Map<String, String> messageData = remoteMessage.getData();
 
-            sendNotification(messageData.get(getString(R.string.KEY_FCM_UPDATE_TITLE))
-                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_MESSAGE))
-                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_EVENT_ID))
-                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_ID))
-                    , messageData.get(getString(R.string.KEY_FCM_UPDATE_EVENT_TITLE)));
+            sendNotification(messageData.get(getString(R.string.KEY_FCM_EVENT_UPDATE_TITLE))
+                    , messageData.get(getString(R.string.KEY_FCM_EVENT_UPDATE_MESSAGE))
+                    , messageData.get(getString(R.string.KEY_FCM_EVENT_UPDATE_EVENT_ID))
+                    , messageData.get(getString(R.string.KEY_FCM_EVENT_UPDATE_ID))
+                    , messageData.get(getString(R.string.KEY_FCM_EVENT_UPDATE_EVENT_TITLE)));
 
         }
     }
@@ -55,8 +55,8 @@ public class FirebaseMessageService extends FirebaseMessagingService {
         //OnActionClick
         Intent likeIntent = new Intent(this, NotificationLikeReceiver.class);
         likeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        likeIntent.putExtra(getString(R.string.event_id), eventId);
-        likeIntent.putExtra(getString(R.string.update_id), updateId);
+        likeIntent.putExtra(getString(R.string.KEY_FCM_EVENT_UPDATE_EVENT_ID), eventId);
+        likeIntent.putExtra(getString(R.string.KEY_FCM_EVENT_UPDATE_ID), updateId);
         PendingIntent likePendingIntent = PendingIntent.getBroadcast(this
                 , PENDING_ACTION_REQUEST_CODE, likeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

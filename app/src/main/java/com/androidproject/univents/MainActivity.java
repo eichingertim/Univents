@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.androidproject.univents.customviews.NoSwipeViewPager;
 import com.androidproject.univents.logreg.LogRegChooserActivity;
@@ -40,7 +39,6 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
@@ -150,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        refUser = db.collection(getString(R.string.KEY_FB_USERS))
+        refUser = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
                 .document(auth.getCurrentUser().getUid());
 
     }
@@ -291,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             deepLink = pendingDynamicLinkData.getLink();
                             String eventID = deepLink.getPath();
                             Intent intent = new Intent(MainActivity.this, ShowEventActivity.class);
-                            intent.putExtra(getString(R.string.event_id), eventID);
+                            intent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventID);
                             startActivity(intent);
                         }
 

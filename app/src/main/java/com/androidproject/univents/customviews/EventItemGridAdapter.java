@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -71,14 +70,14 @@ public class EventItemGridAdapter extends BaseAdapter {
 
         EventItem event = items.get(position);
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(event.getBegin().toDate());
+        calendar.setTime(event.getEventBegin().toDate());
         String date = DateFormat.format("dd.MM.yyyy - hh.mm", calendar).toString() + " MESZ";
         handleOnClickShare(event);
 
-        Picasso.get().load(event.getPicture_url()).into(imgPicture);
-        tvTitle.setText(event.getTitle());
+        Picasso.get().load(event.getEventPictureUrl()).into(imgPicture);
+        tvTitle.setText(event.getEventTitle());
         tvDateTime.setText(date);
-        tvDescrLocation.setText(event.getDescr_location());
+        tvDescrLocation.setText(event.getEventDetailLocation());
 
         return view;
 
@@ -92,9 +91,9 @@ public class EventItemGridAdapter extends BaseAdapter {
         btnShareEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String eventName = eventItem.getTitle();
-                String eventID = eventItem.getEventID();
-                String eventDescr = eventItem.getDescription();
+                String eventName = eventItem.getEventTitle();
+                String eventID = eventItem.getEventId();
+                String eventDescr = eventItem.getEventDescription();
 
                 String message = "Hi, schau dir das Event " + eventName
                         + " an. \n" + buildDynamicLink(eventID, eventName, eventDescr);

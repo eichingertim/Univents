@@ -1,20 +1,13 @@
 package com.androidproject.univents;
 
-import android.net.Uri;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.androidproject.univents.customviews.EventItem;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
 
 public class ShowEventActivity extends AppCompatActivity {
 
@@ -42,13 +35,13 @@ public class ShowEventActivity extends AppCompatActivity {
      * Firebase.
      */
     private void readIntentCreateItem() {
-        eventid = getIntent().getStringExtra(getString(R.string.event_id));
-        db.collection(getString(R.string.KEY_FB_EVENTS)).document(eventid)
+        eventid = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID));
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventid)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 eventItem = documentSnapshot.toObject(EventItem.class);
-                Toast.makeText(getApplicationContext(), eventItem.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), eventItem.getEventTitle(), Toast.LENGTH_LONG).show();
             }
         });
     }

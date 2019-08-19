@@ -131,7 +131,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        refUsers = db.collection(getString(R.string.KEY_FB_USERS));
+        refUsers = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS));
     }
 
     /**
@@ -222,14 +222,14 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
         Map<String, Object> newUser = new HashMap<>();
         if (name.length < 2) {
-            newUser.put(getString(R.string.KEY_FB_LAST_NAME), "...");
+            newUser.put(getString(R.string.KEY_FIREBASE_USER_LASTNAME), "...");
         } else {
-            newUser.put(getString(R.string.KEY_FB_LAST_NAME), name[1]);
+            newUser.put(getString(R.string.KEY_FIREBASE_USER_LASTNAME), name[1]);
         }
-        newUser.put(getString(R.string.KEY_FB_FIRST_NAME), name[0]);
-        newUser.put(getString(R.string.KEY_FB_USER_ID), firebaseUser.getUid());
-        newUser.put(getString(R.string.KEY_FB_IS_ORGA), false);
-        newUser.put(getString(R.string.KEY_FB_EMAIL), Objects.requireNonNull(firebaseUser.getEmail()));
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_FIRSTNAME), name[0]);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_ID), firebaseUser.getUid());
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_IS_ORGA), false);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_EMAIL), Objects.requireNonNull(firebaseUser.getEmail()));
 
         refUsers.document(firebaseUser.getUid()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -367,7 +367,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
         if (resultCode == RESULT_OK && requestCode == REGISTER_REQUEST_CODE) {
             assert data != null;
-            showConfirmEmailDialog(data.getStringExtra(getString(R.string.KEY_USER_EMAIL)));
+            showConfirmEmailDialog(data.getStringExtra(getString(R.string.KEY_FIREBASE_USER_EMAIL)));
         }
 
     }

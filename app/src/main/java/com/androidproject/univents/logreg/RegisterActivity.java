@@ -144,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        refUsers = db.collection(getString(R.string.KEY_FB_USERS));
+        refUsers = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS));
     }
 
     /**
@@ -498,13 +498,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             , String email, String password) {
 
         final Map<String, Object> newUser = new HashMap<>();
-        newUser.put(getString(R.string.KEY_FB_FIRST_NAME), firstName);
-        newUser.put(getString(R.string.KEY_FB_LAST_NAME), lastName);
-        newUser.put(getString(R.string.KEY_FB_EMAIL), email);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_FIRSTNAME), firstName);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_LASTNAME), lastName);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_EMAIL), email);
         if (isOrga) {
-            newUser.put(getString(R.string.KEY_FB_ORGA_NAME), orgaName);
-            newUser.put(getString(R.string.KEY_FB_IS_ORGA), true);
-        } else newUser.put(getString(R.string.KEY_FB_IS_ORGA), false);
+            newUser.put(getString(R.string.KEY_FIREBASE_USER_ORGA_NAME), orgaName);
+            newUser.put(getString(R.string.KEY_FIREBASE_USER_IS_ORGA), true);
+        } else newUser.put(getString(R.string.KEY_FIREBASE_USER_IS_ORGA), false);
 
         progressDialog.show();
         auth.createUserWithEmailAndPassword(email, password)
@@ -514,7 +514,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
                             FirebaseUser user = auth.getCurrentUser();
                             if (user != null) {
-                                newUser.put(getString(R.string.KEY_FB_USER_ID), user.getUid());
+                                newUser.put(getString(R.string.KEY_FIREBASE_USER_ID), user.getUid());
                                 uploadDataToFbAndFinish(newUser, user);
                             }
                         } else {
@@ -539,7 +539,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onSuccess(Void aVoid) {
                 Intent finishRegister = new Intent();
-                finishRegister.putExtra(getString(R.string.KEY_USER_EMAIL)
+                finishRegister.putExtra(getString(R.string.KEY_FIREBASE_USER_EMAIL)
                         , user.getEmail());
                 setResult(RESULT_OK, finishRegister);
                 user.sendEmailVerification();

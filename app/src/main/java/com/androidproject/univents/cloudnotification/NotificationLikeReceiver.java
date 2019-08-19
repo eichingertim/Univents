@@ -18,8 +18,8 @@ public class NotificationLikeReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String eventID = intent.getStringExtra(context.getString(R.string.event_id));
-        String updateID = intent.getStringExtra(context.getString(R.string.update_id));
+        String eventID = intent.getStringExtra(context.getString(R.string.KEY_FCM_EVENT_UPDATE_EVENT_ID));
+        String updateID = intent.getStringExtra(context.getString(R.string.KEY_FCM_EVENT_UPDATE_ID));
         initFireBase();
         executeLike(context, eventID, updateID);
     }
@@ -35,9 +35,9 @@ public class NotificationLikeReceiver extends BroadcastReceiver {
      * @param updateID id of the current update
      */
     private void executeLike(final Context context, String eventID, String updateID) {
-        db.collection(context.getString(R.string.KEY_FB_EVENTS)).document(eventID)
-                .collection(context.getString(R.string.KEY_FB_UPDATES)).document(updateID)
-                .update(context.getString(R.string.KEY_FB_UPDATE_LIKES)
+        db.collection(context.getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventID)
+                .collection(context.getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES)).document(updateID)
+                .update(context.getString(R.string.KEY_FIRBASE_EVENT_UPDATE_LIKES)
                         , FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

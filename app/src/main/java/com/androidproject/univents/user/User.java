@@ -13,9 +13,9 @@ public class User {
 
     }
 
-    public User(String foreName, String lastName, String email, String userId
+    public User(String firstName, String lastName, String email, String userId
             , boolean isOrga, String orgaName) {
-        this.firstName = foreName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userId = userId;
@@ -60,7 +60,7 @@ public class User {
     }
 
     public void setOrga(boolean orga) {
-        isOrga = orga;
+        this.isOrga = orga;
     }
 
     public String getOrgaName() {
