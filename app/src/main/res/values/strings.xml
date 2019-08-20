@@ -6,7 +6,7 @@
 
     <string-array name="app_creator_members">
         <item>Tim Eichinger</item>
-        <item>Jonas Ernst</item>
+        <item>Jonas Ernst2089197</item>
         <item>Timon Lorenz</item>
     </string-array>
 
@@ -132,5 +132,10 @@
     <string name="PREF_KEY_THEME">theme_pref</string>
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
+
+    <!--Profile Strings-->
+    <string name="prof_name">Name</string>
+    <string name="prof_email">Email</string>
+    <string name="prof_number">Telefonnummer</string>
 
 </resources>
