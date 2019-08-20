@@ -60,8 +60,8 @@ public class ProfilePageActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.home:
-                finish();
+            case android.R.id.home:
+                onBackPressed();
                 return true;
             case R.id.profile_edit:
                 editProfile();
