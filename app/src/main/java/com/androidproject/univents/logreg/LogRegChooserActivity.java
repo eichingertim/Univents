@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +35,7 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -40,6 +43,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -126,7 +131,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        refUsers = db.collection(getString(R.string.KEY_FB_USERS));
+        refUsers = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS));
     }
 
     /**
@@ -217,14 +222,14 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
         Map<String, Object> newUser = new HashMap<>();
         if (name.length < 2) {
-            newUser.put(getString(R.string.KEY_FB_LAST_NAME), "...");
+            newUser.put(getString(R.string.KEY_FIREBASE_USER_LASTNAME), "...");
         } else {
-            newUser.put(getString(R.string.KEY_FB_LAST_NAME), name[1]);
+            newUser.put(getString(R.string.KEY_FIREBASE_USER_LASTNAME), name[1]);
         }
-        newUser.put(getString(R.string.KEY_FB_FIRST_NAME), name[0]);
-        newUser.put(getString(R.string.KEY_FB_USER_ID), firebaseUser.getUid());
-        newUser.put(getString(R.string.KEY_FB_IS_ORGA), false);
-        newUser.put(getString(R.string.KEY_FB_EMAIL), Objects.requireNonNull(firebaseUser.getEmail()));
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_FIRSTNAME), name[0]);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_ID), firebaseUser.getUid());
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_IS_ORGA), false);
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_EMAIL), Objects.requireNonNull(firebaseUser.getEmail()));
 
         refUsers.document(firebaseUser.getUid()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -362,7 +367,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
         if (resultCode == RESULT_OK && requestCode == REGISTER_REQUEST_CODE) {
             assert data != null;
-            showConfirmEmailDialog(data.getStringExtra(getString(R.string.KEY_USER_EMAIL)));
+            showConfirmEmailDialog(data.getStringExtra(getString(R.string.KEY_FIREBASE_USER_EMAIL)));
         }
 
     }

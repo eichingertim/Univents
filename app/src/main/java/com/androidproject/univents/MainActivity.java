@@ -2,8 +2,14 @@ package com.androidproject.univents;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,19 +23,34 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.androidproject.univents.customviews.NoSwipeViewPager;
 import com.androidproject.univents.logreg.LogRegChooserActivity;
+import com.androidproject.univents.main_fragments.HomeFragment;
+import com.androidproject.univents.main_fragments.MapFragment;
+import com.androidproject.univents.main_fragments.MyEventsFragment;
+import com.androidproject.univents.main_fragments.SearchFragment;
 import com.androidproject.univents.settings.SettingsActivity;
 import com.androidproject.univents.user.ProfilePageActivity;
 import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
+        , BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private static final int NUM_VIEW_PAGES = 4;
+    private static final int HOME = 0;
+    private static final int SEARCH = 1;
+    private static final int MAP = 2;
+    private static final int MY_EVENTS = 3;
 
     private Toolbar toolbar;
 
@@ -41,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle mainDrawerToggle;
     private NavigationView mainDrawerNavView;
 
+    private BottomNavigationView mainBottomNav;
+    private NoSwipeViewPager mainViewPager;
+    private PagerAdapter viewPagerAdapter;
+
     private User user;
 
     @Override
@@ -49,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initDynamicLinks();
         initToolbar();
         initFireBase();
         initNavigationDrawer();
@@ -64,6 +90,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * Initializes all views of the navigation-drawer-header and
+     * fills relevant views with data
+     */
     private void initNavDrawerHeader() {
         TextView tvHeaderUserName = findViewById(R.id.tv_header_name);
         TextView tvHeaderUserEmail = findViewById(R.id.tv_header_email);
@@ -83,7 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * initializes all content-views
      */
     private void initContent() {
-
+        mainBottomNav = findViewById(R.id.bottom_nav_view);
+        mainViewPager = findViewById(R.id.main_view_pager);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mainViewPager.setAdapter(viewPagerAdapter);
+        mainBottomNav.setOnNavigationItemSelectedListener(this);
     }
 
     /**
@@ -115,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        refUser = db.collection(getString(R.string.KEY_FB_USERS))
+        refUser = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
                 .document(auth.getCurrentUser().getUid());
 
     }
@@ -146,8 +180,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.drawer_action_settings:
                 goToSettings();
                 break;
+            case R.id.bottom_action_home:
+                handleHomeClick();
+                break;
+            case R.id.bottom_action_search:
+                handleSearchClick();
+                break;
+            case R.id.bottom_action_map:
+                handleMapClick();
+                break;
+            case R.id.bottom_action_my_events:
+                handleMyEventsClick();
+                break;
         }
         return true;
+    }
+
+    private void handleSearchClick() {
+        mainViewPager.setCurrentItem(SEARCH);
+    }
+
+    private void handleHomeClick() {
+        mainViewPager.setCurrentItem(HOME);
+    }
+
+    private void handleMapClick() {
+        mainViewPager.setCurrentItem(MAP);
+    }
+
+    private void handleMyEventsClick() {
+        mainViewPager.setCurrentItem(MY_EVENTS);
     }
 
     private void goToSettings() {
@@ -187,5 +249,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return sharedPreferences
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
+
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            switch (i) {
+                case HOME:
+                    return new HomeFragment();
+                case SEARCH:
+                    return new SearchFragment();
+                case MAP:
+                    return new MapFragment();
+                case MY_EVENTS:
+                    return new MyEventsFragment();
+            }
+            return new HomeFragment();
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_VIEW_PAGES;
+        }
+    }
+
+    /**
+     * receive dynamic links and send the eventID from URL to ShowEventActivity
+     */
+    private void initDynamicLinks() {
+        FirebaseDynamicLinks.getInstance().getDynamicLink(getIntent())
+                .addOnSuccessListener(new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink();
+                            String eventID = deepLink.getPath();
+                            Intent intent = new Intent(MainActivity.this, ShowEventActivity.class);
+                            intent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventID);
+                            startActivity(intent);
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("DEEP_LINK_FAIL", "getDynamicLink:onFailure", e);
+                    }
+                });
+    }
+
+
 
 }

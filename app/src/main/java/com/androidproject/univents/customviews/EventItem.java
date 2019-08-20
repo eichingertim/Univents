@@ -1,0 +1,75 @@
+package com.androidproject.univents.customviews;
+
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.GeoPoint;
+
+public class EventItem {
+
+    private String eventTitle;
+    private String eventDescription;
+    private String eventOrganizer;
+    private String eventId;
+    private Timestamp eventBegin;
+    private Timestamp eventEnd;
+    private String eventPictureUrl;
+    private GeoPoint eventExactLocation;
+    private String eventDetailLocation;
+    private String eventCity;
+
+    public EventItem() {}
+
+    public EventItem(String eventTitle, String eventDescription, String eventOrganizer, String eventId
+            , Timestamp eventBegin, Timestamp eventEnd, String eventPictureUrl, GeoPoint eventExactLocation,
+                     String eventDetailLocation, String eventCity) {
+        this.eventTitle = eventTitle;
+        this.eventDescription = eventDescription;
+        this.eventOrganizer = eventOrganizer;
+        this.eventId = eventId;
+        this.eventBegin = eventBegin;
+        this.eventEnd = eventEnd;
+        this.eventPictureUrl = eventPictureUrl;
+        this.eventExactLocation = eventExactLocation;
+        this.eventDetailLocation = eventDetailLocation;
+        this.eventCity = eventCity;
+    }
+
+    public String getEventTitle() {
+        return eventTitle;
+    }
+
+    public String getEventDescription() {
+        return eventDescription;
+    }
+
+    public String getEventOrganizer() {
+        return eventOrganizer;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public Timestamp getEventBegin() {
+        return eventBegin;
+    }
+
+    public Timestamp getEventEnd() {
+        return eventEnd;
+    }
+
+    public String getEventPictureUrl() {
+        return eventPictureUrl;
+    }
+
+    public GeoPoint getEventExactLocation() {
+        return eventExactLocation;
+    }
+
+    public String getEventDetailLocation() {
+        return eventDetailLocation;
+    }
+
+    public String getEventCity() {
+        return eventCity;
+    }
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="@dimen/mtrl_card_spacing"
+    android:layout_marginTop="@dimen/mtrl_card_spacing"
+    android:layout_marginRight="@dimen/mtrl_card_spacing"
+    android:minHeight="150dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    android:descendantFocusability="blocksDescendants"
+    app:cardUseCompatPadding="true">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_card_event_picture"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:src="@color/colorAccent" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tv_card_event_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sommerfest FIM"
+                    android:textColor="?attr/textColorDark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_card_event_date_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="30.08.19 - 18.00 MESZ"
+                    android:textColor="?attr/textColorDark"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_card_event_descr_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PT Nord Außenbereich"
+                    android:textColor="?attr/textColorDark"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/card_share"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_anchor="@id/img_card_event_picture"
+            app:layout_anchorGravity="bottom|right|end"
+            android:src="@drawable/ic_share_24dp"
+            android:tint="?attr/normalIconColor"
+            android:elevation="3dp"
+            android:background="@drawable/form_circle"
+            android:padding="5dp"
+            android:layout_margin="10dp"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+</android.support.design.card.MaterialCardView>

@@ -3,12 +3,17 @@
     <string name="app_name">Univents</string>
     <string name="facebook_app_id">696143180856191</string>
     <string name="fb_login_protocol_scheme">fb696143180856191</string>
+    <string name="updates_notification_channel_id">UPDATE3152ID</string>
 
     <string-array name="app_creator_members">
-        <item>Tim Eichinger</item>
-        <item>Jonas Ernst2089197</item>
+        <item>Jonas Ernst(2089197)</item>
+        <item>Tim Eichinger(2089449)</item>
         <item>Timon Lorenz</item>
     </string-array>
+
+    <!--Drawer Toggle-->
+    <string name="OPEN">open</string>
+    <string name="CLOSE">close</string>
 
     <!--Button Text-Values-->
     <string name="text_btn_login">Anmelden</string>
@@ -70,10 +75,6 @@
 
         ]]></string>
 
-    <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
-
-    <string name="close">Schliessen</string>
-
     <!--Toolbar titles-->
     <string name="toolbar_reg_steps">Schritt %d</string>
 
@@ -87,7 +88,7 @@
     <string name="orga_name">Organisationsname</string>
 
     <!--Intent Keys-->
-    <string name="BOOLEAN_ORGA">isOrga</string>
+    <string name="BOOLEAN_ORGA">orga</string>
 
     <!--Toast Messages-->
     <string name="confirm_data_protection">Der Datenschutzerklärung muss zugestimmt werden</string>
@@ -98,16 +99,9 @@
     <string name="passwords_not_same">Passwörter stimmen nicht überein</string>
     <string name="email_not_yet_confirmed">E-Mail Adresse noch nicht bestätigt</string>
     <string name="enter_log_in_data">Du musst deine Login-Daten eingeben um dich anzumelden.</string>
-
-    <!--FireBase Keys-->
-    <string name="KEY_USER_EMAIL">user_email</string>
-    <string name="KEY_FB_USERS">users</string>
-    <string name="KEY_FB_FIRST_NAME">firstName</string>
-    <string name="KEY_FB_LAST_NAME">lastName</string>
-    <string name="KEY_FB_EMAIL">email</string>
-    <string name="KEY_FB_ORGA_NAME">orgaName</string>
-    <string name="KEY_FB_IS_ORGA">isOrga</string>
-    <string name="KEY_FB_USER_ID">userId</string>
+    <string name="cannot_encode_address">Deinem aktuellen Standort konnte kein Ort zugewiesen werden</string>
+    <string name="no_events_city_found">Keine Events in diesem Ort gefunden</string>
+    <string name="like_this_update">Dir gefällt dieses Update</string>
 
     <!--Email-Sent Dialog-->
     <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
@@ -116,20 +110,24 @@
     <!--Facebook log in-->
     <string name="go_on_with_facebook">weiter mit Facebook</string>
 
-    <!--ProgressBar Messges-->
+    <!--ProgressDialog Messages-->
     <string name="you_to_be_registered">Du wirst registriert....</string>
     <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
-
-    <!--Drawer Toggle-->
-    <string name="OPEN">open</string>
-    <string name="CLOSE">close</string>
 
     <!--Menu Item titles-->
     <string name="account">Konto</string>
     <string name="profile">Profil</string>
     <string name="signout">Abmelden</string>
     <string name="settings">Einstellungen</string>
+    <string name="home">Home</string>
+    <string name="search">Suche</string>
+    <string name="map">Karte</string>
+    <string name="my_events">Meine Events</string>
+
+    <!--Keys for settings preferences-->
     <string name="PREF_KEY_THEME">theme_pref</string>
+
+    <!--Settings titles and descriptions-->
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
 
@@ -137,5 +135,52 @@
     <string name="prof_name">Name</string>
     <string name="prof_email">Email</string>
     <string name="prof_number">Telefonnummer</string>
+
+    <!--Notification text values-->
+    <string name="update_suffix">Update:</string>
+    <string name="like_it">Gefällt mir</string>
+    <string name="notification_channel_name">Channel for Event Updates</string>
+
+    <!--Firebase Cloud Messaging Keys-->
+    <string name="KEY_FCM_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
+    <string name="KEY_FCM_EVENT_UPDATE_MESSAGE">eventUpdateMessage</string>
+    <string name="KEY_FCM_EVENT_UPDATE_EVENT_ID">eventId</string>
+    <string name="KEY_FCM_EVENT_UPDATE_ID">eventUpdateId</string>
+    <string name="KEY_FCM_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
+
+    <!--Keys for Firebase-->
+    <string name="KEY_FIREBASE_COLLECTION_USERS">users</string>
+    <string name="KEY_FIREBASE_COLLECTION_EVENTS">events</string>
+    <string name="KEY_FIREBASE_COLLECTION_EVENT_UPDATES">updates</string>
+
+    <string name="KEY_FIREBASE_USER_ID">userId</string>
+    <string name="KEY_FIREBASE_USER_FIRSTNAME">firstName</string>
+    <string name="KEY_FIREBASE_USER_LASTNAME">lastName</string>
+    <string name="KEY_FIREBASE_USER_EMAIL">email</string>
+    <string name="KEY_FIREBASE_USER_IS_ORGA">isOrga</string>
+    <string name="KEY_FIREBASE_USER_ORGA_NAME">orgaName</string>
+
+    <string name="KEY_FIREBASE_EVENT_ID">eventId</string>
+    <string name="KEY_FIREBASE_EVENT_TITLE">eventTitle</string>
+    <string name="KEY_FIREBASE_EVENT_DESCRIPTION">eventDescription</string>
+    <string name="KEY_FIREBASE_EVENT_ORGANIZER">eventOrganizer</string>
+    <string name="KEY_FIREBASE_EVENT_EXACT_LOCATION">eventExactLocation</string>
+    <string name="KEY_FIREBASE_EVENT_DETAIL_LOCATION">eventDetailLocation</string>
+    <string name="KEY_FIREBASE_EVENT_CITY">eventCity</string>
+    <string name="KEY_FIREBASE_EVENT_BEGIN">eventBegin</string>
+    <string name="KEY_FIREBASE_EVENT_END">eventEnd</string>
+    <string name="KEY_FIREBASE_EVENT_PICTURE_URL">eventPictureUrl</string>
+
+    <string name="KEY_FIRBASE_EVENT_UPDATE_LIKES">eventUpdateLikes</string>
+    <string name="KEY_FIRBASE_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
+    <string name="KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION">eventUpdateDescription</string>
+    <string name="KEY_FIRBASE_EVENT_UPDATE_PICTURE_URL">eventUpdatePictureUrl</string>
+    <string name="KEY_FIREBASE_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
+
+    <!--values-->
+    <string name="regensburg">Regensburg</string>
+    <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
+    <string name="close">Schliessen</string>
+
 
 </resources>
