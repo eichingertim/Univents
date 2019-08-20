@@ -6,8 +6,8 @@
     <string name="updates_notification_channel_id">UPDATE3152ID</string>
 
     <string-array name="app_creator_members">
+        <item>Jonas Ernst(2089197)</item>
         <item>Tim Eichinger(2089449)</item>
-        <item>Jonas Ernst</item>
         <item>Timon Lorenz</item>
     </string-array>
 
@@ -130,6 +130,11 @@
     <!--Settings titles and descriptions-->
     <string name="dark_theme">Dark Theme</string>
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
+
+    <!--Profile Strings-->
+    <string name="prof_name">Name</string>
+    <string name="prof_email">Email</string>
+    <string name="prof_number">Telefonnummer</string>
 
     <!--Notification text values-->
     <string name="update_suffix">Update:</string>

@@ -30,6 +30,7 @@ import com.androidproject.univents.main_fragments.MapFragment;
 import com.androidproject.univents.main_fragments.MyEventsFragment;
 import com.androidproject.univents.main_fragments.SearchFragment;
 import com.androidproject.univents.settings.SettingsActivity;
+import com.androidproject.univents.user.ProfilePageActivity;
 import com.androidproject.univents.user.User;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //TODO: Intent to profile page
     private void goToProfilePage() {
-
+        startActivity(new Intent(this, ProfilePageActivity.class));
     }
 
     /**

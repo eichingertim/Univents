@@ -93,7 +93,6 @@ public class HomeFragment extends Fragment {
                 .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             double latitude = location.getLatitude();
                             double longitude = location.getLongitude();
@@ -153,6 +152,7 @@ public class HomeFragment extends Fragment {
         adapter = new EventItemGridAdapter(getActivity(),  items);
         gridViewHomeEvents.setAdapter(adapter);
         gridViewHomeEvents.setSelector(android.R.color.transparent);
+        gridViewHomeEvents.setEmptyView(view.findViewById(R.id.tv_empty_list_view));
         gridViewHomeEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -176,9 +176,6 @@ public class HomeFragment extends Fragment {
                 for (DocumentSnapshot document : queryDocumentSnapshots) {
                     EventItem item = document.toObject(EventItem.class);
                     items.add(item);
-                }
-                if (items.isEmpty()) {
-                    showToast(getString(R.string.no_events_city_found));
                 }
                 adapter.notifyDataSetChanged();
             }

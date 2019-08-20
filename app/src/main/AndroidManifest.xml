@@ -56,6 +56,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".settings.SettingsActivity" />
+        <activity android:name=".user.ProfilePageActivity" />
 
         <service
             android:name=".cloudnotification.FirebaseMessageService"
