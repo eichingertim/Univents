@@ -15,12 +15,13 @@ public class EventItem {
     private GeoPoint eventExactLocation;
     private String eventDetailLocation;
     private String eventCity;
+    private String eventCategory;
 
     public EventItem() {}
 
     public EventItem(String eventTitle, String eventDescription, String eventOrganizer, String eventId
             , Timestamp eventBegin, Timestamp eventEnd, String eventPictureUrl, GeoPoint eventExactLocation,
-                     String eventDetailLocation, String eventCity) {
+                     String eventDetailLocation, String eventCity, String eventCategory) {
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.eventOrganizer = eventOrganizer;
@@ -31,6 +32,7 @@ public class EventItem {
         this.eventExactLocation = eventExactLocation;
         this.eventDetailLocation = eventDetailLocation;
         this.eventCity = eventCity;
+        this.eventCategory = eventCategory;
     }
 
     public String getEventTitle() {
@@ -71,5 +73,9 @@ public class EventItem {
 
     public String getEventCity() {
         return eventCity;
+    }
+
+    public String getEventCategory() {
+        return eventCategory;
     }
 }

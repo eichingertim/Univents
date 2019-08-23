@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ import com.androidproject.univents.customviews.EventItem;
 import com.androidproject.univents.customviews.EventItemGridAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,6 +47,7 @@ public class HomeFragment extends Fragment {
 
     private FloatingActionButton fabNewEvent;
     private EditText txtCurrentLocation;
+    private ImageButton imgSearchLocation;
 
     private GridView gridViewHomeEvents;
     private EventItemGridAdapter adapter;
@@ -108,6 +111,12 @@ public class HomeFragment extends Fragment {
                             getData();
                         }
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showToast("Es konnte kein Standort abgerufen werden");
+                    }
                 });
     }
 
@@ -160,6 +169,14 @@ public class HomeFragment extends Fragment {
                 goToShowEventActivity(item);
             }
         });
+
+        imgSearchLocation = view.findViewById(R.id.btn_edit_location);
+        imgSearchLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                receiveLocation();
+            }
+        });
     }
 
     /**
@@ -210,14 +227,9 @@ public class HomeFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSIONS_REQUEST_LOCATION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     receiveLocation();
-                } else {
-                    txtCurrentLocation.setText(getString(R.string.regensburg));
                 }
-                return;
             }
         }
     }

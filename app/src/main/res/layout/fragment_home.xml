@@ -56,12 +56,15 @@
                     android:textStyle="bold"
                     android:textColor="?attr/textColorDark"/>
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/btn_edit_location"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="10dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
                     android:src="@drawable/ic_location_24dp"
+                    android:background="@drawable/form_circle"
+                    android:elevation="2dp"
                     android:tint="?attr/normalIconColor"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@id/txt_current_location"

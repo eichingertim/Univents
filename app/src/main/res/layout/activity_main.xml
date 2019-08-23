@@ -9,7 +9,7 @@
     android:background="?attr/backgroundColor"
     tools:context=".MainActivity">
 
-    <include layout="@layout/layout_main_activity_content"/>
+    <include layout="@layout/activity_main_content"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/drawer_nav_view"
