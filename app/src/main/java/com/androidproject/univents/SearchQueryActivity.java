@@ -71,6 +71,7 @@ public class SearchQueryActivity extends AppCompatActivity {
         adapter = new EventItemListAdapter(this, eventItems);
         listQuery.setAdapter(adapter);
         listQuery.setEmptyView(findViewById(R.id.tv_search_empty));
+        listQuery.setDivider(null);
     }
 
     private void getIntentExtras() {
