@@ -1,6 +1,7 @@
 package com.androidproject.univents.customviews;
 
 import android.content.Context;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,9 @@ public class EventItemListAdapter extends BaseAdapter {
         calendar.setTime(item.getEventBegin().toDate());
         String date = DateFormat.format("dd.MM.yyyy - hh.mm", calendar).toString() + " MESZ";
 
-        Picasso.get().load(item.getEventPictureUrl()).fit().into(imgEventPicture);
+        Picasso.get().load(item.getEventPictureUrl())
+                .resize(100,100).centerCrop()
+                .into(imgEventPicture);
         tvEventTitle.setText(item.getEventTitle());
         tvEventDate.setText(date);
         tvEventCity.setText(item.getEventCity());
