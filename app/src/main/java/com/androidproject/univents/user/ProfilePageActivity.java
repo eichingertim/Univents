@@ -1,27 +1,31 @@
 package com.androidproject.univents.user;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
-import com.androidproject.univents.settings.SettingsFragment;
+
 
 import javax.annotation.Nullable;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
-    private Button phoneNumberButton;
+    private ImageButton phoneNumberButton;
     private ImageButton emailButton;
     private TextView profileName;
     private Toolbar toolbar;
+
+    private User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         initToolbar();
         initUI();
+        initUsername();
+        initButtons();
     }
 
     /**
@@ -39,6 +45,55 @@ public class ProfilePageActivity extends AppCompatActivity {
         emailButton = findViewById(R.id.btn_profile_email);
         phoneNumberButton = findViewById(R.id.btn_phone_number);
         profileName = findViewById(R.id.profile_name);
+        user = new User();
+    }
+
+    /**
+     * initializes the Username
+     */
+    private void initUsername(){
+        String username = user.getFirstName() + user.getLastName();
+        profileName.setText(username);
+    }
+
+    /**
+     * initializes OnClickListeners for the buttons
+     */
+    private void initButtons(){
+        emailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMail();
+            }
+        });
+        phoneNumberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openPhoneCall();
+            }
+        });
+    }
+
+    /**
+     * initializes send email intent
+     */
+    private void sendMail(){
+        String email = user.getEmail();
+
+        Intent sendMail = new Intent(Intent.ACTION_SENDTO);
+        //sendMail.putExtra(Intent.EXTRA_EMAIL, email);
+        //sendMail.setType("message/rfc822");
+        sendMail.setData(Uri.parse("mailto:" + email));
+        startActivity(Intent.createChooser(sendMail, "Choose an email client"));
+    }
+
+    private void openPhoneCall(){
+        Integer number = 12345;
+        String phoneNumber = number.toString();
+        Intent phoneCall = new Intent(Intent.ACTION_DIAL);
+        phoneCall.setData(Uri.fromParts("tel", phoneNumber, null));
+        startActivity(phoneCall);
+
     }
 
     /**
@@ -72,6 +127,8 @@ public class ProfilePageActivity extends AppCompatActivity {
     }
 
     private void editProfile(){
+        Intent editProfile = new Intent(ProfilePageActivity.this, EditProfilePage.class);
+
 
     }
 }
