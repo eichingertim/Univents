@@ -74,7 +74,9 @@ public class EventItemGridAdapter extends BaseAdapter {
         String date = DateFormat.format("dd.MM.yyyy - hh.mm", calendar).toString() + " MESZ";
         handleOnClickShare(event);
 
-        Picasso.get().load(event.getEventPictureUrl()).into(imgPicture);
+        Picasso.get().load(event.getEventPictureUrl())
+                .resize(550, 255).centerCrop()
+                .into(imgPicture);
         tvTitle.setText(event.getEventTitle());
         tvDateTime.setText(date);
         tvDescrLocation.setText(event.getEventDetailLocation());

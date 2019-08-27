@@ -1,7 +1,9 @@
 package com.androidproject.univents.main_fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -53,6 +55,9 @@ public class HomeFragment extends Fragment {
     private EventItemGridAdapter adapter;
     private List<EventItem> items = new ArrayList<>();
 
+    private SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
     //Location things
     private FusedLocationProviderClient flProviderClient;
 
@@ -69,9 +74,17 @@ public class HomeFragment extends Fragment {
 
         initFireBase();
         initFlProviderClient();
+        initPreferences();
         initViews(view);
         getPermissions();
-        receiveLocation();
+        if (!checkIfLocationSaved()) {
+            receiveLocation();
+        }
+    }
+
+    private void initPreferences() {
+        sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
     }
 
     //requests permissions.
@@ -81,6 +94,18 @@ public class HomeFragment extends Fragment {
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
                             , Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_LOCATION);
+        }
+    }
+
+
+    private boolean checkIfLocationSaved() {
+        String location = sharedPref.getString("currentLocation", null);
+        if (location == null) {
+            return false;
+        } else {
+            txtCurrentLocation.setText(location);
+            getData();
+            return true;
         }
     }
 
@@ -103,10 +128,11 @@ public class HomeFragment extends Fragment {
                             try {
                                 Address address = geocoder.getFromLocation(latitude, longitude, 1).get(0);
                                 txtCurrentLocation.setText(address.getLocality());
+                                editor.putString("currentLocation", txtCurrentLocation.getText().toString());
+                                editor.commit();
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 showToast(getString(R.string.cannot_encode_address));
-                                txtCurrentLocation.setText(getString(R.string.regensburg));
                             }
                             getData();
                         }
@@ -145,12 +171,13 @@ public class HomeFragment extends Fragment {
         });
 
         txtCurrentLocation = view.findViewById(R.id.txt_current_location);
-        //TODO Save entered city in preferences.
         txtCurrentLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
                         || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    editor.putString("currentLocation", txtCurrentLocation.getText().toString());
+                    editor.commit();
                     getData();
                 }
                 return false;

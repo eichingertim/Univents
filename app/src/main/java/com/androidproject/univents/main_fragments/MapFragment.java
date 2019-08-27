@@ -1,5 +1,6 @@
 package com.androidproject.univents.main_fragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,21 +12,40 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.ShowEventActivity;
+import com.androidproject.univents.customviews.EventItem;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Marker;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxMap.OnInfoWindowClickListener {
+
+    private static final String MARKER_SOURCE = "markers-source";
+    private static final String MARKER_STYLE_LAYER = "markers-style-layer";
+    private static final String MARKER_IMAGE = "custom-marker";
 
     private MapView mapView;
+
+    private FirebaseFirestore db;
+
+    private List<EventItem> allEvents = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Mapbox.getInstance(getActivity(), "pk.eyJ1IjoidHRqYXBwcHJvamVjdCIsImEiOiJjano1c2NnOGIwNXU3M2RuMGZ3ZXJ0cWJvIn0.dSrsfqwzCei9HvcRDZxwiA");
-
     }
 
     @Nullable
@@ -39,7 +59,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState);
         
         initMap(view, savedInstanceState);
+        initFireBase();
         
+    }
+
+    private void initFireBase() {
+        db = FirebaseFirestore.getInstance();
     }
 
     /**
@@ -51,6 +76,56 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        mapboxMap.setStyle(getStyle(), new Style.OnStyleLoaded() {
+
+            @Override
+            public void onStyleLoaded(@NonNull Style style) {
+                getDataAndAddMarkers(mapboxMap);
+            }
+        });
+    }
+
+    private void getDataAndAddMarkers(final MapboxMap mapboxMap) {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    EventItem item = doc.toObject(EventItem.class);
+                    allEvents.add(item);
+                    LatLng position = new LatLng(item.getEventExactLocation().getLatitude()
+                            , item.getEventExactLocation().getLongitude());
+                    mapboxMap.addMarker(new MarkerOptions().position(position)
+                            .setSnippet(item.getEventId())
+                            .setTitle(item.getEventTitle()));
+                }
+            }
+        });
+        mapboxMap.setOnInfoWindowClickListener(this);
+    }
+
+    @Override
+    public boolean onInfoWindowClick(@NonNull Marker marker) {
+        Intent showEventIntent = new Intent(getActivity(), ShowEventActivity.class);
+        showEventIntent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), marker.getSnippet());
+        startActivity(showEventIntent);
+        return true;
+    }
+
+    private String getStyle() {
+        if (isDarkTheme()) return Style.DARK;
+        else return Style.LIGHT;
+    }
+
+    private boolean isDarkTheme() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        return sharedPreferences
+                .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
 
     @Override
@@ -95,26 +170,5 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mapView.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onMapReady(@NonNull MapboxMap mapboxMap) {
-        mapboxMap.setStyle(getStyle(), new Style.OnStyleLoaded() {
 
-            @Override
-            public void onStyleLoaded(@NonNull Style style) {
-
-            }
-        });
-    }
-
-    private String getStyle() {
-        if (isDarkTheme()) return Style.DARK;
-        else return Style.LIGHT;
-    }
-
-    private boolean isDarkTheme() {
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getActivity());
-        return sharedPreferences
-                .getBoolean(getString(R.string.PREF_KEY_THEME), false);
-    }
 }

@@ -15,6 +15,7 @@
         <item name="normalIconColor">@color/normalIconColor</item>
         <item name="actionBarColor">@color/actionBarColor</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -31,6 +32,7 @@
         <item name="normalIconColor">@color/normalIconColorDarkTheme</item>
         <item name="actionBarColor">@color/actionBarColorDarkTheme</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="windowAnimationTransition">
