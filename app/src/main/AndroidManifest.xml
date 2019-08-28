@@ -15,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".SearchQueryActivity"></activity>
+        <activity android:name=".SearchQueryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
         <activity android:name=".ShowEventActivity" />
         <activity android:name=".logreg.RegisterActivity" />
         <activity android:name=".logreg.LogRegChooserActivity">
@@ -28,7 +34,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -36,6 +41,11 @@
                     android:host="univents.com"
                     android:scheme="https" />
             </intent-filter>
+
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".SearchQueryActivity" />
+
+
         </activity>
 
         <meta-data

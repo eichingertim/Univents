@@ -102,6 +102,7 @@
     <string name="cannot_encode_address">Deinem aktuellen Standort konnte kein Ort zugewiesen werden</string>
     <string name="no_events_city_found">Keine Events in diesem Ort gefunden</string>
     <string name="like_this_update">Dir gefällt dieses Update</string>
+    <string name="press_back_again">Drücke ZURÜCK noch einmal um die Anwendung zu schließen</string>
 
     <!--Email-Sent Dialog-->
     <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
@@ -182,6 +183,7 @@
     <string name="regensburg">Regensburg</string>
     <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
     <string name="close">Schliessen</string>
+
 
     <!--Categories for events-->
     <string-array name="eventCategorys">

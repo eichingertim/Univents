@@ -14,8 +14,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -49,7 +53,7 @@ public class HomeFragment extends Fragment {
 
     private FloatingActionButton fabNewEvent;
     private EditText txtCurrentLocation;
-    private ImageButton imgSearchLocation;
+    private ImageButton btnSearchLocation;
 
     private GridView gridViewHomeEvents;
     private EventItemGridAdapter adapter;
@@ -58,6 +62,8 @@ public class HomeFragment extends Fragment {
     private SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     //Location things
     private FusedLocationProviderClient flProviderClient;
 
@@ -65,6 +71,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container
             , @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -82,6 +89,9 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    /**
+     * initializes the preferences and the editor
+     */
     private void initPreferences() {
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         editor = sharedPref.edit();
@@ -98,6 +108,10 @@ public class HomeFragment extends Fragment {
     }
 
 
+    /**
+     * checks whether the user has typed in a location before
+     * @return true or false
+     */
     private boolean checkIfLocationSaved() {
         String location = sharedPref.getString("currentLocation", null);
         if (location == null) {
@@ -162,6 +176,18 @@ public class HomeFragment extends Fragment {
      * @param view includes the layout from the fragment.
      */
     private void initViews(View view) {
+        initFloatingActionButton(view);
+        initLocationEditText(view);
+        initGridView(view);
+        initGetLocationButton(view);
+        initSwipeRefresh(view);
+    }
+
+    /**
+     * initializes the floating action button and sets an onClickListener
+     * @param view current fragment-layout
+     */
+    private void initFloatingActionButton(View view) {
         fabNewEvent = view.findViewById(R.id.fab_home_new_event);
         fabNewEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +195,14 @@ public class HomeFragment extends Fragment {
                 goToNewEventActivity();
             }
         });
+    }
 
+    /**
+     * initializes the editText where the current location is displayed and sets
+     * a listener for detecting when the user presses ENTER or DONE on the keyboard.
+     * @param view current fragment-layout
+     */
+    private void initLocationEditText(View view) {
         txtCurrentLocation = view.findViewById(R.id.txt_current_location);
         txtCurrentLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -183,7 +216,28 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+    }
 
+    /**
+     * initializes the getLocation-button and sets an onclickListener
+     * @param view current fragment-layout
+     */
+    private void initGetLocationButton(View view) {
+        btnSearchLocation = view.findViewById(R.id.btn_edit_location);
+        btnSearchLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                receiveLocation();
+            }
+        });
+    }
+
+    /**
+     * initializes the grid-view and its adapter and sets specific configurations
+     * and an onItemClickListener.
+     * @param view current fragment-layout
+     */
+    private void initGridView(View view) {
         gridViewHomeEvents = view.findViewById(R.id.grid_view_home_events);
         adapter = new EventItemGridAdapter(getActivity(),  items);
         gridViewHomeEvents.setAdapter(adapter);
@@ -196,12 +250,18 @@ public class HomeFragment extends Fragment {
                 goToShowEventActivity(item);
             }
         });
+    }
 
-        imgSearchLocation = view.findViewById(R.id.btn_edit_location);
-        imgSearchLocation.setOnClickListener(new View.OnClickListener() {
+    /**
+     * initializes the swipe refresh layout and sets a refresh listener
+     * @param view current fragment-layout
+     */
+    private void initSwipeRefresh(View view) {
+        swipeRefreshLayout = view.findViewById(R.id.home_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                receiveLocation();
+            public void onRefresh() {
+                getData();
             }
         });
     }
@@ -222,6 +282,7 @@ public class HomeFragment extends Fragment {
                     items.add(item);
                 }
                 adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -245,6 +306,10 @@ public class HomeFragment extends Fragment {
 
     }
 
+    /**
+     * checks if the Permission is already accepted.
+     * @return true or false
+     */
     private boolean checkLocationPermission() {
         return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
@@ -259,5 +324,24 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_home, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_home_refresh:
+                swipeRefreshLayout.setRefreshing(true);
+                getData();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

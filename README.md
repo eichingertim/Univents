@@ -9,3 +9,6 @@ Implementation of a mobile event platform that digitizes private events and even
 
 ## used pictures or icons
 * Facebook-Icon: https://www.pinclipart.com/pindetail/obJJii_social-facebook-svg-png-icon-free-download-facebook/
+
+## used code
+* Filter: https://www.youtube.com/watch?v=sJ-Z9G0SDhc

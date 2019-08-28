@@ -21,6 +21,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class EventItemGridAdapter extends BaseAdapter {
 
@@ -71,7 +73,8 @@ public class EventItemGridAdapter extends BaseAdapter {
         EventItem event = items.get(position);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(event.getEventBegin().toDate());
-        String date = DateFormat.format("dd.MM.yyyy - hh.mm", calendar).toString() + " MESZ";
+        String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
+                + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
         handleOnClickShare(event);
 
         Picasso.get().load(event.getEventPictureUrl())

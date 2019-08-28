@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -50,9 +52,13 @@ public class SearchQueryActivity extends AppCompatActivity {
 
         initFirebase();
         initToolbar();
-        getIntentExtras();
         initListViewAndAdapter();
-        getData();
+        if (getIntent().getExtras().getBoolean("isSearchForTitle")) {
+            getData();
+        } else {
+            getIntentExtras();
+            getData();
+        }
     }
 
     private void initToolbar() {
@@ -80,6 +86,11 @@ public class SearchQueryActivity extends AppCompatActivity {
         try {
             Date dateFrom = formatter.parse(getIntent().getStringExtra("searchDateFrom"));
             timestampFrom = new Timestamp(dateFrom);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
             Date dateTo = formatter.parse(getIntent().getStringExtra("searchDateTo"));
             timestampTo = new Timestamp(dateTo);
         } catch (ParseException e) {
@@ -101,6 +112,7 @@ public class SearchQueryActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        eventItems.clear();
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
                             EventItem item = doc.toObject(EventItem.class);
                             eventItems.add(item);
@@ -108,7 +120,12 @@ public class SearchQueryActivity extends AppCompatActivity {
                         checkTime();
                         checkCategory();
                         checkCity();
-                        adapter.notifyDataSetChanged();
+                        adapter.setList(eventItems);
+                        try {
+                            adapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
@@ -150,7 +167,28 @@ public class SearchQueryActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_collapsable, menu);
+        if (getIntent().getExtras().getBoolean("isSearchForTitle")) {
+            menu.performIdentifierAction(R.id.action_menu_search, 0);
+        }
+        MenuItem menuItem = menu.findItem(R.id.action_menu_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

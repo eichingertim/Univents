@@ -7,22 +7,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
+import java.util.TooManyListenersException;
 
-public class EventItemListAdapter extends BaseAdapter {
+public class EventItemListAdapter extends BaseAdapter implements Filterable {
 
     List<EventItem> items;
+    List<EventItem> itemsFull;
     Context context;
 
     public EventItemListAdapter(Context context, List<EventItem> items) {
         this.items = items;
+        itemsFull = new ArrayList<>(items);
         this.context = context;
     }
 
@@ -69,4 +76,43 @@ public class EventItemListAdapter extends BaseAdapter {
 
         return view;
     }
+
+    @Override
+    public Filter getFilter() {
+        return searchFilter;
+    }
+
+    private Filter searchFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<EventItem> filteredList = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(itemsFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (EventItem item : itemsFull) {
+                    if (item.getEventTitle().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+
+            return filterResults;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            items.clear();
+            items.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
+    public void setList(List<EventItem> itemsFull) {
+        this.itemsFull = new ArrayList<>(itemsFull);
+    }
+
 }

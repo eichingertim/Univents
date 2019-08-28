@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -36,6 +39,7 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
@@ -43,37 +47,26 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
-        setOnClickListeners();
     }
 
+    /**
+     * initializes the views from the UI and sets the listeners
+     * @param view current fragment-layout
+     */
     private void initViews(View view) {
-        tvDateFrom = view.findViewById(R.id.tv_date_from);
-        tvDateTo = view.findViewById(R.id.tv_date_to);
-
-        spCategory = view.findViewById(R.id.sp_category);
-        spAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eventCategorys
-                , android.R.layout.simple_spinner_item);
-        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(spAdapter);
-
-        txtCity = view.findViewById(R.id.txt_city);
-
-        fabSearch = view.findViewById(R.id.fab_search);
+        initDateFields(view);
+        initCategorySpinner(view);
+        initCityEditText(view);
+        initFloatingSearchButton(view);
     }
 
-    private void setOnClickListeners() {
-        tvDateFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAndSetDate(tvDateFrom);
-            }
-        });
-        tvDateTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getAndSetDate(tvDateTo);
-            }
-        });
+    /**
+     * initializes the action button where the filtered search is executed and
+     * sets an onClickListener
+     * @param view current fragment-layout
+     */
+    private void initFloatingSearchButton(View view) {
+        fabSearch = view.findViewById(R.id.fab_search);
         fabSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +75,54 @@ public class SearchFragment extends Fragment {
         });
     }
 
+    /**
+     * initializes the editText where the user can enter a city to
+     * filter the search.
+     * @param view current fragment-layout
+     */
+    private void initCityEditText(View view) {
+        txtCity = view.findViewById(R.id.txt_city);
+    }
+
+    /**
+     * initializes the Spinner and its adapter where the user can select a category
+     * for the search.
+     * @param view current fragment-layout
+     */
+    private void initCategorySpinner(View view) {
+        spCategory = view.findViewById(R.id.sp_category);
+        spAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eventCategorys
+                , android.R.layout.simple_spinner_item);
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(spAdapter);
+    }
+
+    /**
+     * initializes the two date fields where the user can select specific dates and
+     * sets onClickListeners.
+     * @param view current fragment-layout
+     */
+    private void initDateFields(View view) {
+        tvDateFrom = view.findViewById(R.id.tv_date_from);
+        tvDateFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAndSetDate(tvDateFrom);
+            }
+        });
+        tvDateTo = view.findViewById(R.id.tv_date_to);
+        tvDateTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getAndSetDate(tvDateTo);
+            }
+        });
+    }
+
+    /**
+     * gets the data from the filter items (date, category, city) and puts it
+     * into an intent that is send to the QueryActivity.
+     */
     private void search() {
         String dateFrom = tvDateFrom.getText().toString();
         String dateTo = tvDateTo.getText().toString();
@@ -95,9 +136,14 @@ public class SearchFragment extends Fragment {
         searchIntent.putExtra("searchDateTo", dateTo);
         searchIntent.putExtra("searchCategory", category);
         searchIntent.putExtra("searchCity", city);
+        searchIntent.putExtra("isSearchForTitle", false);
         startActivity(searchIntent);
     }
 
+    /**
+     * Opens a dialog to set the date.
+     * @param tvDate textView where the date should be written to.
+     */
     private void getAndSetDate(final TextView tvDate) {
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -118,6 +164,13 @@ public class SearchFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    /**
+     * writes the selected date to the textView tvDate
+     * @param year selected year
+     * @param monthOfYear selected month
+     * @param dayOfMonth selected day
+     * @param tvDate textView where the date should be written to
+     */
     private void writeDateToTextView(int year, int monthOfYear, int dayOfMonth, TextView tvDate) {
         int realMonthOfYear = monthOfYear + 1;
 
@@ -133,5 +186,26 @@ public class SearchFragment extends Fragment {
         String date = day + "." + month + "." + year;
         tvDate.setText(date);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_search, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_menu_search:
+                Intent intent = new Intent(getActivity(), SearchQueryActivity.class);
+                intent.putExtra("isSearchForTitle", true);
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }
