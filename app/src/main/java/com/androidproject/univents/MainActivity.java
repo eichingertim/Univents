@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar_main);
+        toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -201,18 +202,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleSearchClick() {
+        toolbar.setTitle("Suchen");
         mainViewPager.setCurrentItem(SEARCH);
     }
 
     private void handleHomeClick() {
+        toolbar.setTitle("Home");
         mainViewPager.setCurrentItem(HOME);
     }
 
     private void handleMapClick() {
+        toolbar.setTitle("Karte");
         mainViewPager.setCurrentItem(MAP);
     }
 
     private void handleMyEventsClick() {
+        toolbar.setTitle("Meine Events");
         mainViewPager.setCurrentItem(MY_EVENTS);
     }
 
@@ -220,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    //TODO: Intent to profile page
     private void goToProfilePage() {
         startActivity(new Intent(this, ProfilePageActivity.class));
     }

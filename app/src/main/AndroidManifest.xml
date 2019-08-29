@@ -41,11 +41,6 @@
                     android:host="univents.com"
                     android:scheme="https" />
             </intent-filter>
-
-            <meta-data android:name="android.app.default_searchable"
-                android:value=".SearchQueryActivity" />
-
-
         </activity>
 
         <meta-data

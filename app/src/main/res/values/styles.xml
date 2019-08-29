@@ -11,10 +11,7 @@
         <item name="buttonOutlineColorDark">@color/buttonOutlineColorDark</item>
         <item name="textColorHint">@color/colorHintText</item>
         <item name="android:textColorSecondary">@color/colorDarkText</item>
-        <item name="closeIcon">@drawable/ic_close_24dp</item>
-        <item name="searchIcon">@drawable/ic_search_24dp</item>
         <item name="normalIconColor">@color/normalIconColor</item>
-        <item name="refreshIcon">@drawable/ic_refresh_24dp</item>
         <item name="actionBarColor">@color/actionBarColor</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
         <item name="android:fontFamily">@font/roboto_medium</item>
@@ -30,10 +27,7 @@
         <item name="buttonOutlineColorDark">@color/buttonOutlineColorDarkDarkTheme</item>
         <item name="textColorHint">@color/colorHintTextDarkTheme</item>
         <item name="android:textColorSecondary">@color/colorDarkTextDarkTheme</item>
-        <item name="closeIcon">@drawable/ic_close_white_24dp</item>
-        <item name="searchIcon">@drawable/ic_search_white_24dp</item>
         <item name="normalIconColor">@color/normalIconColorDarkTheme</item>
-        <item name="refreshIcon">@drawable/ic_refresh_white_24dp</item>
         <item name="actionBarColor">@color/actionBarColorDarkTheme</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
         <item name="android:fontFamily">@font/roboto_medium</item>

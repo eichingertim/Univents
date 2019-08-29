@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.TooManyListenersException;
 
 public class EventItemListAdapter extends BaseAdapter implements Filterable {
@@ -65,7 +67,8 @@ public class EventItemListAdapter extends BaseAdapter implements Filterable {
         EventItem item = items.get(position);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(item.getEventBegin().toDate());
-        String date = DateFormat.format("dd.MM.yyyy - hh.mm", calendar).toString() + " MESZ";
+        String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
+                + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
 
         Picasso.get().load(item.getEventPictureUrl())
                 .resize(100,100).centerCrop()
