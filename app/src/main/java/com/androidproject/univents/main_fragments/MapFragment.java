@@ -1,13 +1,20 @@
 package com.androidproject.univents.main_fragments;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,6 +29,11 @@ import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.geometry.LatLng;
+import com.mapbox.mapboxsdk.location.LocationComponent;
+import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions;
+import com.mapbox.mapboxsdk.location.LocationComponentOptions;
+import com.mapbox.mapboxsdk.location.modes.CameraMode;
+import com.mapbox.mapboxsdk.location.modes.RenderMode;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
@@ -37,6 +49,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
     private static final String MARKER_IMAGE = "custom-marker";
 
     private MapView mapView;
+    private MapboxMap map;
+    private LocationComponent locationComponent;
+    private Style mapStyle;
 
     private FirebaseFirestore db;
 
@@ -51,6 +66,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_map, container, false);
     }
 
@@ -80,10 +96,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
 
     @Override
     public void onMapReady(@NonNull final MapboxMap mapboxMap) {
+        map = mapboxMap;
         mapboxMap.setStyle(getStyle(), new Style.OnStyleLoaded() {
-
             @Override
             public void onStyleLoaded(@NonNull Style style) {
+                mapStyle = style;
                 getDataAndAddMarkers(mapboxMap);
             }
         });
@@ -114,6 +131,51 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
         showEventIntent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), marker.getSnippet());
         startActivity(showEventIntent);
         return true;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_map, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_map_show_location:
+                showLocation();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showLocation() {
+        if (checkLocationPermission()) {
+            LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(getActivity())
+                    .elevation(5)
+                    .accuracyAlpha(.6f)
+                    .accuracyColor(Color.RED)
+                    .build();
+
+            locationComponent = map.getLocationComponent();
+
+            LocationComponentActivationOptions locationComponentActivationOptions =
+                    LocationComponentActivationOptions.builder(getActivity(), mapStyle)
+                            .locationComponentOptions(customLocationComponentOptions)
+                            .build();
+
+            locationComponent.activateLocationComponent(locationComponentActivationOptions);
+            locationComponent.setLocationComponentEnabled(true);
+            locationComponent.setCameraMode(CameraMode.TRACKING);
+            locationComponent.setRenderMode(RenderMode.COMPASS);
+        }
+    }
+
+    private boolean checkLocationPermission() {
+        return ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private String getStyle() {
