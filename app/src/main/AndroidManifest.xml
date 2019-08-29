@@ -57,6 +57,7 @@
         </activity>
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".user.ProfilePageActivity" />
+        <activity android:name=".user.EditProfilePage"/>
 
         <service
             android:name=".cloudnotification.FirebaseMessageService"

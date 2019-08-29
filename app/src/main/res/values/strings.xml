@@ -135,6 +135,13 @@
     <string name="prof_name">Name</string>
     <string name="prof_email">Email</string>
     <string name="prof_number">Telefonnummer</string>
+    <string name="prof_edit_email_switch">Email Adresse anzeigen</string>
+    <string name="prof_edit_phone_switch">Telefonnummer anzeigen</string>
+    <string name="prof_edit_header">Profileinstellungen</string>
+    <string name="switch_email_true">email true</string>
+    <string name="switch_email_false">email false</string>
+    <string name="switch_phone_true">phone true</string>
+    <string name="switch_phone_false">phone false</string>
 
     <!--Notification text values-->
     <string name="update_suffix">Update:</string>

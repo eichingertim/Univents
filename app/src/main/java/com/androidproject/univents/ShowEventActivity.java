@@ -31,7 +31,7 @@ public class ShowEventActivity extends AppCompatActivity {
     }
 
     /**
-     * reads the intent extra (EventID) and gets the data of the event from
+     * reads the intent extra (UserID) and gets the data of the event from
      * Firebase.
      */
     private void readIntentCreateItem() {
