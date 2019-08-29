@@ -1,5 +1,6 @@
 package com.androidproject.univents;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.androidproject.univents.customviews.EventItem;
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SearchQueryActivity extends AppCompatActivity {
+public class SearchQueryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private FirebaseFirestore db;
 
@@ -73,6 +76,7 @@ public class SearchQueryActivity extends AppCompatActivity {
         listQuery.setAdapter(adapter);
         listQuery.setEmptyView(findViewById(R.id.tv_search_empty));
         listQuery.setDivider(null);
+        listQuery.setOnItemClickListener(this);
     }
 
     private void getIntentExtras() {
@@ -240,5 +244,14 @@ public class SearchQueryActivity extends AppCompatActivity {
                 PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPreferences
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String eventId = ((EventItem) parent.getItemAtPosition(position)).getEventId();
+
+        Intent showEventIntent = new Intent(SearchQueryActivity.this, ShowEventActivity.class);
+        showEventIntent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
+        startActivity(showEventIntent);
     }
 }
