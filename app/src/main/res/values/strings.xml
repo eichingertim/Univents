@@ -127,6 +127,7 @@
 
     <!--Keys for settings preferences-->
     <string name="PREF_KEY_THEME">theme_pref</string>
+    <string name="PREF_KEY_NOTIFICATIONS">notification_pref</string>
 
     <!--Settings titles and descriptions-->
     <string name="dark_theme">Dark Theme</string>

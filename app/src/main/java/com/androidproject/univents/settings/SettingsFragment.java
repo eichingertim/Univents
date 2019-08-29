@@ -13,6 +13,7 @@ import com.androidproject.univents.R;
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     private SwitchPreferenceCompat prefDarkTheme;
+    private SwitchPreferenceCompat prefNotifications;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -23,6 +24,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     private void initPreferences() {
         prefDarkTheme = (SwitchPreferenceCompat) findPreference(getString(R.string.PREF_KEY_THEME));
         prefDarkTheme.setOnPreferenceChangeListener(this);
+
+        prefNotifications = (SwitchPreferenceCompat) findPreference(getString(R.string.PREF_KEY_NOTIFICATIONS));
+        prefNotifications.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -30,8 +34,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
         if (preference.equals(prefDarkTheme)) {
             handleThemeChange(preference);
+        } else if (preference.equals(prefNotifications)) {
+            handleNotificationChange(preference);
         }
         return true;
+    }
+
+    private void handleNotificationChange(Preference preference) {
+        if (!((SwitchPreferenceCompat)preference).isChecked()) {
+            ((SwitchPreferenceCompat)preference).setChecked(true);
+        } else {
+            ((SwitchPreferenceCompat)preference).setChecked(false);
+        }
     }
 
     /**

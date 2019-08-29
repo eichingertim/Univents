@@ -20,7 +20,7 @@
 
         <SwitchPreferenceCompat
             android:defaultValue="true"
-            android:key="@string/PREF_KEY_THEME"
+            android:key="@string/PREF_KEY_NOTIFICATIONS"
             android:icon="@drawable/ic_notifications_24dp"
             android:title="Benachrichtigungen erhalten"/>
     </PreferenceCategory>

@@ -5,10 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.preference.PreferenceManager;
 import android.text.Html;
 
 import com.androidproject.univents.MainActivity;
@@ -97,6 +99,16 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        if (checkCouldSendNotification()) {
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
+
+    }
+
+    private boolean checkCouldSendNotification() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences
+                .getBoolean(getString(R.string.PREF_KEY_NOTIFICATIONS), true);
     }
 }
