@@ -395,10 +395,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void setIconFalse(ImageView icon) {
-        TypedValue typedValue = new TypedValue();
-        this.getTheme().resolveAttribute(R.attr.closeIcon, typedValue, true);
-        int drawableRes = typedValue.resourceId;
-        Drawable drawable = this.getResources().getDrawable(drawableRes);
+        Drawable drawable = this.getResources().getDrawable(R.drawable.ic_close_24dp);
         icon.setImageDrawable(drawable);
 
     }

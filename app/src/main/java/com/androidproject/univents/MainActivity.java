@@ -3,6 +3,7 @@ package com.androidproject.univents;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidproject.univents.customviews.NoSwipeViewPager;
 import com.androidproject.univents.logreg.LogRegChooserActivity;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int SEARCH = 1;
     private static final int MAP = 2;
     private static final int MY_EVENTS = 3;
+
+    private boolean backClickedOnce = false;
 
     private Toolbar toolbar;
 
@@ -125,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar_main);
+        toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -197,18 +202,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleSearchClick() {
+        toolbar.setTitle("Suchen");
         mainViewPager.setCurrentItem(SEARCH);
     }
 
     private void handleHomeClick() {
+        toolbar.setTitle("Home");
         mainViewPager.setCurrentItem(HOME);
     }
 
     private void handleMapClick() {
+        toolbar.setTitle("Karte");
         mainViewPager.setCurrentItem(MAP);
     }
 
     private void handleMyEventsClick() {
+        toolbar.setTitle("Meine Events");
         mainViewPager.setCurrentItem(MY_EVENTS);
     }
 
@@ -216,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(this, SettingsActivity.class));
     }
 
-    //TODO: Intent to profile page
     private void goToProfilePage() {
         startActivity(new Intent(this, ProfilePageActivity.class));
     }
@@ -304,6 +312,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (backClickedOnce) {
+            Intent homeScreenIntent = new Intent(Intent.ACTION_MAIN);
+            homeScreenIntent.addCategory(Intent.CATEGORY_HOME);
+            homeScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(homeScreenIntent);
+            return;
+        }
 
+        this.backClickedOnce = true;
+        Toast.makeText(this, getString(R.string.press_back_again), Toast.LENGTH_SHORT).show();
 
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                backClickedOnce=false;
+            }
+        }, 2000);
+    }
 }

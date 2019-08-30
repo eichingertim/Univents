@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/close_log_reg_layout"
-        android:icon="@drawable/ic_close_24dp"
-        android:title="@string/close"
-        app:showAsAction="always"/>
+    <item android:id="@+id/action_home_refresh"
+        android:title="Refresh"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_refresh_24dp"/>
 
 </menu>

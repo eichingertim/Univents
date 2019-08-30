@@ -8,19 +8,23 @@ public class User {
     private String userId;
     private boolean isOrga;
     private String orgaName = "";
+    private String description = "Keine Beschreibung vorhanden";
+    private String phoneNumber = "";
 
     public User() {
 
     }
 
     public User(String firstName, String lastName, String email, String userId
-            , boolean isOrga, String orgaName) {
+            , boolean isOrga, String orgaName, String description, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.userId = userId;
         this.isOrga = isOrga;
         this.orgaName = orgaName;
+        this.description = description;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getFirstName() {
@@ -69,5 +73,21 @@ public class User {
 
     public void setOrgaName(String orgaName) {
         this.orgaName = orgaName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

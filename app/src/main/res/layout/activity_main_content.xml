@@ -33,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:labelVisibilityMode="labeled"
         android:background="?attr/actionBarColor"
         app:itemIconTint="@drawable/selector_bottom_nav_state_list"
         app:itemTextColor="@drawable/selector_bottom_nav_state_list"

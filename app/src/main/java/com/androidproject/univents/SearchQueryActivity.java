@@ -1,23 +1,23 @@
 package com.androidproject.univents;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.androidproject.univents.customviews.EventItem;
 import com.androidproject.univents.customviews.EventItemListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SearchQueryActivity extends AppCompatActivity {
+public class SearchQueryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private FirebaseFirestore db;
 
@@ -50,9 +50,13 @@ public class SearchQueryActivity extends AppCompatActivity {
 
         initFirebase();
         initToolbar();
-        getIntentExtras();
         initListViewAndAdapter();
-        getData();
+        if (getIntent().getExtras().getBoolean("isSearchForTitle")) {
+            getData();
+        } else {
+            getIntentExtras();
+            getData();
+        }
     }
 
     private void initToolbar() {
@@ -72,6 +76,7 @@ public class SearchQueryActivity extends AppCompatActivity {
         listQuery.setAdapter(adapter);
         listQuery.setEmptyView(findViewById(R.id.tv_search_empty));
         listQuery.setDivider(null);
+        listQuery.setOnItemClickListener(this);
     }
 
     private void getIntentExtras() {
@@ -80,6 +85,11 @@ public class SearchQueryActivity extends AppCompatActivity {
         try {
             Date dateFrom = formatter.parse(getIntent().getStringExtra("searchDateFrom"));
             timestampFrom = new Timestamp(dateFrom);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
             Date dateTo = formatter.parse(getIntent().getStringExtra("searchDateTo"));
             timestampTo = new Timestamp(dateTo);
         } catch (ParseException e) {
@@ -101,56 +111,111 @@ public class SearchQueryActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        eventItems.clear();
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
                             EventItem item = doc.toObject(EventItem.class);
                             eventItems.add(item);
                         }
-                        checkTime();
+                        checkDateFrom();
+                        checkDateTo();
                         checkCategory();
                         checkCity();
-                        adapter.notifyDataSetChanged();
+                        adapter.setList(eventItems);
+                        try {
+                            adapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
 
     private void checkCity() {
         if (city != null) {
+            ArrayList<EventItem> removeIds = new ArrayList<>();
+
             for (EventItem item : eventItems) {
                 if (!item.getEventCity().equals(city)) {
-                    eventItems.remove(item);
+                    removeIds.add(item);
                 }
+            }
+
+            for (EventItem item : removeIds){
+                eventItems.remove(item);
             }
         }
     }
 
     private void checkCategory() {
         if (category != null) {
+            ArrayList<EventItem> removeIds = new ArrayList<>();
+
             for (EventItem item : eventItems) {
                 if (!item.getEventCategory().equals(category)) {
-                    eventItems.remove(item);
+                    removeIds.add(item);
                 }
+            }
+
+            for (EventItem item : removeIds){
+                eventItems.remove(item);
             }
         }
     }
 
-    private void checkTime() {
+    private void checkDateFrom() {
         if (timestampFrom != null) {
+            ArrayList<EventItem> removeIds = new ArrayList<>();
+
             for (EventItem item : eventItems) {
                 if (item.getEventBegin().toDate().before(timestampFrom.toDate())) {
-                    eventItems.remove(item);
+                    removeIds.add(item);
                 }
             }
-        }
-        if (timestampTo != null) {
-            for (EventItem item : eventItems) {
-                if (item.getEventEnd().toDate().after(timestampTo.toDate())) {
-                    eventItems.remove(item);
-                }
+
+            for (EventItem item : removeIds){
+                eventItems.remove(item);
             }
         }
     }
 
+    private void checkDateTo() {
+        if (timestampTo != null) {
+            ArrayList<EventItem> removeIds = new ArrayList<>();
 
+            for (EventItem item : eventItems) {
+                if (item.getEventEnd().toDate().after(timestampTo.toDate())) {
+                    removeIds.add(item);
+                }
+            }
+
+            for (EventItem item : removeIds){
+                eventItems.remove(item);
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search_collapsable, menu);
+        if (getIntent().getExtras().getBoolean("isSearchForTitle")) {
+            menu.performIdentifierAction(R.id.action_menu_search, 0);
+        }
+        MenuItem menuItem = menu.findItem(R.id.action_menu_search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,5 +244,14 @@ public class SearchQueryActivity extends AppCompatActivity {
                 PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPreferences
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String eventId = ((EventItem) parent.getItemAtPosition(position)).getEventId();
+
+        Intent showEventIntent = new Intent(SearchQueryActivity.this, ShowEventActivity.class);
+        showEventIntent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
+        startActivity(showEventIntent);
     }
 }

@@ -9,7 +9,4 @@
     <attr name="normalIconColor" format="color"/>
     <attr name="actionBarColor" format="color"/>
 
-
-    <attr name="closeIcon" format="reference"/>
-
 </resources>
