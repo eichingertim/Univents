@@ -8,31 +8,39 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidproject.univents.R;
-import com.androidproject.univents.customviews.EventItem;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 
 import javax.annotation.Nullable;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfilePageActivity extends AppCompatActivity {
 
     private ImageButton phoneNumberButton;
     private ImageButton emailButton;
-    private TextView profileName;
+    private CircleImageView profilePicture;
+    private TextView profileName, profileDescription;
     private Toolbar toolbar;
+
+    private SharedPreferences sharedPreferences;
 
     private User user;
 
@@ -42,14 +50,19 @@ public class ProfilePageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        checkTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page);
 
         initFireBase();
+        initSharedPreferences();
         initToolbar();
         initUI();
-        readSharedPreferences();
         readIntentCreateItem();
+    }
+
+    private void initSharedPreferences() {
+        sharedPreferences = this.getSharedPreferences("EmailPreference", Context.MODE_PRIVATE);
     }
 
     /**
@@ -71,10 +84,26 @@ public class ProfilePageActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 user = documentSnapshot.toObject(User.class);
-                initUsername();
-                initButtons();
+                fillUserName();
+                setButtonFunctions();
+                setProfilePicture();
+                fillUserDescription();
             }
         });
+    }
+
+    private void fillUserDescription() {
+        profileDescription.setText(user.getDescription());
+    }
+
+    private void setProfilePicture() {
+        Uri photoUrl = auth.getCurrentUser().getPhotoUrl();
+        if (photoUrl != null) {
+            Picasso.get().load(photoUrl).noFade().into(profilePicture);
+        } else {
+            profilePicture.setImageResource(R.color.colorAccent);
+        }
+
     }
 
     /**
@@ -84,31 +113,49 @@ public class ProfilePageActivity extends AppCompatActivity {
         emailButton = findViewById(R.id.btn_profile_email);
         phoneNumberButton = findViewById(R.id.btn_phone_number);
         profileName = findViewById(R.id.profile_name);
-        user = new User();
+        profileDescription = findViewById(R.id.profile_description);
+        profilePicture = findViewById(R.id.profile_picture);
     }
 
     /**
      * initializes the Username
      */
-    private void initUsername(){
-        String username = user.getFirstName() + " " + user.getLastName();
+    private void fillUserName(){
+
+        String username;
+        if (user.isOrga()) {
+            username = user.getOrgaName();
+        } else {
+            username = user.getFirstName() + " " + user.getLastName();
+        }
         profileName.setText(username);
     }
 
     /**
      * initializes OnClickListeners for the buttons
      */
-    private void initButtons(){
+    private void setButtonFunctions(){
         emailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMail();
+                if (sharedPreferences.getBoolean("email", true)) {
+                    sendMail();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Der Nutzer will keine E-Mails bekommen."
+                            , Toast.LENGTH_LONG).show();
+                }
             }
         });
         phoneNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openPhoneCall();
+                if (sharedPreferences.getBoolean("email", true)) {
+                    openPhoneCall();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Der Nutzer will keine Anrufe bekommen."
+                            , Toast.LENGTH_LONG).show();
+                }
+
             }
         });
     }
@@ -125,11 +172,15 @@ public class ProfilePageActivity extends AppCompatActivity {
     }
 
     private void openPhoneCall(){
-        Integer number = 12345;
-        String phoneNumber = number.toString();
-        Intent phoneCall = new Intent(Intent.ACTION_DIAL);
-        phoneCall.setData(Uri.fromParts("tel", phoneNumber, null));
-        startActivity(phoneCall);
+        String phoneNumber = user.getPhoneNumber();
+        if (!phoneNumber.isEmpty()) {
+            Intent phoneCall = new Intent(Intent.ACTION_DIAL);
+            phoneCall.setData(Uri.fromParts("tel", phoneNumber, null));
+            startActivity(phoneCall);
+        } else {
+            Toast.makeText(getApplicationContext(), "Der Nutzer hat keine Telefonnummer."
+                    , Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -167,25 +218,24 @@ public class ProfilePageActivity extends AppCompatActivity {
         startActivity(new Intent(this, EditProfilePage.class));
     }
 
-    private void readSharedPreferences(){
-        SharedPreferences sharedPreferences = this.getSharedPreferences("EmailPreference", Context.MODE_PRIVATE);
-        if (sharedPreferences.getBoolean("email", true)){
-            showEmail();
-        }else{
-            dontShowEmail();
+    /**
+     * checks if dark theme is on
+     */
+    private void checkTheme() {
+        if (isDarkTheme()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            setTheme(R.style.DarkTheme);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            setTheme(R.style.AppTheme);
         }
     }
 
-    public void dontShowEmail(){
-        emailButton.setVisibility(View.INVISIBLE);
+    private boolean isDarkTheme() {
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        return sharedPreferences
+                .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
-    public void showEmail(){
-        emailButton.setVisibility(View.VISIBLE);
-    }
-    public void dontShowPhoneNumber(){
-        phoneNumberButton.setVisibility(View.INVISIBLE);
-    }
-    public void showPhoneNumber(){
-        phoneNumberButton.setVisibility(View.VISIBLE);
-    }
+
 }

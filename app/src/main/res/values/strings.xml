@@ -137,8 +137,8 @@
     <string name="prof_name">Name</string>
     <string name="prof_email">Email</string>
     <string name="prof_number">Telefonnummer</string>
-    <string name="prof_edit_email_switch">Email Adresse anzeigen</string>
-    <string name="prof_edit_phone_switch">Telefonnummer anzeigen</string>
+    <string name="prof_edit_email_switch">Email Adresse öffentlich anzeigen</string>
+    <string name="prof_edit_phone_switch">Telefonnummer öffentlich anzeigen</string>
     <string name="prof_edit_header">Profileinstellungen</string>
     <string name="switch_email_true">email true</string>
     <string name="switch_email_false">email false</string>
@@ -168,6 +168,8 @@
     <string name="KEY_FIREBASE_USER_EMAIL">email</string>
     <string name="KEY_FIREBASE_USER_IS_ORGA">isOrga</string>
     <string name="KEY_FIREBASE_USER_ORGA_NAME">orgaName</string>
+    <string name="KEY_FIREBASE_USER_DESCRIPTION">description</string>
+    <string name="KEY_FIREBASE_USER_PHONE_NUMBER">phoneNumber</string>
 
     <string name="KEY_FIREBASE_EVENT_ID">eventId</string>
     <string name="KEY_FIREBASE_EVENT_TITLE">eventTitle</string>
