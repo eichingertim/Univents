@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/ic_mail_outline_24dp" />
 
-    <Button
+    <ImageButton
         android:id="@+id/btn_phone_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,7 +41,8 @@
         android:text="@string/prof_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/btn_profile_email"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:srcCompat="@drawable/ic_local_phone_black_24dp"/>
 
     <TextView
         android:id="@+id/profile_name"
