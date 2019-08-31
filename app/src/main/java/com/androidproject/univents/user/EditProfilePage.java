@@ -1,10 +1,13 @@
 package com.androidproject.univents.user;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
@@ -84,9 +87,7 @@ public class EditProfilePage extends AppCompatActivity {
         editEmail.setText(user.getEmail());
         editPhone.setText(user.getPhoneNumber());
         editDescription.setText(user.getDescription());
-        Toast.makeText(getApplicationContext(), String.valueOf(user.getOrga()), Toast.LENGTH_LONG).show();
         if (user.getOrga()) {
-            Toast.makeText(getApplicationContext(), "true", Toast.LENGTH_LONG).show();
             containerOrga.setVisibility(View.VISIBLE);
             editOrga.setText(user.getOrgaName());
         }
@@ -148,7 +149,7 @@ public class EditProfilePage extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 } else {
-                    onBackPressed();
+                    showShouldSaveDialog();
                 }
                 break;
             case R.id.profile_edit_save:
@@ -157,6 +158,27 @@ public class EditProfilePage extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showShouldSaveDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfilePage.this);
+        builder.setTitle("Speichern");
+        builder.setMessage("Willst du deine Änderungen speichern?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveProfileInfos();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onBackPressed();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     private void saveProfileInfos() {
