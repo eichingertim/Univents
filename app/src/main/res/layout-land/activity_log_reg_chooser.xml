@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="?attr/backgroundColor"
+    tools:context=".logreg.LogRegChooserActivity">
+
+
+    <ScrollView
+        android:id="@+id/layout_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/backgroundColor"
+            android:visibility="visible"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="15dp">
+
+            <Button
+                android:id="@+id/btn_facebook_login"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/form_round_corners_orange"
+                android:backgroundTint="@color/colorFacebook"
+                android:drawableStart="@drawable/ic_facebook"
+                android:drawableTint="@color/colorLightText"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/go_on_with_facebook"
+                android:textColor="@color/colorLightText"
+                app:layout_constraintEnd_toStartOf="@+id/btn_choose_log_in"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            <Button
+                android:id="@+id/btn_choose_log_in"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:background="@drawable/form_round_corners_orange"
+                android:text="@string/text_btn_login"
+                android:textColor="?attr/textColorLight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:layout_constraintWidth_percent="0.485" />
+
+            <Button
+                android:id="@+id/btn_choose_register_private"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/form_round_corners_dark_stroke"
+                android:text="@string/t_private"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintEnd_toStartOf="@+id/btn_choose_register_orga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_create_account" />
+
+            <Button
+                android:id="@+id/btn_choose_register_orga"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/form_round_corners_dark_stroke"
+                android:text="Organisation"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_create_account"
+                app:layout_constraintWidth_percent="0.485" />
+
+            <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="60dp"
+                android:src="@drawable/app_launch_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
+                android:text="Erstelle, Organisiere und Beteilige dich an Events"
+                android:textColor="?attr/textColorDark"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+            <!--Button: Create new account; Opens RegisterActivity-->
+            <TextView
+                android:id="@+id/tv_create_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:text="@string/create_account"
+                android:textColor="?attr/textColorDark"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_choose_log_in" />
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/facebook_login_button"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="onFbButtonClick"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_facebook_login"
+                app:layout_constraintEnd_toEndOf="@+id/btn_facebook_login"
+                app:layout_constraintStart_toStartOf="@+id/btn_facebook_login" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
+
+    <include
+        android:id="@+id/layout_login"
+        layout="@layout/layout_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

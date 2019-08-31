@@ -3,6 +3,7 @@ package com.androidproject.univents.customviews;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,9 +34,20 @@ public class EventRecyclerViewHolder extends RecyclerView.ViewHolder {
         String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
                 + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
 
-        Picasso.get().load(item.getEventPictureUrl())
-                .resize(400,200).centerCrop()
-                .into(imgEventPicture);
+
+        ViewTreeObserver viewTreeObserver = imgEventPicture.getViewTreeObserver();
+        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                imgEventPicture.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = imgEventPicture.getMeasuredHeight();
+                int finalWidth = imgEventPicture.getMeasuredWidth();
+                Picasso.get().load(item.getEventPictureUrl())
+                        .resize(finalWidth, finalHeight).centerCrop()
+                        .into(imgEventPicture);
+                return true;
+            }
+        });
         tvEventTitle.setText(item.getEventTitle());
         tvEventDate.setText(date);
         itemView.setOnClickListener(new View.OnClickListener() {

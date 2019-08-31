@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -64,22 +65,33 @@ public class EventItemGridAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.layout_event_card, null);
         }
 
-        ImageView imgPicture = view.findViewById(R.id.img_card_event_picture);
+        final ImageView imgPicture = view.findViewById(R.id.img_card_event_picture);
         TextView tvTitle = view.findViewById(R.id.tv_card_event_title);
         TextView tvDateTime = view.findViewById(R.id.tv_card_event_date_time);
         TextView tvDescrLocation = view.findViewById(R.id.tv_card_event_descr_location);
         btnShareEvent = view.findViewById(R.id.card_share);
 
-        EventItem event = items.get(position);
+        final EventItem event = items.get(position);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(event.getEventBegin().toDate());
         String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
                 + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
         handleOnClickShare(event);
 
-        Picasso.get().load(event.getEventPictureUrl())
-                .resize(550, 255).centerCrop()
-                .into(imgPicture);
+        ViewTreeObserver viewTreeObserver = imgPicture.getViewTreeObserver();
+        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                imgPicture.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = imgPicture.getMeasuredHeight();
+                int finalWidth = imgPicture.getMeasuredWidth();
+                Picasso.get().load(event.getEventPictureUrl())
+                        .resize(finalWidth, finalHeight).centerCrop()
+                        .into(imgPicture);
+                return true;
+            }
+        });
+
         tvTitle.setText(event.getEventTitle());
         tvDateTime.setText(date);
         tvDescrLocation.setText(event.getEventDetailLocation());

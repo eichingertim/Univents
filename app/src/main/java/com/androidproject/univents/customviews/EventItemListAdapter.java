@@ -6,6 +6,7 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -59,20 +60,30 @@ public class EventItemListAdapter extends BaseAdapter implements Filterable {
             view = inflater.inflate(R.layout.layout_event_list_item, null);
         }
 
-        ImageView imgEventPicture = view.findViewById(R.id.img_list_item_picture);
+        final ImageView imgEventPicture = view.findViewById(R.id.img_list_item_picture);
         TextView tvEventTitle = view.findViewById(R.id.tv_list_item_title);
         TextView tvEventDate = view.findViewById(R.id.tv_list_item_date);
         TextView tvEventCity = view.findViewById(R.id.tv_list_item_city);
 
-        EventItem item = items.get(position);
+        final EventItem item = items.get(position);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(item.getEventBegin().toDate());
         String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
                 + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
 
-        Picasso.get().load(item.getEventPictureUrl())
-                .resize(100,100).centerCrop()
-                .into(imgEventPicture);
+        ViewTreeObserver viewTreeObserver = imgEventPicture.getViewTreeObserver();
+        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                imgEventPicture.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = imgEventPicture.getMeasuredHeight();
+                int finalWidth = imgEventPicture.getMeasuredWidth();
+                Picasso.get().load(item.getEventPictureUrl())
+                        .resize(finalWidth, finalHeight).centerCrop()
+                        .into(imgEventPicture);
+                return true;
+            }
+        });
         tvEventTitle.setText(item.getEventTitle());
         tvEventDate.setText(date);
         tvEventCity.setText(item.getEventCity());
