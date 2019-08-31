@@ -148,7 +148,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         phoneNumberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPreferences.getBoolean("email", true)) {
+                if (sharedPreferences.getBoolean("phone", true)) {
                     openPhoneCall();
                 } else {
                     Toast.makeText(getApplicationContext(), "Der Nutzer will keine Anrufe bekommen."
