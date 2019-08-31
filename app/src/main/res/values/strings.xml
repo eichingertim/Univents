@@ -166,7 +166,7 @@
     <string name="KEY_FIREBASE_USER_FIRSTNAME">firstName</string>
     <string name="KEY_FIREBASE_USER_LASTNAME">lastName</string>
     <string name="KEY_FIREBASE_USER_EMAIL">email</string>
-    <string name="KEY_FIREBASE_USER_IS_ORGA">isOrga</string>
+    <string name="KEY_FIREBASE_USER_IS_ORGA">orga</string>
     <string name="KEY_FIREBASE_USER_ORGA_NAME">orgaName</string>
     <string name="KEY_FIREBASE_USER_DESCRIPTION">description</string>
     <string name="KEY_FIREBASE_USER_PHONE_NUMBER">phoneNumber</string>

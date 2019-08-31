@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,7 +122,7 @@ public class ProfilePageActivity extends AppCompatActivity {
     private void fillUserName(){
 
         String username;
-        if (user.isOrga()) {
+        if (user.getOrga()) {
             username = user.getOrgaName();
         } else {
             username = user.getFirstName() + " " + user.getLastName();

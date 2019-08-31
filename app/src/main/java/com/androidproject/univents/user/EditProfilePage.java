@@ -84,7 +84,9 @@ public class EditProfilePage extends AppCompatActivity {
         editEmail.setText(user.getEmail());
         editPhone.setText(user.getPhoneNumber());
         editDescription.setText(user.getDescription());
-        if (user.isOrga()) {
+        Toast.makeText(getApplicationContext(), String.valueOf(user.getOrga()), Toast.LENGTH_LONG).show();
+        if (user.getOrga()) {
+            Toast.makeText(getApplicationContext(), "true", Toast.LENGTH_LONG).show();
             containerOrga.setVisibility(View.VISIBLE);
             editOrga.setText(user.getOrgaName());
         }
@@ -175,7 +177,7 @@ public class EditProfilePage extends AppCompatActivity {
                 , editDescription.getText().toString());
         update.put(getString(R.string.KEY_FIREBASE_USER_PHONE_NUMBER)
                 , editPhone.getText().toString());
-        if (user.isOrga()) {
+        if (user.getOrga()) {
             update.put(getString(R.string.KEY_FIREBASE_USER_ORGA_NAME)
                     , editOrga.getText().toString());
         }

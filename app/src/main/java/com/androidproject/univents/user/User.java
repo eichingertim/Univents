@@ -59,7 +59,7 @@ public class User {
         this.userId = userId;
     }
 
-    public boolean isOrga() {
+    public boolean getOrga() {
         return isOrga;
     }
 
