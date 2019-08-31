@@ -24,7 +24,8 @@
         </activity>
         <activity android:name=".ShowEventActivity" />
         <activity android:name=".logreg.RegisterActivity" />
-        <activity android:name=".logreg.LogRegChooserActivity">
+        <activity android:name=".logreg.LogRegChooserActivity"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
