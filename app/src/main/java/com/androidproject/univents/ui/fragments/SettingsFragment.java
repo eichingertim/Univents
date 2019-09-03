@@ -1,4 +1,4 @@
-package com.androidproject.univents.settings;
+package com.androidproject.univents.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

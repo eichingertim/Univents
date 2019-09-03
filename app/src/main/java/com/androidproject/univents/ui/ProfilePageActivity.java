@@ -1,4 +1,4 @@
-package com.androidproject.univents.user;
+package com.androidproject.univents.ui;
 
 
 import android.content.Context;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,13 +36,14 @@ public class ProfilePageActivity extends AppCompatActivity {
 
     private ImageButton phoneNumberButton;
     private ImageButton emailButton;
-    private CircleImageView profilePicture;
+    private CircleImageView profilePicture, imgEditPic;
     private TextView profileName, profileDescription;
     private Toolbar toolbar;
 
     private SharedPreferences sharedPreferences;
 
     private User user;
+    private String userId;
 
     private FirebaseFirestore db;
     private DocumentReference refUser;
@@ -54,10 +56,15 @@ public class ProfilePageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_page);
 
         initFireBase();
+        getIntentExtras();
         initSharedPreferences();
         initToolbar();
         initUI();
         readIntentCreateItem();
+    }
+
+    private void getIntentExtras() {
+        userId = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_USER_ID));
     }
 
     private void initSharedPreferences() {
@@ -78,7 +85,7 @@ public class ProfilePageActivity extends AppCompatActivity {
      */
     private void readIntentCreateItem() {
         refUser = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
-                .document(auth.getCurrentUser().getUid());
+                .document(userId);
         refUser.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -87,6 +94,19 @@ public class ProfilePageActivity extends AppCompatActivity {
                 setButtonFunctions();
                 setProfilePicture();
                 fillUserDescription();
+                setProfilePicClickListener();
+            }
+        });
+    }
+
+    private void setProfilePicClickListener() {
+        imgEditPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (auth.getCurrentUser().getUid().equals(userId)) {
+                    startActivity(new Intent(ProfilePageActivity.this
+                            , ProfilePicChangeActivity.class));
+                }
             }
         });
     }
@@ -114,6 +134,7 @@ public class ProfilePageActivity extends AppCompatActivity {
         profileName = findViewById(R.id.profile_name);
         profileDescription = findViewById(R.id.profile_description);
         profilePicture = findViewById(R.id.profile_picture);
+        imgEditPic = findViewById(R.id.img_edit_pic);
     }
 
     /**
@@ -195,7 +216,9 @@ public class ProfilePageActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        if (userId.equals(auth.getCurrentUser().getUid())) {
+            getMenuInflater().inflate(R.menu.menu_profile, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -214,7 +237,7 @@ public class ProfilePageActivity extends AppCompatActivity {
     }
 
     private void editProfile(){
-        startActivity(new Intent(this, EditProfilePage.class));
+        startActivity(new Intent(this, ProfileEditActivity.class));
     }
 
     /**

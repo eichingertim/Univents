@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="15dp"
     android:background="?attr/backgroundColor"
-    tools:context=".logreg.LogRegChooserActivity">
+    tools:context=".ui.LogRegChooserActivity">
 
 
     <android.support.constraint.ConstraintLayout

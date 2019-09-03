@@ -1,4 +1,4 @@
-package com.androidproject.univents.main_fragments;
+package com.androidproject.univents.ui.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
-import com.androidproject.univents.SearchQueryActivity;
+import com.androidproject.univents.ui.SearchQueryActivity;
 
 import java.util.Calendar;
 

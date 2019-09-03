@@ -1,4 +1,4 @@
-package com.androidproject.univents.cloudnotification;
+package com.androidproject.univents.controller;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -13,7 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.text.Html;
 
-import com.androidproject.univents.MainActivity;
+import com.androidproject.univents.ui.MainActivity;
 import com.androidproject.univents.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

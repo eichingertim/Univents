@@ -1,4 +1,4 @@
-package com.androidproject.univents.main_fragments;
+package com.androidproject.univents.ui.fragments;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,8 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidproject.univents.R;
-import com.androidproject.univents.ShowEventActivity;
-import com.androidproject.univents.customviews.EventItem;
+import com.androidproject.univents.ui.ShowEventActivity;
+import com.androidproject.univents.models.EventItem;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;

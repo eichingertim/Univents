@@ -1,4 +1,4 @@
-package com.androidproject.univents.customviews;
+package com.androidproject.univents.models;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;

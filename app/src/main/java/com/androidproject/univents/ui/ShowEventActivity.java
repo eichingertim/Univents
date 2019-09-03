@@ -1,10 +1,11 @@
-package com.androidproject.univents;
+package com.androidproject.univents.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.androidproject.univents.customviews.EventItem;
+import com.androidproject.univents.R;
+import com.androidproject.univents.models.EventItem;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;

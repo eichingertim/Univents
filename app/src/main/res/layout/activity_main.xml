@@ -7,7 +7,7 @@
     android:id="@+id/main_drawer_layout"
     android:fitsSystemWindows="true"
     android:background="?attr/backgroundColor"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <include layout="@layout/activity_main_content"/>
 

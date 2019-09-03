@@ -1,4 +1,4 @@
-package com.androidproject.univents.user;
+package com.androidproject.univents.models;
 
 public class User {
 

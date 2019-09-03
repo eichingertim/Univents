@@ -1,4 +1,4 @@
-package com.androidproject.univents;
+package com.androidproject.univents.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,8 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.androidproject.univents.customviews.EventItem;
-import com.androidproject.univents.customviews.EventItemListAdapter;
+import com.androidproject.univents.R;
+import com.androidproject.univents.models.EventItem;
+import com.androidproject.univents.models.EventItemListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;

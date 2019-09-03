@@ -17,7 +17,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         app:popupTheme="@style/Theme.AppCompat.DayNight" />
 
-    <com.androidproject.univents.customviews.NoSwipeViewPager
+    <com.androidproject.univents.models.NoSwipeViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="0dp"
         android:layout_height="0dp"

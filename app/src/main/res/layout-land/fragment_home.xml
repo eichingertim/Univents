@@ -62,7 +62,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:text="Regensburg"
+                            android:text=""
                             android:inputType="textPersonName"
                             app:layout_constraintStart_toEndOf="@id/btn_edit_location"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
                             app:layout_constraintBottom_toBottomOf="@id/txt_current_location"/>
                     </android.support.constraint.ConstraintLayout>
 
-                    <com.androidproject.univents.customviews.ExpandedGridView
+                    <com.androidproject.univents.models.ExpandedGridView
                         android:id="@+id/grid_view_home_events"
                         android:layout_margin="4dp"
                         android:padding="4dp"

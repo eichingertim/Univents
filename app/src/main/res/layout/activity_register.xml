@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor"
-    tools:context=".logreg.RegisterActivity">
+    tools:context=".ui.RegisterActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,7 +16,7 @@
         android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
         app:popupTheme="@style/Theme.AppCompat.DayNight"/>
 
-    <com.androidproject.univents.customviews.NoSwipeViewPager
+    <com.androidproject.univents.models.NoSwipeViewPager
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"

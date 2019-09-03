@@ -1,4 +1,4 @@
-package com.androidproject.univents.cloudnotification;
+package com.androidproject.univents.controller;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;

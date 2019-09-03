@@ -1,7 +1,6 @@
-package com.androidproject.univents.customviews;
+package com.androidproject.univents.models;
 
 import android.content.Context;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,11 +17,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
-import java.util.TooManyListenersException;
 
 public class EventItemListAdapter extends BaseAdapter implements Filterable {
 

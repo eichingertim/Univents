@@ -1,4 +1,4 @@
-package com.androidproject.univents.customviews;
+package com.androidproject.univents.models;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

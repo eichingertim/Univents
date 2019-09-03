@@ -1,4 +1,4 @@
-package com.androidproject.univents.user;
+package com.androidproject.univents.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -21,6 +21,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.models.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,7 +32,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class EditProfilePage extends AppCompatActivity {
+public class ProfileEditActivity extends AppCompatActivity {
 
 
     private EditText editFirstName, editLastname, editDescription
@@ -161,7 +162,7 @@ public class EditProfilePage extends AppCompatActivity {
     }
 
     private void showShouldSaveDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfilePage.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
         builder.setTitle("Speichern");
         builder.setMessage("Willst du deine Änderungen speichern?");
         builder.setCancelable(false);

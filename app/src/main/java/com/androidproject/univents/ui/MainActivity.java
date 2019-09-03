@@ -1,4 +1,4 @@
-package com.androidproject.univents;
+package com.androidproject.univents.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,15 +25,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidproject.univents.customviews.NoSwipeViewPager;
-import com.androidproject.univents.logreg.LogRegChooserActivity;
-import com.androidproject.univents.main_fragments.HomeFragment;
-import com.androidproject.univents.main_fragments.MapFragment;
-import com.androidproject.univents.main_fragments.MyEventsFragment;
-import com.androidproject.univents.main_fragments.SearchFragment;
-import com.androidproject.univents.settings.SettingsActivity;
-import com.androidproject.univents.user.ProfilePageActivity;
-import com.androidproject.univents.user.User;
+import com.androidproject.univents.R;
+import com.androidproject.univents.models.NoSwipeViewPager;
+import com.androidproject.univents.ui.fragments.HomeFragment;
+import com.androidproject.univents.ui.fragments.MapFragment;
+import com.androidproject.univents.ui.fragments.MyEventsFragment;
+import com.androidproject.univents.ui.fragments.SearchFragment;
+import com.androidproject.univents.models.User;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -226,7 +224,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void goToProfilePage() {
-        startActivity(new Intent(this, ProfilePageActivity.class));
+        Intent profileIntent = new Intent(MainActivity.this, ProfilePageActivity.class);
+        profileIntent.putExtra(getString(R.string.KEY_FIREBASE_USER_ID), user.getUserId());
+        startActivity(profileIntent);
     }
 
     /**

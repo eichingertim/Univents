@@ -24,10 +24,10 @@
             android:padding="20dp"
             android:elevation="4dp"
             android:tint="?attr/normalIconColor"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
-            app:layout_constraintEnd_toStartOf="@+id/profile_picture"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_pic_container"
+            app:layout_constraintEnd_toStartOf="@+id/profile_pic_container"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/profile_picture"
+            app:layout_constraintTop_toTopOf="@id/profile_pic_container"
             app:srcCompat="@drawable/ic_mail_outline_24dp" />
 
         <ImageButton
@@ -39,24 +39,46 @@
             android:padding="20dp"
             android:elevation="4dp"
             android:tint="?attr/normalIconColor"
-            app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_pic_container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/profile_picture"
-            app:layout_constraintTop_toTopOf="@id/profile_picture"
+            app:layout_constraintStart_toEndOf="@+id/profile_pic_container"
+            app:layout_constraintTop_toTopOf="@id/profile_pic_container"
             app:srcCompat="@drawable/ic_local_phone_24dp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_picture"
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:src="@color/colorAccent"
+        <FrameLayout
+            android:id="@+id/profile_pic_container"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:elevation="4dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="?attr/normalIconColor"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="#ffb300"
+                app:civ_border_width="2dp"
+                app:civ_border_color="?attr/normalIconColor"
+                android:layout_gravity="top|center_horizontal"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_edit_pic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="25dp"
+                android:layout_marginEnd="10dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="?attr/normalIconColor"
+                android:src="@drawable/edit_small"
+                />
+
+        </FrameLayout>
+
+
 
 
     </android.support.constraint.ConstraintLayout>

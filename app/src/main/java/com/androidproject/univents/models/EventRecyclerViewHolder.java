@@ -1,4 +1,4 @@
-package com.androidproject.univents.customviews;
+package com.androidproject.univents.models;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;

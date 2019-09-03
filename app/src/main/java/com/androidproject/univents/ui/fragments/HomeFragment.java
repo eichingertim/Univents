@@ -1,4 +1,4 @@
-package com.androidproject.univents.main_fragments;
+package com.androidproject.univents.ui.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -31,9 +31,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidproject.univents.R;
-import com.androidproject.univents.ShowEventActivity;
-import com.androidproject.univents.customviews.EventItem;
-import com.androidproject.univents.customviews.EventItemGridAdapter;
+import com.androidproject.univents.ui.ShowEventActivity;
+import com.androidproject.univents.models.EventItem;
+import com.androidproject.univents.models.EventItemGridAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;

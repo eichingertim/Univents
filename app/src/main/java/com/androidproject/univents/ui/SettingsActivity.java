@@ -1,4 +1,4 @@
-package com.androidproject.univents.settings;
+package com.androidproject.univents.ui;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.ui.fragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
 

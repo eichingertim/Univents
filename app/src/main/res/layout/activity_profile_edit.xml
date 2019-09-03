@@ -348,13 +348,6 @@
                     app:layout_constraintStart_toEndOf="@id/img_layout_5"
                     app:layout_constraintTop_toBottomOf="@id/divider_4">
 
-                    <EditText
-                        android:id="@+id/txt_edit_orga_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Organisation"
-                        android:inputType="textPersonName" />
-
                     <TextView
                         android:id="@+id/tv_orga_name"
                         android:layout_width="match_parent"
@@ -362,6 +355,13 @@
                         android:text="Organisation"
                         android:textColor="?attr/textColorDark"
                         android:textSize="18sp" />
+
+                    <EditText
+                        android:id="@+id/txt_edit_orga_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Organisation"
+                        android:inputType="textPersonName" />
 
 
                 </LinearLayout>
