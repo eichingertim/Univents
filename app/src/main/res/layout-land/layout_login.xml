@@ -29,7 +29,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="44dp" />
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toBottomOf="@id/layout_password"
                 app:layout_constraintWidth_percent="0.55" />
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -64,10 +64,10 @@
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:textColor="?attr/textColorDark" />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_email"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -84,8 +84,8 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:textColor="?attr/textColorDark" />
-            </android.support.design.widget.TextInputLayout>
-        </android.support.constraint.ConstraintLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

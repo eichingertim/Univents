@@ -9,8 +9,8 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v7.preference.PreferenceManager;
+import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 import android.text.Html;
 
 import com.androidproject.univents.ui.MainActivity;

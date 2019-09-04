@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -209,6 +209,7 @@ public class ProfilePageActivity extends AppCompatActivity {
      */
     private void initToolbar(){
         toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.profile));
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -260,4 +261,13 @@ public class ProfilePageActivity extends AppCompatActivity {
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            setProfilePicture();
+        } catch (Exception ignore) {
+
+        }
+    }
 }

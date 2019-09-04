@@ -10,7 +10,7 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -27,9 +27,9 @@
                 android:textColor="?attr/textColorDark"
                 android:inputType="textPersonName"/>
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -45,9 +45,9 @@
                 android:textColorHint="?attr/textColorHint"
                 android:backgroundTint="?attr/textColorDark"
                 android:inputType="textPersonName"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -63,9 +63,9 @@
                 android:textColorHint="?attr/textColorHint"
                 android:backgroundTint="?attr/textColorDark"
                 android:inputType="textEmailAddress"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColorHint="?attr/textColorHint"
@@ -81,10 +81,10 @@
                 android:textColorHint="?attr/textColorHint"
                 android:backgroundTint="?attr/textColorDark"
                 android:inputType="textEmailAddress"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--Layout for live-checking email confirm-->
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -112,9 +112,9 @@
                 app:layout_constraintTop_toTopOf="@id/img_email_confirmed"
                 app:layout_constraintBottom_toBottomOf="@id/img_email_confirmed"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -130,10 +130,10 @@
                 android:backgroundTint="?attr/textColorDark"
                 android:textColor="?attr/textColorDark"
                 android:inputType="textPassword"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--Layout for live-checking password specifications-->
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -202,9 +202,9 @@
                 app:layout_constraintTop_toTopOf="@id/img_count_chars"
                 app:layout_constraintBottom_toBottomOf="@id/img_count_chars"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -220,10 +220,10 @@
                 android:backgroundTint="?attr/textColorDark"
                 android:textColor="?attr/textColorDark"
                 android:inputType="textPassword"/>
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--Layout for live-checking password confirm-->
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -251,7 +251,7 @@
                 app:layout_constraintTop_toTopOf="@id/img_password_confirmed"
                 app:layout_constraintBottom_toBottomOf="@id/img_password_confirmed"/>
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 

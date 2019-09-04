@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -41,14 +41,17 @@
         android:gravity="right"
         android:textColor="?attr/textColorDark"/>
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_header_profile_pic"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_margin="15dp"
-        app:srcCompat="@drawable/com_facebook_profile_picture_blank_square"
+        android:src="?attr/colorAccent"
+        app:civ_border_width="2dp"
+        app:civ_border_color="?attr/normalIconColor"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_header_name"/>
 
-</android.support.constraint.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
