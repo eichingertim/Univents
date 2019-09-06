@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,14 +13,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.ui.SearchQueryActivity;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SearchFragment extends Fragment {
@@ -30,11 +35,11 @@ public class SearchFragment extends Fragment {
     private TextView tvDateTo;
 
     private Spinner spCategory;
-    private ArrayAdapter<CharSequence> spAdapter;
+    private ArrayAdapter<CharSequence> adapter;
 
     private EditText txtCity;
 
-    private FloatingActionButton fabSearch;
+    private Button btnSearch;
 
     @Nullable
     @Override
@@ -66,8 +71,8 @@ public class SearchFragment extends Fragment {
      * @param view current fragment-layout
      */
     private void initFloatingSearchButton(View view) {
-        fabSearch = view.findViewById(R.id.fab_search);
-        fabSearch.setOnClickListener(new View.OnClickListener() {
+        btnSearch = view.findViewById(R.id.btn_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 search();
@@ -91,10 +96,10 @@ public class SearchFragment extends Fragment {
      */
     private void initCategorySpinner(View view) {
         spCategory = view.findViewById(R.id.sp_category);
-        spAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.eventCategorys
-                , android.R.layout.simple_spinner_item);
-        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(spAdapter);
+        adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.eventCategorys, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
     }
 
     /**
@@ -126,7 +131,7 @@ public class SearchFragment extends Fragment {
     private void search() {
         String dateFrom = tvDateFrom.getText().toString();
         String dateTo = tvDateTo.getText().toString();
-        String category = spAdapter.getItem(spCategory.getSelectedItemPosition()).toString();
+        String categorySelected = adapter.getItem(spCategory.getSelectedItemPosition()).toString();
         String city = "";
         if (!txtCity.getText().toString().isEmpty()) {
             city = txtCity.getText().toString();
@@ -134,7 +139,7 @@ public class SearchFragment extends Fragment {
         Intent searchIntent = new Intent(getActivity(), SearchQueryActivity.class);
         searchIntent.putExtra("searchDateFrom", dateFrom);
         searchIntent.putExtra("searchDateTo", dateTo);
-        searchIntent.putExtra("searchCategory", category);
+        searchIntent.putExtra("searchCategory", categorySelected);
         searchIntent.putExtra("searchCity", city);
         searchIntent.putExtra("isSearchForTitle", false);
         startActivity(searchIntent);

@@ -68,7 +68,8 @@ public class ProfilePageActivity extends AppCompatActivity {
     }
 
     private void initSharedPreferences() {
-        sharedPreferences = this.getSharedPreferences("EmailPreference", Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(getString(R.string.PREF_KEY_EMAIL_PHONE)
+                , Context.MODE_PRIVATE);
     }
 
     /**
@@ -94,12 +95,15 @@ public class ProfilePageActivity extends AppCompatActivity {
                 setButtonFunctions();
                 setProfilePicture();
                 fillUserDescription();
-                setProfilePicClickListener();
+                profilePicEditHandler();
             }
         });
     }
 
-    private void setProfilePicClickListener() {
+    private void profilePicEditHandler() {
+        if (auth.getCurrentUser().getUid().equals(userId)) {
+            imgEditPic.setVisibility(View.VISIBLE);
+        }
         imgEditPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +165,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                 if (sharedPreferences.getBoolean("email", true)) {
                     sendMail();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Der Nutzer will keine E-Mails bekommen."
+                    Toast.makeText(getApplicationContext(), getString(R.string.user_not_receive_emails)
                             , Toast.LENGTH_LONG).show();
                 }
             }
@@ -172,7 +176,7 @@ public class ProfilePageActivity extends AppCompatActivity {
                 if (sharedPreferences.getBoolean("phone", true)) {
                     openPhoneCall();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Der Nutzer will keine Anrufe bekommen."
+                    Toast.makeText(getApplicationContext(), getString(R.string.user_not_receive_calls)
                             , Toast.LENGTH_LONG).show();
                 }
 
@@ -188,7 +192,7 @@ public class ProfilePageActivity extends AppCompatActivity {
 
         Intent sendMail = new Intent(Intent.ACTION_SENDTO);
         sendMail.setData(Uri.parse("mailto:" + email));
-        startActivity(Intent.createChooser(sendMail, "Choose an email client"));
+        startActivity(Intent.createChooser(sendMail, "Wähle eine E-Mail App"));
     }
 
     private void openPhoneCall(){
@@ -198,7 +202,7 @@ public class ProfilePageActivity extends AppCompatActivity {
             phoneCall.setData(Uri.fromParts("tel", phoneNumber, null));
             startActivity(phoneCall);
         } else {
-            Toast.makeText(getApplicationContext(), "Der Nutzer hat keine Telefonnummer."
+            Toast.makeText(getApplicationContext(), getString(R.string.user_has_no_phone_number)
                     , Toast.LENGTH_LONG).show();
         }
 

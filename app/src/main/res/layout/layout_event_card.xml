@@ -47,16 +47,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="30.08.19 - 18.00 MESZ"
-                    android:textColor="?attr/textColorDark"
-                    android:textSize="16sp" />
+                    android:textColor="?attr/textColorDarkDetails"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_card_event_descr_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="PT Nord Außenbereich"
-                    android:textColor="?attr/textColorDark"
-                    android:textSize="16sp" />
+                    android:textColor="?attr/textColorDarkDetails"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

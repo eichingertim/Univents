@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.models.EventItem;
@@ -41,7 +42,8 @@ public class SearchQueryActivity extends AppCompatActivity implements AdapterVie
     private List<EventItem> eventItems = new ArrayList<>();
 
     private Timestamp timestampFrom, timestampTo = null;
-    private String category, city = null;
+    private String city = null;
+    private String category = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class SearchQueryActivity extends AppCompatActivity implements AdapterVie
             e.printStackTrace();
         }
 
-        if (!getIntent().getStringExtra("searchCategory").equals("Alle")) {
+        if (getIntent().getStringExtra("searchCategory") != null) {
             category = getIntent().getStringExtra("searchCategory");
         }
 
@@ -160,6 +162,7 @@ public class SearchQueryActivity extends AppCompatActivity implements AdapterVie
             for (EventItem item : removeIds){
                 eventItems.remove(item);
             }
+
         }
     }
 

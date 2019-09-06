@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.androidproject.univents.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,10 +64,12 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
     private ProgressDialog progressDialog;
 
-    private static final int RESULT_LOAD_IMAGE = 1;
-    String currentPhotoPath;
-    static final int REQUEST_TAKE_PHOTO = 2;
     private static final int PERMISSIONS_REQUEST_CODE = 201;
+
+    private static final int RESULT_LOAD_IMAGE = 21;
+    private static final int REQUEST_TAKE_PHOTO = 20;
+    private String currentPhotoPath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,13 +81,14 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         initFireBase();
         initProgressDialog();
         initUI();
+        showCurrentProfilePic();
         checkStoragePermission();
 
     }
 
     private void initProgressDialog() {
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Hochladen....");
+        progressDialog.setMessage(getString(R.string.uploading));
         progressDialog.setCancelable(false);
     }
 
@@ -121,8 +126,16 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         tvGrantPermission.setOnClickListener(this);
     }
 
-    private void selectImageFromCamera() {
+    private void showCurrentProfilePic() {
+        Uri photoUrl = firebaseUser.getPhotoUrl();
+        if (photoUrl != null) {
+            Picasso.get().load(photoUrl).noFade().into(imgPreview);
+        } else {
+            imgPreview.setImageResource(R.color.colorAccent);
+        }
+    }
 
+    private void selectImageFromCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
@@ -133,7 +146,7 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.androidproject.univents.fileprovider",
+                        getString(R.string.fileprovider_path),
                         photoFile);
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -217,10 +230,10 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Berechtigung erteilt", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.permssion_granted), Toast.LENGTH_SHORT).show();
                 disableTvEnableButtons();
             } else {
-                Toast.makeText(this, "Berechtigung nicht erteilt", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -279,6 +292,9 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
     }
 
     private void updateUserProfileUri(Uri downloadUri) {
+
+        final Uri oldDownloadUri = firebaseUser.getPhotoUrl();
+
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(downloadUri)
                 .build();
@@ -289,12 +305,31 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("FIREASE_USER", "User profile updated.");
-                            progressDialog.dismiss();
+                            deleteOldProfilePic(oldDownloadUri);
                         } else {
                             progressDialog.dismiss();
                         }
                     }
                 });
+    }
+
+    private void deleteOldProfilePic(Uri oldDownloadUri) {
+        try {
+            StorageReference refOld = storage.getReferenceFromUrl(oldDownloadUri.toString());
+            refOld.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    progressDialog.dismiss();
+                    Log.d("FIREASE_USER_PIC", "Old profilepic deleted");
+                    Toast.makeText(getApplicationContext(), getString(R.string.profile_picture_was_changed)
+                            , Toast.LENGTH_LONG).show();
+                    onBackPressed();
+                }
+            });
+        } catch (Exception e) {
+            progressDialog.dismiss();
+            e.printStackTrace();
+        }
     }
 
     /**

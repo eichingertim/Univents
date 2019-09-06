@@ -111,7 +111,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         email = findViewById(R.id.profile_edit_email_switch);
         phone = findViewById(R.id.profile_edit_phone_switch);
 
-        sharedPreferences = this.getSharedPreferences("EmailPreference", Context.MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences(getString(R.string.PREF_KEY_EMAIL_PHONE)
+                , Context.MODE_PRIVATE);
 
         if (sharedPreferences.getBoolean("email", true))email.setChecked(true);
         else email.setChecked(false);
@@ -184,13 +185,29 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void saveProfileInfos() {
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences("EmailPreference", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.PREF_KEY_EMAIL_PHONE)
+                , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("email", email.isChecked());
         editor.putBoolean("phone", phone.isChecked());
         editor.commit();
 
+        Map<String, Object> update = getUserData();
 
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
+                .document(auth.getCurrentUser().getUid()).update(update)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getApplicationContext(), "Daten gespeichert", Toast.LENGTH_LONG)
+                        .show();
+                saved = true;
+            }
+        });
+
+    }
+
+    private Map<String, Object> getUserData() {
         Map<String, Object> update = new HashMap<>();
         update.put(getString(R.string.KEY_FIREBASE_USER_FIRSTNAME)
                 , editFirstName.getText().toString());
@@ -204,18 +221,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             update.put(getString(R.string.KEY_FIREBASE_USER_ORGA_NAME)
                     , editOrga.getText().toString());
         }
-
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
-                .document(auth.getCurrentUser().getUid()).update(update)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Daten gespeichert", Toast.LENGTH_LONG)
-                        .show();
-                saved = true;
-            }
-        });
-
+        return update;
     }
 
     /**

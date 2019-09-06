@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -8,64 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/container_orga_events"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/tv_you_organize"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Du organisierst..."
-                android:textColor="?attr/textColorDark"
-                android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_empty_rv_orga"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Du organisierst derzeit keine Events"
-                app:layout_constraintTop_toBottomOf="@id/tv_you_organize"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginTop="60dp"
-                android:layout_marginBottom="60dp"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_my_events_orga"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_you_organize"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <View
             android:id="@+id/my_events_divider"
             android:layout_width="0dp"
             android:layout_height="1dp"
-            app:layout_constraintTop_toBottomOf="@id/container_orga_events"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="?attr/normalIconColor"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="?attr/normalIconColor"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/container_orga_events" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toBottomOf="@+id/my_events_container_bottom" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_events_container_bottom"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/my_events_divider"
-            app:layout_constraintStart_toStartOf="parent"
+            android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:padding="10dp">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/my_events_divider">
 
             <TextView
                 android:id="@+id/tv_you_participate"
@@ -74,29 +39,71 @@
                 android:text="Du nimmst teil..."
                 android:textColor="?attr/textColorDark"
                 android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_empty_rv_part"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Du nimmst derzeit an keinen Events teil"
-                app:layout_constraintTop_toBottomOf="@id/tv_you_participate"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginTop="60dp"
-                android:layout_marginBottom="60dp"/>
+                android:layout_marginBottom="60dp"
+                android:text="Du nimmst derzeit an keinen Events teil"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_you_participate" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_events_participate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_you_participate"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_you_participate" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_orga_events"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_you_organize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Du organisierst..."
+                android:textColor="?attr/textColorDark"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_empty_rv_orga"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="60dp"
+                android:text="Du organisierst derzeit keine Events"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_you_organize" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_my_events_orga"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_you_organize" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

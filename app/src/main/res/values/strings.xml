@@ -99,6 +99,9 @@
     <string name="like_this_update">Dir gefällt dieses Update</string>
     <string name="press_back_again">Drücke ZURÜCK noch einmal um die Anwendung zu schließen</string>
     <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
+    <string name="permssion_granted">Berechtigung erteilt</string>
+    <string name="permission_denied">Berechtigung nicht erteilt</string>
+    <string name="profile_picture_was_changed">Dein Profilbild wurde geändert!</string>
 
     <!--Email-Sent Dialog-->
     <string name="check_inbox">Überprüfe deinen Posteingang und bestätige deine Mail-Adresse</string>
@@ -109,6 +112,7 @@
 
     <!--ProgressDialog Messages-->
     <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
+    <string name="uploading">Hochladen....</string>
     <string name="account">Konto</string>
 
     <!--Menu Item titles-->
@@ -118,12 +122,13 @@
     <string name="home">Home</string>
     <string name="search">Suche</string>
     <string name="map">Karte</string>
-    <string name="my_events">Meine Events</string>
+    <string name="my_events">Meine</string>
     <string name="PREF_KEY_THEME">theme_pref</string>
 
     <!--Keys for settings preferences-->
     <string name="PREF_KEY_NOTIFICATIONS">notification_pref</string>
     <string name="dark_theme">Dark Theme</string>
+    <string name="PREF_KEY_EMAIL_PHONE">email_phone_preference</string>
 
     <!--Settings titles and descriptions-->
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
@@ -188,6 +193,12 @@
     <!--values-->
     <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
     <string name="close">Schliessen</string>
+    <string name="fileprovider_path">com.androidproject.univents.fileprovider</string>
+    <string name="user_not_receive_emails">Der Nutzer will keine E-Mails bekommen.</string>
+    <string name="user_not_receive_calls">Der Nutzer will keine Anrufe bekommen.</string>
+    <string name="user_has_no_phone_number">Der Nutzer hat keine Telefonnummer.</string>
+
+
     <string-array name="app_creator_members">
         <item>Jonas Ernst(2089197)</item>
         <item>Tim Eichinger(2089449)</item>

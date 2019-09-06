@@ -5,7 +5,10 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Handler;
 import androidx.annotation.NonNull;
+
+import com.androidproject.univents.models.CustomBottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -21,6 +24,7 @@ import androidx.preference.PreferenceManager;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,11 +68,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle mainDrawerToggle;
     private NavigationView mainDrawerNavView;
 
-    private BottomNavigationView mainBottomNav;
+    private CustomBottomNavigationView mainBottomNav;
     private NoSwipeViewPager mainViewPager;
     private PagerAdapter viewPagerAdapter;
 
     private User user;
+
+    private FloatingActionButton fabNewEvent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +126,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mainViewPager.setAdapter(viewPagerAdapter);
         mainBottomNav.setOnNavigationItemSelectedListener(this);
+        initFloatingActionButton();
+    }
+
+    /**
+     * initializes the floating action button and sets an onClickListener
+     */
+    private void initFloatingActionButton() {
+        fabNewEvent = findViewById(R.id.fab_home_new_event);
+        fabNewEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToNewEventActivity();
+            }
+        });
+    }
+
+    //TODO: Create New Event
+    private void goToNewEventActivity() {
+
     }
 
     /**
@@ -131,6 +156,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+    }
+
+    public void setToolbarElevation(float width) {
+        toolbar.setElevation(width);
     }
 
     /**

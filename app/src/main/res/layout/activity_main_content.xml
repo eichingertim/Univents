@@ -10,12 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/actionBarColor"
-        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        android:theme="@style/ToolbarTheme"
         app:popupTheme="@style/Theme.AppCompat.DayNight" />
+
+
 
     <com.androidproject.univents.models.NoSwipeViewPager
         android:id="@+id/main_view_pager"
@@ -24,21 +25,43 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar_main"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_nav_view"/>
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav_view"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:labelVisibilityMode="labeled"
-        android:background="?attr/actionBarColor"
-        app:itemIconTint="@drawable/selector_bottom_nav_state_list"
-        app:itemTextColor="@drawable/selector_bottom_nav_state_list"
-        app:menu="@menu/menu_nav_bottom"/>
+        app:layout_constraintBottom_toBottomOf="parent">
 
+        <com.androidproject.univents.models.CustomBottomNavigationView
+            android:id="@+id/bottom_nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            app:labelVisibilityMode="labeled"
+            android:background="?attr/actionBarColor"
+            app:paintColor="?attr/actionBarColor"
+            app:itemIconTint="@drawable/selector_bottom_nav_state_list"
+            app:itemTextColor="@drawable/selector_bottom_nav_state_list"
+            app:menu="@menu/menu_nav_bottom"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_home_new_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_24dp"
+        android:tint="@color/colorLightText"
+        android:backgroundTint="?attr/colorAccent"
+        app:borderWidth="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="28dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

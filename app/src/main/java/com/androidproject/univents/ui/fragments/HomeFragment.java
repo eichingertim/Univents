@@ -11,6 +11,8 @@ import android.location.Location;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.androidproject.univents.ui.MainActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -27,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,9 +54,9 @@ public class HomeFragment extends Fragment {
     private static final int PERMISSIONS_REQUEST_LOCATION = 122;
     private FirebaseFirestore db;
 
-    private FloatingActionButton fabNewEvent;
     private EditText txtCurrentLocation;
     private ImageButton btnSearchLocation;
+    private ScrollView scrollView;
 
     private GridView gridViewHomeEvents;
     private EventItemGridAdapter adapter;
@@ -64,7 +67,6 @@ public class HomeFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    //Location things
     private FusedLocationProviderClient flProviderClient;
 
     @Nullable
@@ -97,7 +99,6 @@ public class HomeFragment extends Fragment {
         editor = sharedPref.edit();
     }
 
-    //requests permissions.
     private void getPermissions() {
         if (!checkLocationPermission()) {
             ActivityCompat.requestPermissions(getActivity(),
@@ -176,23 +177,19 @@ public class HomeFragment extends Fragment {
      * @param view includes the layout from the fragment.
      */
     private void initViews(View view) {
-        initFloatingActionButton(view);
         initLocationEditText(view);
         initGridView(view);
         initGetLocationButton(view);
         initSwipeRefresh(view);
-    }
-
-    /**
-     * initializes the floating action button and sets an onClickListener
-     * @param view current fragment-layout
-     */
-    private void initFloatingActionButton(View view) {
-        fabNewEvent = view.findViewById(R.id.fab_home_new_event);
-        fabNewEvent.setOnClickListener(new View.OnClickListener() {
+        scrollView = view.findViewById(R.id.scroll_view);
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
             @Override
-            public void onClick(View v) {
-                goToNewEventActivity();
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == 0) {
+                    ((MainActivity)getActivity()).setToolbarElevation(0.0f);
+                } else {
+                    ((MainActivity)getActivity()).setToolbarElevation(7.0f);
+                }
             }
         });
     }
@@ -317,11 +314,12 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_LOCATION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    receiveLocation();
-                }
+        if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showToast("Berechtigung erteilt");
+                receiveLocation();
+            } else {
+                showToast("Berechtigung nicht erteilt");
             }
         }
     }

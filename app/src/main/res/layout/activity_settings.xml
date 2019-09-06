@@ -10,7 +10,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/actionBarColor"
         android:elevation="4dp"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        android:theme="@style/ToolbarTheme"
         app:popupTheme="@style/Theme.AppCompat.DayNight"/>
 
     <FrameLayout

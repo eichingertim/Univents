@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        android:theme="@style/ToolbarTheme"
         app:popupTheme="@style/Theme.AppCompat.DayNight" />
 
     <de.hdodenhof.circleimageview.CircleImageView

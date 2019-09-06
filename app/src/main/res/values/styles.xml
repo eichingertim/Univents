@@ -1,12 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundColor">@color/backgroundColor</item>
         <item name="textColorDark">@color/colorDarkText</item>
+        <item name="textColorDarkDetails">@color/colorDarkTextDetails</item>
         <item name="textColorLight">@color/colorLightText</item>
         <item name="buttonOutlineColorDark">@color/buttonOutlineColorDark</item>
         <item name="textColorHint">@color/colorHintText</item>
@@ -14,15 +15,16 @@
         <item name="normalIconColor">@color/normalIconColor</item>
         <item name="actionBarColor">@color/actionBarColor</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
-        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto</item>
     </style>
 
-    <style name="DarkTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="DarkTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDarkTheme</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundColor">@color/backgroundColorDarkTheme</item>
         <item name="textColorDark">@color/colorDarkTextDarkTheme</item>
+        <item name="textColorDarkDetails">@color/colorDarkTextDetailsDarkTheme</item>
         <item name="textColorLight">@color/colorLightTextDarkTheme</item>
         <item name="buttonOutlineColorDark">@color/buttonOutlineColorDarkDarkTheme</item>
         <item name="textColorHint">@color/colorHintTextDarkTheme</item>
@@ -30,6 +32,10 @@
         <item name="normalIconColor">@color/normalIconColorDarkTheme</item>
         <item name="actionBarColor">@color/actionBarColorDarkTheme</item>
         <item name="android:windowAnimationStyle">@style/windowAnimationTransition</item>
+        <item name="android:fontFamily">@font/roboto</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 
