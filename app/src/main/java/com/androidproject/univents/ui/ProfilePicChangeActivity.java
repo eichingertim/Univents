@@ -48,6 +48,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfilePicChangeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -295,22 +297,34 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
         final Uri oldDownloadUri = firebaseUser.getPhotoUrl();
 
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+        final UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(downloadUri)
                 .build();
 
-        firebaseUser.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("FIREASE_USER", "User profile updated.");
-                            deleteOldProfilePic(oldDownloadUri);
-                        } else {
-                            progressDialog.dismiss();
-                        }
-                    }
-                });
+        Map<String, Object> update = new HashMap<>();
+        update.put(getString(R.string.KEY_FIREBASE_USER_PICTURE_URL), downloadUri.toString());
+
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
+                .document(firebaseUser.getUid()).update(update)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                firebaseUser.updateProfile(profileUpdates)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("FIREASE_USER", "User profile updated.");
+                                    deleteOldProfilePic(oldDownloadUri);
+                                } else {
+                                    progressDialog.dismiss();
+                                }
+                            }
+                        });
+            }
+        });
+
+
     }
 
     private void deleteOldProfilePic(Uri oldDownloadUri) {

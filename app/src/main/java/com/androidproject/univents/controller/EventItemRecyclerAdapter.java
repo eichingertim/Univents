@@ -1,4 +1,4 @@
-package com.androidproject.univents.models;
+package com.androidproject.univents.controller;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.models.EventItem;
 
 import java.util.List;
 

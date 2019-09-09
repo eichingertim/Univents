@@ -223,6 +223,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         newUser.put(getString(R.string.KEY_FIREBASE_USER_ID), firebaseUser.getUid());
         newUser.put(getString(R.string.KEY_FIREBASE_USER_IS_ORGA), false);
         newUser.put(getString(R.string.KEY_FIREBASE_USER_EMAIL), Objects.requireNonNull(firebaseUser.getEmail()));
+        newUser.put(getString(R.string.KEY_FIREBASE_USER_PICTURE_URL), firebaseUser.getPhotoUrl().toString());
 
         refUsers.document(firebaseUser.getUid()).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

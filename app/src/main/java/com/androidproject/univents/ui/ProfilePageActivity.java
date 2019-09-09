@@ -120,9 +120,8 @@ public class ProfilePageActivity extends AppCompatActivity {
     }
 
     private void setProfilePicture() {
-        Uri photoUrl = auth.getCurrentUser().getPhotoUrl();
-        if (photoUrl != null) {
-            Picasso.get().load(photoUrl).noFade().into(profilePicture);
+        if (!user.getPictureURL().equals("")) {
+            Picasso.get().load(user.getPictureURL()).noFade().into(profilePicture);
         } else {
             profilePicture.setImageResource(R.color.colorAccent);
         }

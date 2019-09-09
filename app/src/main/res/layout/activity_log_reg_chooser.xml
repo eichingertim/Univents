@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_facebook_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_choose_log_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
             android:gravity="center"/>
 
         <!--Button: Create new account; Opens RegisterActivity-->
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_choose_register_private"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
             app:layout_goneMarginEnd="10dp"
             />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_choose_register_orga"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

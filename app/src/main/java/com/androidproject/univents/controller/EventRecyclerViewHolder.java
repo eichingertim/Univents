@@ -1,4 +1,4 @@
-package com.androidproject.univents.models;
+package com.androidproject.univents.controller;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.models.EventItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;

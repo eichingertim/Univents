@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/tv_event_qanda_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="{qanda question}"
+        android:padding="5dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="?attr/textColorDark"/>
+
+    <TextView
+        android:id="@+id/tv_event_qanda_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="{qanda answer}"
+        android:padding="5dp"
+        android:textSize="18sp"
+        android:textColor="?attr/textColorDark"/>
+
+    <TextView
+        android:id="@+id/tv_event_qanda_bool_answered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="{qanda bool answered}"
+        android:padding="5dp"
+        android:gravity="end"
+        android:textSize="18sp"
+        android:textColor="#ff3300"/>
+
+</LinearLayout>

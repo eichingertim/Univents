@@ -10,8 +10,4 @@
     <attr name="actionBarColor" format="color"/>
     <attr name="textColorDarkDetails" format="color"/>
 
-        <declare-styleable name="CustomBottomNavigationView">
-            <attr name="paintColor" format="color" />
-        </declare-styleable>
-
 </resources>

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.androidproject.univents.ui.MainActivity;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -36,7 +36,7 @@ import android.widget.Toast;
 import com.androidproject.univents.R;
 import com.androidproject.univents.ui.ShowEventActivity;
 import com.androidproject.univents.models.EventItem;
-import com.androidproject.univents.models.EventItemGridAdapter;
+import com.androidproject.univents.controller.EventItemGridAdapter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;

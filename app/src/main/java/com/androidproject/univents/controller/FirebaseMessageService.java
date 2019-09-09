@@ -15,6 +15,7 @@ import android.text.Html;
 
 import com.androidproject.univents.ui.MainActivity;
 import com.androidproject.univents.R;
+import com.androidproject.univents.ui.ShowEventActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -49,7 +50,8 @@ public class FirebaseMessageService extends FirebaseMessagingService {
             , String updateId, String eventTitle) {
 
         //OnNormalClick
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ShowEventActivity.class);
+        intent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, PENDING_REQUEST_CODE, intent,
                 PendingIntent.FLAG_ONE_SHOT);

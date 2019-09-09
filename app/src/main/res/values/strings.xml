@@ -156,37 +156,40 @@
     <string name="KEY_FCM_EVENT_UPDATE_EVENT_ID">eventId</string>
     <string name="KEY_FCM_EVENT_UPDATE_ID">eventUpdateId</string>
     <string name="KEY_FCM_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
-    <string name="KEY_FIREBASE_COLLECTION_USERS">users</string>
 
     <!--Keys for Firebase-->
+    <string name="KEY_FIREBASE_COLLECTION_USERS">users</string>
     <string name="KEY_FIREBASE_COLLECTION_EVENTS">events</string>
     <string name="KEY_FIREBASE_COLLECTION_EVENT_UPDATES">updates</string>
-    <string name="KEY_FIREBASE_USER_ID">userId</string>
+    <string name="KEY_FIREBASE_COLLECTION_EVENT_SALE">sale</string>
+    <string name="KEY_FIREBASE_COLLECTION_QANDAS">qanda</string>
 
+    <string name="KEY_FIREBASE_USER_ID">userId</string>
     <string name="KEY_FIREBASE_USER_FIRSTNAME">firstName</string>
     <string name="KEY_FIREBASE_USER_LASTNAME">lastName</string>
     <string name="KEY_FIREBASE_USER_EMAIL">email</string>
     <string name="KEY_FIREBASE_USER_IS_ORGA">orga</string>
     <string name="KEY_FIREBASE_USER_ORGA_NAME">orgaName</string>
+    <string name="KEY_FIREBASE_USER_PICTURE_URL">pictureURL</string>
     <string name="KEY_FIREBASE_USER_DESCRIPTION">description</string>
     <string name="KEY_FIREBASE_USER_PHONE_NUMBER">phoneNumber</string>
-    <string name="KEY_FIREBASE_EVENT_ID">eventId</string>
 
+    <string name="KEY_FIREBASE_EVENT_ID">eventId</string>
     <string name="KEY_FIREBASE_EVENT_TITLE">eventTitle</string>
     <string name="KEY_FIREBASE_EVENT_DESCRIPTION">eventDescription</string>
     <string name="KEY_FIREBASE_EVENT_ORGANIZER">eventOrganizer</string>
     <string name="KEY_FIREBASE_EVENT_EXACT_LOCATION">eventExactLocation</string>
     <string name="KEY_FIREBASE_EVENT_DETAIL_LOCATION">eventDetailLocation</string>
+    <string name="KEY_FIREBASE_EVENT_PARTICIPANTS">eventParticipants</string>
     <string name="KEY_FIREBASE_EVENT_CITY">eventCity</string>
     <string name="KEY_FIREBASE_EVENT_BEGIN">eventBegin</string>
     <string name="KEY_FIREBASE_EVENT_END">eventEnd</string>
     <string name="KEY_FIREBASE_EVENT_PICTURE_URL">eventPictureUrl</string>
     <string name="KEY_FIREBASE_EVENT_CATEGORY">eventCategory</string>
-    <string name="KEY_FIRBASE_EVENT_UPDATE_LIKES">eventUpdateLikes</string>
 
+    <string name="KEY_FIRBASE_EVENT_UPDATE_LIKES">eventUpdateLikes</string>
     <string name="KEY_FIRBASE_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
     <string name="KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION">eventUpdateDescription</string>
-    <string name="KEY_FIRBASE_EVENT_UPDATE_PICTURE_URL">eventUpdatePictureUrl</string>
     <string name="KEY_FIREBASE_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
     <string name="regensburg">Regensburg</string>
 
@@ -198,15 +201,19 @@
     <string name="user_not_receive_calls">Der Nutzer will keine Anrufe bekommen.</string>
     <string name="user_has_no_phone_number">Der Nutzer hat keine Telefonnummer.</string>
 
+    <string name="IS_ANSWER">is_answer</string>
 
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!--Categories for events-->
     <string-array name="app_creator_members">
         <item>Jonas Ernst(2089197)</item>
         <item>Tim Eichinger(2089449)</item>
         <item>Timon Lorenz</item>
     </string-array>
 
-
-    <!--Categories for events-->
+    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="eventCategorys">
         <item>Alle</item>
         <item>Sommerfest</item>

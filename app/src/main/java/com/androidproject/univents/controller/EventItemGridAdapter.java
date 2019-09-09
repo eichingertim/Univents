@@ -1,4 +1,4 @@
-package com.androidproject.univents.models;
+package com.androidproject.univents.controller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.models.EventItem;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.squareup.picasso.Picasso;

@@ -14,11 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.models.EventItem;
-import com.androidproject.univents.models.EventItemListAdapter;
+import com.androidproject.univents.controller.EventItemListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -99,7 +98,7 @@ public class SearchQueryActivity extends AppCompatActivity implements AdapterVie
             e.printStackTrace();
         }
 
-        if (getIntent().getStringExtra("searchCategory") != null) {
+        if (!getIntent().getStringExtra("searchCategory").equals("Alle")) {
             category = getIntent().getStringExtra("searchCategory");
         }
 

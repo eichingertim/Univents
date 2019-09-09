@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:cardBackgroundColor="?attr/actionBarColor"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/btn_close_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_close_24dp"
+                android:tint="?attr/normalIconColor"
+                android:layout_marginStart="10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/textColorDark"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_toEndOf="@id/btn_close_dialog"
+                android:layout_toStartOf="@id/btn_publish"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="20sp"
+                android:text="Antwort"/>
+
+            <TextView
+                android:id="@+id/btn_publish"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="?attr/textColorDark"
+                android:fontFamily="@font/roboto_medium"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textSize="16sp"
+                android:text="POSTEN"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Frage"
+        android:textColor="?attr/textColorDarkDetails"
+        android:textSize="14sp"
+        android:padding="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_show_question"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="{frage}"
+        android:textColor="?attr/textColorDark"
+        android:textSize="16sp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColorHint="?attr/textColorHint">
+
+        <EditText
+            android:id="@+id/txt_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Antwort"
+            android:textColor="?attr/textColorDark"
+            android:gravity=""
+            android:textColorHint="?attr/textColorHint"
+            android:inputType="textMultiLine"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+</LinearLayout>

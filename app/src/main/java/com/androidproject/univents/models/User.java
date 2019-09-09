@@ -10,13 +10,14 @@ public class User {
     private String orgaName = "";
     private String description = "Keine Beschreibung vorhanden";
     private String phoneNumber = "";
+    private String pictureURL = "";
 
     public User() {
 
     }
 
     public User(String firstName, String lastName, String email, String userId
-            , boolean isOrga, String orgaName, String description, String phoneNumber) {
+            , boolean isOrga, String orgaName, String description, String phoneNumber, String pictureURL) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -25,6 +26,7 @@ public class User {
         this.orgaName = orgaName;
         this.description = description;
         this.phoneNumber = phoneNumber;
+        this.pictureURL = pictureURL;
     }
 
     public String getFirstName() {
@@ -89,5 +91,13 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
     }
 }

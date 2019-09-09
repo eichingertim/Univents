@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.androidproject.univents.R;
 import com.androidproject.univents.ui.ShowEventActivity;
 import com.androidproject.univents.models.EventItem;
-import com.androidproject.univents.models.EventItemRecyclerAdapter;
+import com.androidproject.univents.controller.EventItemRecyclerAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;

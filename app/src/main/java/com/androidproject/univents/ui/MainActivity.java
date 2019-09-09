@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 
-import com.androidproject.univents.models.CustomBottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle mainDrawerToggle;
     private NavigationView mainDrawerNavView;
 
-    private CustomBottomNavigationView mainBottomNav;
+    private BottomNavigationView mainBottomNav;
     private NoSwipeViewPager mainViewPager;
     private PagerAdapter viewPagerAdapter;
 
