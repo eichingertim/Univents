@@ -187,6 +187,8 @@
     <string name="KEY_FIREBASE_EVENT_PICTURE_URL">eventPictureUrl</string>
     <string name="KEY_FIREBASE_EVENT_CATEGORY">eventCategory</string>
 
+    <string name="KEY_FIREBASE_EVENT_PICTURE_PATH">eventPicturePath</string>
+
     <string name="KEY_FIRBASE_EVENT_UPDATE_LIKES">eventUpdateLikes</string>
     <string name="KEY_FIRBASE_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
     <string name="KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION">eventUpdateDescription</string>

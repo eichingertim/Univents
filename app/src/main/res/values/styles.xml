@@ -21,6 +21,7 @@
     <style name="DarkTheme" parent="Theme.MaterialComponents.NoActionBar">
         <item name="colorPrimary">@color/colorPrimaryDarkTheme</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkDarkTheme</item>
+        <item name="colorSecondary">@color/colorPrimaryDarkTheme</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="backgroundColor">@color/backgroundColorDarkTheme</item>
         <item name="textColorDark">@color/colorDarkTextDarkTheme</item>

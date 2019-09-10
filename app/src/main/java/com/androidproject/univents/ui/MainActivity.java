@@ -30,10 +30,10 @@ import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.models.NoSwipeViewPager;
-import com.androidproject.univents.ui.fragments.HomeFragment;
-import com.androidproject.univents.ui.fragments.MapFragment;
-import com.androidproject.univents.ui.fragments.MyEventsFragment;
-import com.androidproject.univents.ui.fragments.SearchFragment;
+import com.androidproject.univents.ui.fragments.main_fragments.HomeFragment;
+import com.androidproject.univents.ui.fragments.main_fragments.MapFragment;
+import com.androidproject.univents.ui.fragments.main_fragments.MyEventsFragment;
+import com.androidproject.univents.ui.fragments.main_fragments.SearchFragment;
 import com.androidproject.univents.models.User;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     //TODO: Create New Event
     private void goToNewEventActivity() {
-
+        startActivity(new Intent(this, CreateEditEventActivity.class));
     }
 
     /**

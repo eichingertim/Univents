@@ -1,4 +1,4 @@
-package com.androidproject.univents.ui.fragments;
+package com.androidproject.univents.ui.fragments.show_event_fragments;
 
 import android.content.Intent;
 import android.os.Bundle;

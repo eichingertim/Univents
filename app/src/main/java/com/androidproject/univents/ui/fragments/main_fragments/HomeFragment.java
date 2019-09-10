@@ -1,4 +1,4 @@
-package com.androidproject.univents.ui.fragments;
+package com.androidproject.univents.ui.fragments.main_fragments;
 
 import android.Manifest;
 import android.content.Context;

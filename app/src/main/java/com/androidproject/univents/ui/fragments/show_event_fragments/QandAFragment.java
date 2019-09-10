@@ -1,4 +1,4 @@
-package com.androidproject.univents.ui.fragments;
+package com.androidproject.univents.ui.fragments.show_event_fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

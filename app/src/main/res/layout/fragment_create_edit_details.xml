@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:id="@+id/img_create_edit_event_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:src="#55ffc300"/>
+
+                <TextView
+                    android:id="@+id/tv_create_edit_select_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="30dp"
+                    android:text="Titelbild auswählen"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark">
+
+                <EditText
+                    android:id="@+id/txt_create_edit_event_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Titel des Events"
+                    android:textSize="24sp"
+                    android:textColor="?attr/textColorDark"
+                    android:textColorHint="?attr/textColorHint"
+                    android:backgroundTint="?attr/textColorDark"
+                    android:inputType="textPersonName"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <ImageView
+                    android:id="@+id/img_icon_time"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_access_time_24dp"
+                    android:tint="?attr/textColorDarkDetails"
+                    android:layout_alignBottom="@id/layout_start_date_time"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/layout_start_date_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_toEndOf="@id/img_icon_time"
+                    android:weightSum="8">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColorHint="?attr/textColorHint"
+                        android:backgroundTint="?attr/textColorDark"
+                        android:layout_weight="5">
+
+                        <EditText
+                            android:id="@+id/txt_create_edit_event_start_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Startdatum"
+                            android:focusable="false"
+                            android:textColor="?attr/textColorDark"
+                            android:textColorHint="?attr/textColorHint"
+                            android:backgroundTint="?attr/textColorDark"
+                            android:inputType="date"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColorHint="?attr/textColorHint"
+                        android:backgroundTint="?attr/textColorDark"
+                        android:layout_weight="3">
+
+                        <EditText
+                            android:id="@+id/txt_create_edit_event_start_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Startzeit"
+                            android:focusable="false"
+                            android:textColor="?attr/textColorDark"
+                            android:textColorHint="?attr/textColorHint"
+                            android:backgroundTint="?attr/textColorDark"
+                            android:inputType="datetime"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_toEndOf="@id/img_icon_time"
+                    android:layout_below="@id/layout_start_date_time"
+                    android:weightSum="8">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColorHint="?attr/textColorHint"
+                        android:backgroundTint="?attr/textColorDark"
+                        android:layout_weight="5">
+
+                        <EditText
+                            android:id="@+id/txt_create_edit_event_end_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Enddatum"
+                            android:focusable="false"
+                            android:textColor="?attr/textColorDark"
+                            android:textColorHint="?attr/textColorHint"
+                            android:backgroundTint="?attr/textColorDark"
+                            android:inputType="date"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColorHint="?attr/textColorHint"
+                        android:backgroundTint="?attr/textColorDark"
+                        android:layout_weight="3">
+
+                        <EditText
+                            android:id="@+id/txt_create_edit_event_end_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Endzeit"
+                            android:focusable="false"
+                            android:textColor="?attr/textColorDark"
+                            android:textColorHint="?attr/textColorHint"
+                            android:backgroundTint="?attr/textColorDark"
+                            android:inputType="datetime"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <ImageView
+                    android:id="@+id/img_icon_beschreibung"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:src="@drawable/ic_description_24dp"
+                    android:tint="?attr/textColorDarkDetails"
+                    android:layout_alignBottom="@id/layout_description"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layout_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_toEndOf="@id/img_icon_beschreibung"
+                    android:textColorHint="?attr/textColorHint"
+                    android:backgroundTint="?attr/textColorDark">
+
+                    <EditText
+                        android:id="@+id/txt_create_edit_event_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Beschreibung o. Details des Events"
+                        android:textColor="?attr/textColorDark"
+                        android:textColorHint="?attr/textColorHint"
+                        android:backgroundTint="?attr/textColorDark"
+                        android:inputType="textMultiLine"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_controller_create_edit_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorAccent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_arrow_forward_24dp"
+        android:tint="?attr/textColorLight"
+        android:layout_margin="32dp"/>
+
+</RelativeLayout>
+

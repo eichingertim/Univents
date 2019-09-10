@@ -11,16 +11,18 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.models.EventItem;
-import com.androidproject.univents.ui.fragments.OverviewFragment;
-import com.androidproject.univents.ui.fragments.SaleFragment;
-import com.androidproject.univents.ui.fragments.QandAFragment;
-import com.androidproject.univents.ui.fragments.UpdatesFragment;
+import com.androidproject.univents.ui.fragments.show_event_fragments.OverviewFragment;
+import com.androidproject.univents.ui.fragments.show_event_fragments.SaleFragment;
+import com.androidproject.univents.ui.fragments.show_event_fragments.QandAFragment;
+import com.androidproject.univents.ui.fragments.show_event_fragments.UpdatesFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -109,11 +111,22 @@ public class ShowEventActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_show_event, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.action_edit_event:
+                Intent intent = new Intent(ShowEventActivity.this, CreateEditEventActivity.class);
+                intent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventid);
+                startActivity(intent);
                 break;
         }
 
