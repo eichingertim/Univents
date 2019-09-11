@@ -6,15 +6,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
@@ -22,10 +26,14 @@ import android.widget.Toast;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +47,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             , editEmail, editPhone, editOrga;
     private ImageButton btnEditPassword;
     private View containerOrga;
+    private Button btnDeleteAccount;
 
     private Switch email, phone;
 
@@ -96,6 +105,9 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private void initUI(){
 
+        btnDeleteAccount = findViewById(R.id.btn_delete_account);
+        setDeleteClickListener();
+
         editFirstName = findViewById(R.id.txt_edit_first_name);
         editLastname = findViewById(R.id.txt_edit_last_name);
         editDescription = findViewById(R.id.txt_edit_description);
@@ -121,6 +133,82 @@ public class ProfileEditActivity extends AppCompatActivity {
         else phone.setChecked(false);
 
 
+    }
+
+    private void setDeleteClickListener() {
+        btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
+                builder.setTitle("Konto löschen");
+                builder.setMessage("Willst du dein Konto wirklich löschen? Es werden alle " +
+                        "deine Daten und alle deine Events gelöscht.");
+                builder.setPositiveButton("Konto löschen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteUserDatabaseData(dialog);
+                    }
+                });
+                builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+    }
+
+    private void deleteUserDatabaseData(final DialogInterface dialog) {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
+                .document(auth.getCurrentUser().getUid()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        deleteEventDatabaseData(dialog);
+                    }
+                });
+    }
+
+    private void deleteEventDatabaseData(final DialogInterface dialog) {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                .whereEqualTo(getString(R.string.KEY_FIREBASE_EVENT_ORGANIZER), auth.getCurrentUser().getUid())
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                    db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                            .document(doc.getId()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                        }
+                    });
+                }
+                deleteAccount(dialog);
+            }
+        });
+    }
+
+    private void deleteAccount(final DialogInterface dialog) {
+        FirebaseUser user = auth.getCurrentUser();
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Intent intent = new Intent(ProfileEditActivity.this
+                                    , LogRegChooserActivity.class);
+                            startActivity(intent);
+                            Toast.makeText(getApplicationContext(), "Konto erfolgreich" +
+                                    " gelöscht", Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }
+                });
     }
 
     private void setEditPasswordClickListener() {

@@ -322,7 +322,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_4">
@@ -377,6 +376,20 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_delete_account"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/textColorLight"
+                android:layout_margin="20dp"
+                android:text="Konto löchen"
+                android:background="@drawable/form_round_corners_orange"
+                android:backgroundTint="#C44F3E"
+                app:layout_constraintTop_toBottomOf="@id/container_profile_orga"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
