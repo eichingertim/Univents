@@ -36,6 +36,8 @@ import static android.app.Activity.RESULT_OK;
  */
 public class CreateEditAddressFragment extends Fragment {
 
+    private static int REQUEST_LOCATION_CODE = 901;
+
     private FirebaseFirestore db;
 
     private Button btnSelectLocation;
@@ -190,14 +192,14 @@ public class CreateEditAddressFragment extends Fragment {
      */
     private void selectLocation() {
         Intent intent = new Intent(getActivity(), SelectLocationActivity.class);
-        startActivityForResult(intent, 901);
+        startActivityForResult(intent, REQUEST_LOCATION_CODE);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 901 && resultCode == RESULT_OK && data != null) {
+        if (requestCode == REQUEST_LOCATION_CODE && resultCode == RESULT_OK && data != null) {
             double latitude = (double) data.getExtras().get(getString(R.string.KEY_LATITUDE));
             double longitude = (double) data.getExtras().get(getString(R.string.KEY_LONGITUDE));
             String coordinates = latitude + "," + longitude;
