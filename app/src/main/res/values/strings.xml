@@ -170,6 +170,11 @@
     <string name="KEY_INTENT_SALE_CATEGORY">sales_category</string>
     <string name="date_format_normal">dd.MM.yyyy - HH.mm</string>
     <string name="dynamic_link_text">Hi, schau dir das Event %s an.</string>
+    <string name="fill_all_fields">Du musst alle Felder ausfüllen</string>
+    <string name="startdate_after_enddate">Das Startdatum liegt hinter dem Endatum</string>
+    <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
+    <string name="select_category">Du musst eine Kategorie wählen</string>
+    <string name="date_pattern_for_saving">dd.MM.yyyyHH.mm</string>
 
 
     <!--Categories for events-->

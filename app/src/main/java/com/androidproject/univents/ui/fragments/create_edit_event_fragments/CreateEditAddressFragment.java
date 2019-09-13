@@ -1,6 +1,5 @@
 package com.androidproject.univents.ui.fragments.create_edit_event_fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;

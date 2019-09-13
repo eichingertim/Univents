@@ -4,10 +4,8 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -44,7 +42,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,35 +53,30 @@ import static android.app.Activity.RESULT_OK;
 
 public class CreateEditDetailsFragment extends Fragment implements View.OnClickListener {
 
-    private FabClickListener fabClickListener;
-    private FloatingActionButton fabContinue;
+    private static final int IMAGE_REQUEST_CODE = 111;
+    private static final int PERMISSIONS_REQUEST_CODE = 201;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+    private FirebaseUser firebaseUser;
 
     private EditText txtTitle, txtStartDate, txtStartTime,
             txtEndDate, txtEndTime, txtDescription;
-
     private ImageView ivTitlePicure;
     private TextView btnSelectPicture;
-
+    private FabClickListener fabClickListener;
     private Spinner spCategory;
+
+    private FloatingActionButton fabContinue;
     private ArrayAdapter<CharSequence> adapter;
 
     private DatePickerDialog datePicker;
     private TimePickerDialog timePicker;
 
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
-
     private String currentPhotoPath;
-
-    private static final int IMAGE_REQUEST_CODE = 111;
-    private static final int PERMISSIONS_REQUEST_CODE = 201;
 
     private String eventId = "";
     private EventItem event;
-
-    private FirebaseFirestore db;
-    private FirebaseAuth auth;
-    private FirebaseUser firebaseUser;
 
     public void setFabClickListener(FabClickListener fabClickListener) {
         this.fabClickListener = fabClickListener;
@@ -103,7 +95,7 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         if (getArguments() != null) {
             eventId = getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
         }
-        initFirebase();
+        initFireBase();
         initViews(view);
         setClickListener();
         if (getArguments() != null) {
@@ -112,12 +104,54 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
 
     }
 
-    private void initFirebase() {
+    /**
+     * initializes necessary Firebase-Tools;
+     */
+    private void initFireBase() {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
     }
 
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to this fragment
+     */
+    private void initViews(View view) {
+        fabContinue = view.findViewById(R.id.fab_controller_create_edit_event);
+
+        txtTitle = view.findViewById(R.id.txt_create_edit_event_title);
+        txtStartDate = view.findViewById(R.id.txt_create_edit_event_start_date);
+        txtStartTime = view.findViewById(R.id.txt_create_edit_event_start_time);
+        txtEndDate = view.findViewById(R.id.txt_create_edit_event_end_date);
+        txtEndTime = view.findViewById(R.id.txt_create_edit_event_end_time);
+        txtDescription = view.findViewById(R.id.txt_create_edit_event_description);
+
+        ivTitlePicure = view.findViewById(R.id.img_create_edit_event_picture);
+        btnSelectPicture = view.findViewById(R.id.tv_create_edit_select_picture);
+
+        spCategory = view.findViewById(R.id.sp_create_edit_event_category);
+        adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.eventCategorysCreate, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
+    }
+
+    /**
+     * sets the onClickListener to all necessary views
+     */
+    private void setClickListener() {
+        fabContinue.setOnClickListener(this);
+        txtStartDate.setOnClickListener(this);
+        txtStartTime.setOnClickListener(this);
+        txtEndDate.setOnClickListener(this);
+        txtEndTime.setOnClickListener(this);
+        btnSelectPicture.setOnClickListener(this);
+    }
+
+    /**
+     * retrieves the event data from FireBase and saves the data in an EventItem-Object
+     */
     private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -129,6 +163,9 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         });
     }
 
+    /**
+     * fills the data into the initialized views
+     */
     private void fillData() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH.mm");
@@ -149,6 +186,10 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
 
     }
 
+    /**
+     * checks if a picture was selected from the gallery or not
+     * and hands a boolean over to the loadImageMethod
+     */
     private void fillImageData() {
         if (currentPhotoPath == null) {
             loadImage(false);
@@ -157,7 +198,15 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         }
 
     }
+
+    /**
+     * loads the image either from a file or from an URL depending on the boolean
+     * @param isFile includes if it is a file from a path or not
+     */
     private void loadImage(final boolean isFile) {
+
+        //With this ViewTreeObserver, we can check the height and width of the
+        //given imageView and can set the picture to this size with PICASSO.
         ViewTreeObserver viewTreeObserver = ivTitlePicure.getViewTreeObserver();
         viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -178,35 +227,6 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
                 return true;
             }
         });
-    }
-
-    private void setClickListener() {
-        fabContinue.setOnClickListener(this);
-        txtStartDate.setOnClickListener(this);
-        txtStartTime.setOnClickListener(this);
-        txtEndDate.setOnClickListener(this);
-        txtEndTime.setOnClickListener(this);
-        btnSelectPicture.setOnClickListener(this);
-    }
-
-    private void initViews(View view) {
-        fabContinue = view.findViewById(R.id.fab_controller_create_edit_event);
-
-        txtTitle = view.findViewById(R.id.txt_create_edit_event_title);
-        txtStartDate = view.findViewById(R.id.txt_create_edit_event_start_date);
-        txtStartTime = view.findViewById(R.id.txt_create_edit_event_start_time);
-        txtEndDate = view.findViewById(R.id.txt_create_edit_event_end_date);
-        txtEndTime = view.findViewById(R.id.txt_create_edit_event_end_time);
-        txtDescription = view.findViewById(R.id.txt_create_edit_event_description);
-
-        ivTitlePicure = view.findViewById(R.id.img_create_edit_event_picture);
-        btnSelectPicture = view.findViewById(R.id.tv_create_edit_select_picture);
-
-        spCategory = view.findViewById(R.id.sp_create_edit_event_category);
-        adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.eventCategorysCreate, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(adapter);
     }
 
     @Override
@@ -236,6 +256,11 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         }
     }
 
+    /**
+     * Creates a key-value-map with all data that the user has entered/selected.
+     * The keys of the map matches with the firebase keys
+     * @return returns a map with the data
+     */
     private Map<String, Object> getDataMap() {
         Map<String, Object> map = new HashMap<>();
         map.put(getString(R.string.KEY_FIREBASE_EVENT_TITLE), txtTitle.getText().toString());
@@ -260,12 +285,16 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         return map;
     }
 
+    /**
+     * checks if all inputs are valid and if not toasts with error-messages are displayed
+     * @return if all is valid or not
+     */
     private boolean checkValidInput() {
 
         if (txtTitle.getText().toString().equals("") || txtStartDate.getText().toString().equals("") ||
                 txtEndDate.getText().toString().equals("") || txtStartTime.getText().toString().equals("") ||
                 txtEndTime.getText().toString().equals("") || txtDescription.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Du musst alle Felder ausfüllen"
+            Toast.makeText(getActivity(), getString(R.string.fill_all_fields)
                     , Toast.LENGTH_LONG).show();
             return false;
         }
@@ -276,15 +305,15 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
                 txtEndTime.getText().toString());
 
         if (start == null || end == null || start.after(end)) {
-            Toast.makeText(getActivity(), "Das Startdatum liegt hinter dem Endatum"
+            Toast.makeText(getActivity(), getString(R.string.startdate_after_enddate)
                     , Toast.LENGTH_LONG).show();
             return false;
         } else if (currentPhotoPath == null && eventId.equals("")) {
-            Toast.makeText(getActivity(), "Du musst ein Titelbild auswählen"
+            Toast.makeText(getActivity(), getString(R.string.select_title_picture)
                     , Toast.LENGTH_LONG).show();
             return false;
         } else if (spCategory.getSelectedItemPosition() == 0) {
-            Toast.makeText(getActivity(), "Du musst eine Kategorie wählen"
+            Toast.makeText(getActivity(), getString(R.string.select_category)
                     , Toast.LENGTH_LONG).show();
             return false;
         }
@@ -292,8 +321,14 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         return true;
     }
 
+    /**
+     * this method transforms dateString and a timeString into a date object
+     * @param dateStr contains the date as a string
+     * @param timeStr contains the time as a string
+     * @return a date object
+     */
     private Date getDateOutOfString(String dateStr, String timeStr) {
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyyHH.mm");
+        SimpleDateFormat format = new SimpleDateFormat(getString(R.string.date_pattern_for_saving));
         Date date = null;
         try {
             date = format.parse(dateStr+timeStr);
@@ -303,6 +338,9 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         return date;
     }
 
+    /**
+     * starts an intent to select a picture from the gallery
+     */
     private void selectTitlePicture() {
         Intent i = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -332,6 +370,10 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         }
     }
 
+    /**
+     * Creates and shows the date-picker-dialog
+     * @param txtDate editText where the selected date should be displayed
+     */
     private void showDatePickerDialog(final EditText txtDate){
         final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -346,22 +388,39 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         ((CreateEditEventActivity)getActivity()).checkTheme();
 
-                        String dayStr = String.valueOf(dayOfMonth);
-                        String monthStr = String.valueOf(monthOfYear+1);
-                        if (dayOfMonth < 10) {
-                            dayStr = "0"+dayOfMonth;
-                        }
-                        if ((monthOfYear+1) < 10) {
-                            monthStr = "0"+(monthOfYear+1);
-                        }
+                        fillDateToView(dayOfMonth, monthOfYear, year, txtDate);
 
-                        String date = dayStr + "." + monthStr + "." + year;
-                        txtDate.setText(date);
                     }
                 }, year, month, day);
         datePicker.show();
     }
 
+    /**
+     * fills the selected time to the ediText
+     * @param dayOfMonth selected day
+     * @param monthOfYear selected month
+     * @param year selected year
+     * @param txtDate editText where the selected date should be displayed
+     */
+    private void fillDateToView(int dayOfMonth, int monthOfYear, int year
+            , EditText txtDate) {
+        String dayStr = String.valueOf(dayOfMonth);
+        String monthStr = String.valueOf(monthOfYear+1);
+        if (dayOfMonth < 10) {
+            dayStr = "0"+dayOfMonth;
+        }
+        if ((monthOfYear+1) < 10) {
+            monthStr = "0"+(monthOfYear+1);
+        }
+
+        String date = dayStr + "." + monthStr + "." + year;
+        txtDate.setText(date);
+    }
+
+    /**
+     * Creates and shows the time-picker-dialog
+     * @param txtTime editText where the selected time should be displayed
+     */
     private void showTimePickerDialog(final EditText txtTime){
         final Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -375,21 +434,32 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 ((CreateEditEventActivity)getActivity()).checkTheme();
 
-                String hourStr = String.valueOf(hourOfDay);
-                String minuteStr = String.valueOf(minute);
+                fillTimeToView(hourOfDay, minute, txtTime);
 
-                if (hourOfDay < 10) {
-                    hourStr = "0"+hourOfDay;
-                }
-                if (minute < 10) {
-                    minuteStr = "0"+minute;
-                }
-
-                String time = hourStr + "." + minuteStr;
-                txtTime.setText(time);
             }
         }, hour, minute, true);
         timePicker.show();
+    }
+
+    /**
+     * fills the selected time to the ediText
+     * @param hourOfDay selected hour
+     * @param minute selected minute
+     * @param txtTime editText where the selected time should be displayed
+     */
+    private void fillTimeToView(int hourOfDay, int minute, EditText txtTime) {
+        String hourStr = String.valueOf(hourOfDay);
+        String minuteStr = String.valueOf(minute);
+
+        if (hourOfDay < 10) {
+            hourStr = "0"+hourOfDay;
+        }
+        if (minute < 10) {
+            minuteStr = "0"+minute;
+        }
+
+        String time = hourStr + "." + minuteStr;
+        txtTime.setText(time);
     }
 
     private void checkStoragePermission() {
