@@ -24,6 +24,9 @@ public class ExpandedGridView extends GridView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        //Measures the height of the gridViewContent and sets the size to the globalHeight
+        //of the View
         int expandSpec = MeasureSpec.makeMeasureSpec(MEASURED_SIZE_MASK,
                 MeasureSpec.AT_MOST);
         super.onMeasure(widthMeasureSpec, expandSpec);
