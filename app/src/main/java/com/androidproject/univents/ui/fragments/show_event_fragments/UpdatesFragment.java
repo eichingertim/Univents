@@ -35,7 +35,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment that shows all updates from an event
+ */
 public class UpdatesFragment extends Fragment {
 
     private FirebaseFirestore db;
@@ -71,6 +73,47 @@ public class UpdatesFragment extends Fragment {
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFirebase() {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+    }
+
+    /**
+     * initializes the listView and its adapter and emptyView
+     * @param view layout belonging to the fragment
+     */
+    private void initListView(View view) {
+        listViewUpdates = view.findViewById(R.id.list_view_updates);
+        adapter = new EventUpdateListAdapter(getActivity(), updates);
+        listViewUpdates.setAdapter(adapter);
+        tvEmptyListView = view.findViewById(R.id.tv_empty_list_view);
+        listViewUpdates.setEmptyView(tvEmptyListView);
+    }
+
+    /**
+     * retrieves the data of the current event and saves it in an eventItem Object.
+     * Afterwards the floatingActionButton is initialized and the clickListeners are set.
+     * @param view layout belonging to the fragment
+     */
+    private void getEventData(final View view) {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                event = documentSnapshot.toObject(EventItem.class);
+                initFab(view);
+                setClickListener();
+            }
+        });
+    }
+
+    /**
+     * sets the onItemClickListener for the list
+     */
     private void setClickListener() {
         listViewUpdates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,17 +127,21 @@ public class UpdatesFragment extends Fragment {
         });
     }
 
+    /**
+     * shows the dialog whether the user wants to like an update
+     * @param itemAtPosition clicked EventUpdate-item
+     */
     private void showLikeDialog(final EventUpdate itemAtPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Gefällt dir " + itemAtPosition.getEventUpdateTitle() +"?");
-        builder.setMessage("Diesen Beitrag mit gefällt mir markieren!");
-        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        builder.setTitle(String.format(getString(R.string.excited_of_title), itemAtPosition.getEventUpdateTitle()));
+        builder.setMessage(getString(R.string.mark_update_with_like));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 likeUpdate(itemAtPosition.getEventUpdateId());
             }
         });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -104,6 +151,10 @@ public class UpdatesFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * updates the like counter for the selected update
+     * @param eventUpdateId id of the selected update
+     */
     private void likeUpdate(String eventUpdateId) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES))
@@ -111,23 +162,28 @@ public class UpdatesFragment extends Fragment {
                 , FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(), "Dir gefällt dieser Beitrag"
+                Toast.makeText(getActivity(), getString(R.string.you_like_this_update)
                         , Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * shows the dialog whether the organizer wants to delete an update
+     * @param itemAtPosition clicked EventUpdate-item
+     */
     private void showDeleteDialog(final EventUpdate itemAtPosition) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(itemAtPosition.getEventUpdateTitle() + " löschen?");
-        builder.setMessage("Willst du diesen Beitrag löschen?");
-        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        builder.setTitle(String.format(getString(R.string.delete_title)
+                , itemAtPosition.getEventUpdateTitle()));
+        builder.setMessage(getString(R.string.want_to_delete_update));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteUpdate(itemAtPosition.getEventUpdateId());
             }
         });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -137,30 +193,26 @@ public class UpdatesFragment extends Fragment {
         dialog.show();
     }
 
+    /**
+     * deletes the selected update
+     * @param eventUpdateId id of the selected update
+     */
     private void deleteUpdate(String eventUpdateId) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES))
                 .document(eventUpdateId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getActivity(), "Beitrag erfolgreich gelöscht"
+                Toast.makeText(getActivity(), getString(R.string.updated_deleted)
                         , Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void getEventData(final View view) {
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                event = documentSnapshot.toObject(EventItem.class);
-                initFab(view);
-                setClickListener();
-            }
-        });
-    }
-
+    /**
+     * initializes the floating action button and sets an onClickListener
+     * @param view layout belonging to the fragment
+     */
     private void initFab(View view) {
         fabAddUpdate = view.findViewById(R.id.fab_add_update);
         if (firebaseUser.getUid().equals(event.getEventOrganizer())) {
@@ -175,6 +227,9 @@ public class UpdatesFragment extends Fragment {
         }
     }
 
+    /**
+     * opens the NewUpdateDialogFragment to create a new update
+     */
     private void openNewUpdateDialog() {
         DialogFragment dialog = NewUpdateDialogFragment.newInstance();
         Bundle bundle = new Bundle();
@@ -188,6 +243,9 @@ public class UpdatesFragment extends Fragment {
         return getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
     }
 
+    /**
+     * retrieves the update data and saves it in a list of EventUpdate-item objects
+     */
     private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES)).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -202,20 +260,5 @@ public class UpdatesFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-    }
-
-    private void initListView(View view) {
-        listViewUpdates = view.findViewById(R.id.list_view_updates);
-        adapter = new EventUpdateListAdapter(getActivity(), updates);
-        listViewUpdates.setAdapter(adapter);
-        tvEmptyListView = view.findViewById(R.id.tv_empty_list_view);
-        listViewUpdates.setEmptyView(tvEmptyListView);
-
-    }
-
-    private void initFirebase() {
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
     }
 }

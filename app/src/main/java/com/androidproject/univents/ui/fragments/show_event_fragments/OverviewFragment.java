@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * Fragment shows all details from a event in the showEventActivity
+ */
 public class OverviewFragment extends Fragment {
 
     private FirebaseFirestore db;
@@ -61,7 +62,6 @@ public class OverviewFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         eventId = getArguments().get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString();
-
         return inflater.inflate(R.layout.fragment_overview, container, false);
 
 
@@ -72,11 +72,24 @@ public class OverviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initFireBase();
-        initEventItem();
+        getData();
         initViews(view);
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFireBase() {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+    }
+
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to the fragment
+     */
     private void initViews(View view) {
         tvMonth = view.findViewById(R.id.tv_month);
         tvDay = view.findViewById(R.id.tv_day);
@@ -96,13 +109,12 @@ public class OverviewFragment extends Fragment {
 
     }
 
-    private void initFireBase() {
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-    }
-
-    private void initEventItem() {
+    /**
+     * retrieves the data from firebase and saves it an eventItem object.
+     * Afterwards the views are fill with data, participation state is set and
+     * the onclickListener are set.
+     */
+    private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -115,22 +127,30 @@ public class OverviewFragment extends Fragment {
         });
     }
 
+    /**
+     * checks whether the current user is the organizer of the event or participates
+     * and sets correspondingly the visibility of participate-button and textView;
+     */
     private void setParticipationState() {
         if (firebaseUser.getUid().equals(item.getEventOrganizer())) {
             tvParticipate.setVisibility(View.GONE);
             btnParticipate.setVisibility(View.GONE);
         } else if (item.getEventParticipants() == null) {
-            tvParticipate.setVisibility(View.VISIBLE);
+            tvParticipate.setText(getString(R.string.participate));
             btnParticipate.setImageResource(R.drawable.ic_star_border_24dp);
         } else if (item.getEventParticipants().contains(firebaseUser.getUid())) {
-            tvParticipate.setVisibility(View.GONE);
+            tvParticipate.setText(getString(R.string.you_participate));
             btnParticipate.setImageResource(R.drawable.ic_star_orange_24dp);
         } else {
-            tvParticipate.setVisibility(View.VISIBLE);
+            tvParticipate.setText(getString(R.string.participate));
             btnParticipate.setImageResource(R.drawable.ic_star_border_24dp);
         }
     }
 
+    /**
+     * sets the onClickListener for the imageView and textView
+     * to get to the profile and for the button to participate
+     */
     private void setOnClickListener() {
         imgOrganizerProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +180,10 @@ public class OverviewFragment extends Fragment {
         });
     }
 
+    /**
+     * adds the user to the participants list and updates the list
+     * of the event in the firebase-cloud
+     */
     private void participate() {
         List<String> participants = item.getEventParticipants();
         participants.add(firebaseUser.getUid());
@@ -175,6 +199,9 @@ public class OverviewFragment extends Fragment {
         });
     }
 
+    /**
+     * subscribe the user to the topic(eventId) to receive notifications for this event
+     */
     private void subscribeToNotifications() {
         FirebaseMessaging.getInstance().subscribeToTopic(item.getEventId())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -189,6 +216,10 @@ public class OverviewFragment extends Fragment {
                 });
     }
 
+    /**
+     * deletes the user from the participants list and updates the list
+     * of the event in the firebase-cloud
+     */
     private void deleteParticipation() {
         List<String> participants = item.getEventParticipants();
         participants.remove(firebaseUser.getUid());
@@ -204,14 +235,19 @@ public class OverviewFragment extends Fragment {
         });
     }
 
+    /**
+     * unsubscribes the user from the topic(eventId)
+     * to receive notifications for this event
+     */
     private void unSubscribeToNotifications() {
         FirebaseMessaging.getInstance().unsubscribeFromTopic(item.getEventId())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(getActivity(), "Teilnahme erfolgreich entfernt. Du erhälst auch " +
-                                    "keine Benachrichtigungen mehr.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity()
+                                    , getString(R.string.receive_no_more_notifications_for_the_event)
+                                    , Toast.LENGTH_LONG).show();
                             getActivity().finish();
                             getActivity().startActivity(getActivity().getIntent());
                         }
@@ -219,12 +255,18 @@ public class OverviewFragment extends Fragment {
                 });
     }
 
+    /**
+     * starts the ProfilePageActivity to show the profile of the organizer
+     */
     private void goToProfile() {
         Intent intent = new Intent(getActivity(), ProfilePageActivity.class);
         intent.putExtra(getString(R.string.KEY_FIREBASE_USER_ID), item.getEventOrganizer());
         startActivity(intent);
     }
 
+    /**
+     * fills the data of the event to the belonging views
+     */
     private void fillViewsWithData() {
         Date begin = item.getEventBegin().toDate();
         Date end = item.getEventEnd().toDate();
@@ -252,7 +294,19 @@ public class OverviewFragment extends Fragment {
 
     }
 
+
     private void fillPictures() {
+        fillTitlePicture();
+        fillOrganizerPicture();
+
+    }
+
+    /**
+     * fills the data of title-picture to the belonging image-view
+     */
+    private void fillTitlePicture() {
+        //With this ViewTreeObserver, we can check the height and width of the
+        //given imageView and can set the picture to this size with PICASSO.
         ViewTreeObserver viewTreeObserver = imgTitlePicture.getViewTreeObserver();
         viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -266,6 +320,12 @@ public class OverviewFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    /**
+     * fills the organizer's user-picture to the belonging imageView
+     */
+    private void fillOrganizerPicture() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS)).document(item.getEventOrganizer())
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -285,7 +345,6 @@ public class OverviewFragment extends Fragment {
                 }
             }
         });
-
     }
 
 }

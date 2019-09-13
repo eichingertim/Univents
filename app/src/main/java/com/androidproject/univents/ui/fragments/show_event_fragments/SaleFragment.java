@@ -23,7 +23,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment that shows lists of the sale from an event
+ */
 public class SaleFragment extends Fragment {
 
     private FirebaseAuth auth;
@@ -48,11 +50,24 @@ public class SaleFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initFirebase();
-        getEventId();
+        eventId = getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
         initViews(view);
         getData();
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFirebase() {
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to the fragment
+     */
     private void initViews(View view) {
         emptyListView = view.findViewById(R.id.tv_no_sale_lists);
         listViewSales = view.findViewById(R.id.list_view_sale);
@@ -62,10 +77,10 @@ public class SaleFragment extends Fragment {
 
     }
 
-    private void getEventId() {
-        eventId = getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
-    }
-
+    /**
+     * retrieves the sale-data from firebase and saves it in a list of
+     * sale-items.
+     */
     private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_SALE))
@@ -81,11 +96,5 @@ public class SaleFragment extends Fragment {
 
             }
         });
-    }
-
-    private void initFirebase() {
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
     }
 }

@@ -25,6 +25,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * DialogFragment where the user(organizer) can create an new update
+ */
 public class NewUpdateDialogFragment extends DialogFragment {
 
     private FirebaseFirestore db;
@@ -33,7 +36,6 @@ public class NewUpdateDialogFragment extends DialogFragment {
 
     private ImageButton btnCloseDialog;
     private TextView btnPublishUpdate;
-
     private EditText txtUpdateTitle;
     private EditText txtUpdateDescription;
 
@@ -69,6 +71,19 @@ public class NewUpdateDialogFragment extends DialogFragment {
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFirebase() {
+        db = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * retrieves the data for the transferred eventId and saves the data
+     * in an eventItem object.
+     * Afterwards the layout-views are initialized
+     * @param view layout belonging to dialog fragment
+     */
     private void getEventData(final View view) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventID)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -81,10 +96,21 @@ public class NewUpdateDialogFragment extends DialogFragment {
         });
     }
 
-    private void initFirebase() {
-        db = FirebaseFirestore.getInstance();
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to this dialog-fragment
+     */
+    private void initViews(View view) {
+        btnCloseDialog = view.findViewById(R.id.btn_close_update_dialog);
+        btnPublishUpdate = view.findViewById(R.id.btn_publish_update);
+
+        txtUpdateTitle = view.findViewById(R.id.txt_update_title);
+        txtUpdateDescription = view.findViewById(R.id.txt_update_description);
     }
 
+    /**
+     * sets the onClickListener to the 2 buttons
+     */
     private void setOnClickListeners() {
         btnCloseDialog.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +126,10 @@ public class NewUpdateDialogFragment extends DialogFragment {
         });
     }
 
+    /**
+     * processes the data and stores it into a map,
+     * that is then uploaded to the firebase cloud
+     */
     private void publishUpdate() {
         if (canBePublished()) {
             String updateId = generateEventId();
@@ -116,29 +146,25 @@ public class NewUpdateDialogFragment extends DialogFragment {
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(getActivity(), "Betrag wurde gepostet", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), getString(R.string.update_posted), Toast.LENGTH_LONG).show();
                             dismiss();
                         }
                     });
         }
     }
 
+    /**
+     * checks whether a update can be published or not
+     * @return true or false
+     */
     private boolean canBePublished() {
         if (txtUpdateTitle.getText().toString().equals("")
                 || txtUpdateDescription.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Du musst alle Felder befüllen", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), getString(R.string.fill_all_fields), Toast.LENGTH_LONG).show();
             return false;
         } else {
             return true;
         }
-    }
-
-    private void initViews(View view) {
-        btnCloseDialog = view.findViewById(R.id.btn_close_update_dialog);
-        btnPublishUpdate = view.findViewById(R.id.btn_publish_update);
-
-        txtUpdateTitle = view.findViewById(R.id.txt_update_title);
-        txtUpdateDescription = view.findViewById(R.id.txt_update_description);
     }
 
     private boolean isDarkTheme() {
@@ -148,6 +174,10 @@ public class NewUpdateDialogFragment extends DialogFragment {
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
 
+    /**
+     * generates a random 20 char string
+     * @return a random string
+     */
     private String generateEventId() {
         String availableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"

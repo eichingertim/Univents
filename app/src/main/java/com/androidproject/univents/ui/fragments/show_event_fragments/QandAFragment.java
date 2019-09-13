@@ -29,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-
+/**
+ * Fragment that shows questions and answers that are asked and answered about an event
+ */
 public class QandAFragment extends Fragment {
 
     private FirebaseFirestore db;
@@ -57,13 +59,41 @@ public class QandAFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         initFirebase();
-        getEventId();
+        eventId = getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
         initViews(view);
         getEventData(view);
         getData();
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFirebase() {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+    }
+
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to the fragment
+     */
+    private void initViews(View view) {
+        emptyListView = view.findViewById(R.id.tv_empty_q_and_as);
+        listViewQandAs = view.findViewById(R.id.list_view_event_q_and_as);
+        adapter = new EventQandAListAdapter(getActivity(), qandAs);
+        listViewQandAs.setAdapter(adapter);
+        listViewQandAs.setEmptyView(emptyListView);
+
+    }
+
+    /**
+     * retrieves the data for an event and saves it in an eventItem object.
+     * afterwards, the listclicklistener is set and the floatingActionButton is
+     * initialized
+     * @param view layout belonging to the fragment
+     */
     private void getEventData(final View view) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -76,21 +106,10 @@ public class QandAFragment extends Fragment {
         });
     }
 
-    private void initFab(View view) {
-        fabaddNewQuestion = view.findViewById(R.id.fab_add_question);
-        fabaddNewQuestion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DialogFragment dialog = NewQandADialogFragment.newInstance();
-                Bundle bundle = new Bundle();
-                bundle.putString(getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
-                bundle.putBoolean(getString(R.string.IS_ANSWER), false);
-                dialog.setArguments(bundle);
-                dialog.show(getActivity().getSupportFragmentManager(), "tag");
-            }
-        });
-    }
-
+    /**
+     * sets the itemClickListener to the listView
+     * onClick, the NewQandADialogFragment is opened.
+     */
     private void setListClickListener() {
         if (eventItem.getEventOrganizer().equals(firebaseUser.getUid())) {
             listViewQandAs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -100,7 +119,7 @@ public class QandAFragment extends Fragment {
                     DialogFragment dialog = NewQandADialogFragment.newInstance();
                     Bundle bundle = new Bundle();
                     bundle.putString(getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
-                    bundle.putBoolean(getString(R.string.IS_ANSWER), true);
+                    bundle.putBoolean(getString(R.string.KEY_INTENT_IS_ANSWER), true);
                     bundle.putString("eventQandAId", item.getEventQandAId());
                     dialog.setArguments(bundle);
                     dialog.show(getActivity().getSupportFragmentManager(), "tag");
@@ -109,10 +128,28 @@ public class QandAFragment extends Fragment {
         }
     }
 
-    private void getEventId() {
-        eventId = getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
+    /**
+     * initializes the FloatingActionButton and sets an onClickListener
+     * @param view
+     */
+    private void initFab(View view) {
+        fabaddNewQuestion = view.findViewById(R.id.fab_add_question);
+        fabaddNewQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment dialog = NewQandADialogFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
+                bundle.putBoolean(getString(R.string.KEY_INTENT_IS_ANSWER), false);
+                dialog.setArguments(bundle);
+                dialog.show(getActivity().getSupportFragmentManager(), "tag");
+            }
+        });
     }
 
+    /**
+     * retrieves all the answers and question data and saves it in a list of QandA-items
+     */
     private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_QANDAS)).addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -127,20 +164,5 @@ public class QandAFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-    }
-
-    private void initViews(View view) {
-        emptyListView = view.findViewById(R.id.tv_empty_q_and_as);
-        listViewQandAs = view.findViewById(R.id.list_view_event_q_and_as);
-        adapter = new EventQandAListAdapter(getActivity(), qandAs);
-        listViewQandAs.setAdapter(adapter);
-        listViewQandAs.setEmptyView(emptyListView);
-
-    }
-
-    private void initFirebase() {
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
     }
 }

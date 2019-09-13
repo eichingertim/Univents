@@ -4,29 +4,18 @@
     <string name="facebook_app_id">696143180856191</string>
     <string name="fb_login_protocol_scheme">fb696143180856191</string>
     <string name="updates_notification_channel_id">UPDATE3152ID</string>
-
-    <string name="OPEN">open</string>
+    <string name="fileprovider_path">com.androidproject.univents.fileprovider</string>
 
     <!--Drawer Toggle-->
     <string name="CLOSE">close</string>
-    <string name="text_btn_login">Anmelden</string>
+    <string name="OPEN">open</string>
 
     <!--Button Text-Values-->
+    <string name="close">Schliessen</string>
+    <string name="text_btn_login">Anmelden</string>
     <string name="text_btn_register">Konto erstellen</string>
     <string name="create_account">Account erstellen</string>
     <string name="t_private">Privat</string>
-    <string name="data_protection"><![CDATA[
-
-            <h2><strong>DATENSCHUTZERKL&Auml;RUNG</strong></h2>
-            <p><strong>1. Erhobene Daten</strong><br />F&uuml;r eine voll funktionsf&auml;hig Applikation, werden personenbezogene Daten auf der Datenbank Firebase gespeichert. Zur Authentifizierung werden Nutzername, Passwort und eine zugeh&ouml;rige E-Mail-Adresse gespeichert. Um Titel und Profilbilder zu bearbeiten muss der Nutzer den Zugriff auf Fotos und Kamera erlaubt werden.</p>
-            <p><br /><strong>2. Zweck der Datenspeicherung</strong><br />Wie schon oben genannt werden die personenbezogenen Daten zur Erkennung und Erstellung von Nutzerkonten ben&ouml;tigt.<br />Zur Personalisierung k&ouml;nnen Bilder aufgenommen oder ausgew&auml;hlt werden, diese werden in Firebase gespeichert.</p>
-            <p><br /><strong>3. Speicherdauer</strong><br />Die Daten werden gel&ouml;scht nachdem ein Konto von dem Nutzer selbst gel&ouml;scht worden ist.</p>
-            <p><br /><strong>4. Zugriffsrechte</strong> <br />Einsicht auf gespeichert Daten haben nur die Entwickler. Eine Daten&uuml;bermittlung personenbezogener Daten an Dritte findet nicht statt.</p>
-            <p><br /><strong>5. Nutzungsverhalten</strong><br />Das Nutzungsverhalten aller Nutzer wird nicht gespeichert oder ausgewertet.</p>
-            <p><br /><strong>6. App-Betreiber</strong><br />Univents ist ein von Tim Eichinger entwickelte App. Unterst&uuml;tzt wurde er dabei von Jonas Ernst und Timon Lorenz.</p>
-            <p><br /><strong>7. Erstellung</strong><br />Diese Datenschutz-Verordnung wurde am 11.09 erstellt und gilt ebenso ab dem gleichen Datum.</p>
-
-        ]]></string>
 
     <string name="toolbar_reg_steps">Schritt %d</string>
 
@@ -61,20 +50,29 @@
     <string name="permssion_granted">Berechtigung erteilt</string>
     <string name="permission_denied">Berechtigung nicht erteilt</string>
     <string name="profile_picture_was_changed">Dein Profilbild wurde geändert!</string>
+    <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
+    <string name="select_category">Du musst eine Kategorie wählen</string>
+    <string name="answer_posted">Antwort wurde gepostet</string>
+    <string name="question_posted">Frage wurde gepostet</string>
+    <string name="please_select_location">Du musst eine Location auswählen</string>
+    <string name="describe_your_location">Du musst deine Location noch genauer beschreiben</string>
+    <string name="startdate_after_enddate">Das Startdatum liegt hinter dem Endatum</string>
+    <string name="cannot_edit_this_list">Du kannst diese Liste noch nicht bearbeiten. Erst nach der Veröffentlichung!</string>
+    <string name="user_not_receive_emails">Der Nutzer will keine E-Mails bekommen.</string>
+    <string name="user_not_receive_calls">Der Nutzer will keine Anrufe bekommen.</string>
+    <string name="user_has_no_phone_number">Der Nutzer hat keine Telefonnummer.</string>
 
-    <!--Email-Sent Dialog-->
+    <!--Dialog titles and messages-->
     <string name="check_inbox">Überprüfe deinen Posteingang und bestätige deine Mail-Adresse</string>
     <string name="go_on_with_facebook">weiter mit Facebook</string>
-
-    <!--Facebook log in-->
-    <string name="you_to_be_registered">Du wirst registriert....</string>
 
     <!--ProgressDialog Messages-->
     <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
     <string name="uploading">Hochladen....</string>
-    <string name="account">Konto</string>
+    <string name="you_to_be_registered">Du wirst registriert....</string>
 
     <!--Menu Item titles-->
+    <string name="account">Konto</string>
     <string name="profile">Profil</string>
     <string name="signout">Abmelden</string>
     <string name="settings">Einstellungen</string>
@@ -82,16 +80,16 @@
     <string name="search">Suche</string>
     <string name="map">Karte</string>
     <string name="my_events">Meine</string>
-    <string name="PREF_KEY_THEME">theme_pref</string>
 
     <!--Keys for settings preferences-->
     <string name="PREF_KEY_NOTIFICATIONS">notification_pref</string>
-    <string name="dark_theme">Dark Theme</string>
+    <string name="PREF_KEY_THEME">theme_pref</string>
     <string name="PREF_KEY_EMAIL_PHONE">email_phone_preference</string>
 
     <!--Settings titles and descriptions-->
     <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
     <string name="prof_name">Name</string>
+    <string name="dark_theme">Dark Theme</string>
 
     <!--Profile Strings-->
     <string name="prof_email">Email</string>
@@ -108,9 +106,16 @@
     <!--Notification text values-->
     <string name="like_it">Gefällt mir</string>
     <string name="notification_channel_name">Channel for Event Updates</string>
-    <string name="KEY_FCM_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
+
+    <!--special keys for intents-->
+    <string name="KEY_INTENT_NEW_SALE_ITEM_MAP">sales_list_map</string>
+    <string name="KEY_INTENT_SALE_CATEGORY">sales_category</string>
+    <string name="KEY_INTENT_IS_ANSWER">is_answer</string>
+    <string name="KEY_LATITUDE">latitude</string>
+    <string name="KEY_LONGITUDE">longitude</string>
 
     <!--Firebase Cloud Messaging Keys-->
+    <string name="KEY_FCM_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
     <string name="KEY_FCM_EVENT_UPDATE_MESSAGE">eventUpdateMessage</string>
     <string name="KEY_FCM_EVENT_UPDATE_EVENT_ID">eventId</string>
     <string name="KEY_FCM_EVENT_UPDATE_ID">eventUpdateId</string>
@@ -153,42 +158,54 @@
     <string name="KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION">eventUpdateDescription</string>
     <string name="KEY_FIREBASE_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
     <string name="KEY_FIREBASE_EVENT_UPDATE_ID">eventUpdateId</string>
+
+    <string name="KEY_FIREBASE_EVENT_QANDA_ANSWER">answer</string>
+    <string name="KEY_FIREBASE_EVENT_QANDA_QUESTION">question</string>
+
     <string name="regensburg">Regensburg</string>
 
-    <!--values-->
-    <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
-    <string name="close">Schliessen</string>
-    <string name="fileprovider_path">com.androidproject.univents.fileprovider</string>
-    <string name="user_not_receive_emails">Der Nutzer will keine E-Mails bekommen.</string>
-    <string name="user_not_receive_calls">Der Nutzer will keine Anrufe bekommen.</string>
-    <string name="user_has_no_phone_number">Der Nutzer hat keine Telefonnummer.</string>
-
-    <string name="IS_ANSWER">is_answer</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="KEY_INTENT_NEW_SALE_ITEM_MAP">sales_list_map</string>
-    <string name="KEY_INTENT_SALE_CATEGORY">sales_category</string>
-    <string name="date_format_normal">dd.MM.yyyy - HH.mm</string>
+    <!--Dynamic links-->
     <string name="dynamic_link_text">Hi, schau dir das Event %s an.</string>
-    <string name="startdate_after_enddate">Das Startdatum liegt hinter dem Endatum</string>
-    <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
-    <string name="select_category">Du musst eine Kategorie wählen</string>
+
+    <!--Date and time patterns-->
+    <string name="date_format_normal">dd.MM.yyyy - HH.mm</string>
     <string name="date_pattern_for_saving">dd.MM.yyyyHH.mm</string>
-    <string name="please_select_location">Du musst eine Location auswählen</string>
-    <string name="describe_your_location">Du musst deine Location noch genauer beschreiben</string>
-    <string name="KEY_LATITUDE">latitude</string>
-    <string name="KEY_LONGITUDE">longitude</string>
-    <string name="cannot_edit_this_list">Du kannst diese Liste noch nicht bearbeiten. Erst nach der Veröffentlichung!</string>
 
+    <!--Data-Protection-->
+    <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
+    <string name="data_protection"><![CDATA[
 
-    <!--Categories for events-->
+            <h2><strong>DATENSCHUTZERKL&Auml;RUNG</strong></h2>
+            <p><strong>1. Erhobene Daten</strong><br />F&uuml;r eine voll funktionsf&auml;hig Applikation, werden personenbezogene Daten auf der Datenbank Firebase gespeichert. Zur Authentifizierung werden Nutzername, Passwort und eine zugeh&ouml;rige E-Mail-Adresse gespeichert. Um Titel und Profilbilder zu bearbeiten muss der Nutzer den Zugriff auf Fotos und Kamera erlaubt werden.</p>
+            <p><br /><strong>2. Zweck der Datenspeicherung</strong><br />Wie schon oben genannt werden die personenbezogenen Daten zur Erkennung und Erstellung von Nutzerkonten ben&ouml;tigt.<br />Zur Personalisierung k&ouml;nnen Bilder aufgenommen oder ausgew&auml;hlt werden, diese werden in Firebase gespeichert.</p>
+            <p><br /><strong>3. Speicherdauer</strong><br />Die Daten werden gel&ouml;scht nachdem ein Konto von dem Nutzer selbst gel&ouml;scht worden ist.</p>
+            <p><br /><strong>4. Zugriffsrechte</strong> <br />Einsicht auf gespeichert Daten haben nur die Entwickler. Eine Daten&uuml;bermittlung personenbezogener Daten an Dritte findet nicht statt.</p>
+            <p><br /><strong>5. Nutzungsverhalten</strong><br />Das Nutzungsverhalten aller Nutzer wird nicht gespeichert oder ausgewertet.</p>
+            <p><br /><strong>6. App-Betreiber</strong><br />Univents ist ein von Tim Eichinger entwickelte App. Unterst&uuml;tzt wurde er dabei von Jonas Ernst und Timon Lorenz.</p>
+            <p><br /><strong>7. Erstellung</strong><br />Diese Datenschutz-Verordnung wurde am 11.09 erstellt und gilt ebenso ab dem gleichen Datum.</p>
+
+        ]]></string>
+    <string name="update_posted">Beitrag wurde gepostet</string>
+    <string name="you_participate">Du nimmst teil</string>
+    <string name="participate">Teilnehmen</string>
+    <string name="receive_no_more_notifications_for_the_event">Teilnahme erfolgreich entfernt. Du erhälst auch keine Benachrichtigungen mehr.</string>
+    <string name="excited_of_title">Gefällt dir %s ?</string>
+    <string name="mark_update_with_like">Diesen Beitrag mit gefällt mir markieren!</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="you_like_this_update">Dir gefällt dieser Beitrag</string>
+    <string name="delete_title">%s löschen?</string>
+    <string name="want_to_delete_update">Willst du diesen Beitrag löschen?</string>
+    <string name="updated_deleted">Beitrag erfolgreich gelöscht</string>
+
+    <!--Array Univents creator-->
     <string-array name="app_creator_members">
         <item>Jonas Ernst(2089197)</item>
         <item>Tim Eichinger(2089449)</item>
         <item>Timon Lorenz</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!--Categories for events-->
     <string-array name="eventCategorys">
         <item>Alle</item>
         <item>Sommerfest</item>
