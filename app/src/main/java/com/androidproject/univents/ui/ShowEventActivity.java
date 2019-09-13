@@ -25,6 +25,7 @@ import com.androidproject.univents.ui.fragments.show_event_fragments.QandAFragme
 import com.androidproject.univents.ui.fragments.show_event_fragments.UpdatesFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -112,7 +113,9 @@ public class ShowEventActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_show_event, menu);
+        if (eventItem.getEventOrganizer().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            getMenuInflater().inflate(R.menu.menu_show_event, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

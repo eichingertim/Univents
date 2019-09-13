@@ -100,7 +100,7 @@ public class CreateEditAddressFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (checkValidInput()) {
-                    listener.onFabClick(getDataMap(), 0);
+                    listener.onFabClick(getDataMap(), 1);
                 }
             }
         });

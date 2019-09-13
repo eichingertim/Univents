@@ -7,10 +7,12 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,18 +28,22 @@ import com.androidproject.univents.ui.fragments.create_edit_event_fragments.Crea
 import com.androidproject.univents.ui.fragments.create_edit_event_fragments.CreateEditSaleFragment;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CreateEditEventActivity extends AppCompatActivity implements FabClickListener {
@@ -57,6 +63,9 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
 
     private Map<String, Object> mapDetails = new HashMap<>();
     private Map<String, Object> mapAdress = new HashMap<>();
+    private Map<String, Object> mapSale = new HashMap<>();
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +74,21 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         setContentView(R.layout.activity_create_edit_event);
 
         getEventIdFromIntent();
+        initProgressDialog();
         initFirebase();
         initToolbar();
         initViewPager();
 
+    }
+
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        if (isNewEvent) {
+            progressDialog.setMessage("Event wird erstellt und veröffentlicht");
+        } else {
+            progressDialog.setMessage("Event wird geupdated");
+        }
+        progressDialog.setCancelable(false);
     }
 
     private void getEventIdFromIntent() {
@@ -81,9 +101,13 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
 
     }
 
-    //TODO: Finish Create Edit Process
     private void finishCreateEdit() {
         Map<String, Object> newOrEditedEvent = new HashMap<>();
+
+        newOrEditedEvent.put(getString(R.string.KEY_FIREBASE_EVENT_ORGANIZER)
+                , firebaseUser.getUid());
+        newOrEditedEvent.put(getString(R.string.KEY_FIREBASE_EVENT_PARTICIPANTS),
+                new ArrayList<String>());
 
         if (isNewEvent) {
             newOrEditedEvent.put(getString(R.string.KEY_FIREBASE_EVENT_ID), generateEventId());
@@ -118,6 +142,8 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                 , mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_BEGIN)));
         map.put(getString(R.string.KEY_FIREBASE_EVENT_END)
                 , mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_END)));
+        map.put(getString(R.string.KEY_FIREBASE_EVENT_CATEGORY)
+                , mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_CATEGORY)));
         if (mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_PICTURE_PATH)) == null) {
             map.put(getString(R.string.KEY_FIREBASE_EVENT_PICTURE_URL)
                     , mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_PICTURE_URL)));
@@ -144,6 +170,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 if (!task.isSuccessful()) {
+                    progressDialog.dismiss();
                     throw task.getException();
                 }
                 return ref.getDownloadUrl();
@@ -160,31 +187,79 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                     } else {
                         updateFirebaseEventDocument(newOrEditedEvent);
                     }
+                } else {
+                    progressDialog.dismiss();
                 }
             }
         });
     }
 
     private void addNewFirebaseEventDocument(Map<String, Object> newEvent) {
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
-                .document(newEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString())
-                .set(newEvent).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        WriteBatch batch = db.batch();
+
+        DocumentReference refEvent = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                .document(newEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString());
+        batch.set(refEvent, newEvent);
+
+        for (Map.Entry<String, Object> entry : mapSale.entrySet()) {
+            DocumentReference refEventSale = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                    .document(newEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString())
+                    .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_SALE)).document(entry.getKey());
+            batch.set(refEventSale, (Map<String, Object>) entry.getValue());
+        }
+
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getApplicationContext(), "Neues Event erfolgreich erstellt"
+                        , Toast.LENGTH_LONG).show();
+                progressDialog.dismiss();
+                Intent intent = new Intent(CreateEditEventActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Ein Fehler ist aufgetreten"
                         , Toast.LENGTH_LONG).show();
             }
         });
     }
 
     private void updateFirebaseEventDocument(Map<String, Object> editedEvent) {
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
-                .document(editedEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString())
-                .update(editedEvent).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        WriteBatch batch = db.batch();
+
+        DocumentReference refEvent = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                .document(editedEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString());
+        batch.update(refEvent, editedEvent);
+
+        for (Map.Entry<String, Object> entry : mapSale.entrySet()) {
+            DocumentReference refEventSale = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
+                    .document(editedEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString())
+                    .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_SALE)).document(entry.getKey());
+            batch.update(refEventSale, (Map<String, Object>) entry.getValue());
+        }
+
+        batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getApplicationContext(), "Event erfolgreich aktualisiert"
                         , Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(CreateEditEventActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+                progressDialog.dismiss();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "Ein Fehler ist aufgetreten"
+                        , Toast.LENGTH_LONG).show();
+                progressDialog.dismiss();
             }
         });
     }
@@ -265,20 +340,23 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
 
     @Override
     public void onFabClick(Map<String, Object> data, int fragmentPosition) {
-
         switch (fragmentPosition) {
             case 0:
-                mapDetails = data;
+                mapDetails = new HashMap<>(data);
+                Toast.makeText(getApplicationContext(), mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_TITLE)).toString(), Toast.LENGTH_LONG).show();
                 pager.setCurrentItem(pager.getCurrentItem()+1);
                 break;
             case 1:
-                mapAdress = data;
+                mapAdress = new HashMap<>(data);
+                Toast.makeText(getApplicationContext(), mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_TITLE)).toString(), Toast.LENGTH_LONG).show();
                 pager.setCurrentItem(pager.getCurrentItem()+1);
                 break;
             case 2:
+                mapSale = new HashMap<>(data);
                 pager.setCurrentItem(pager.getCurrentItem()+1);
                 break;
             case 3:
+                progressDialog.show();
                 finishCreateEdit();
                 break;
         }
@@ -320,7 +398,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
     }
 
-    public class CustomPagerAdapter extends FragmentStatePagerAdapter {
+    public class CustomPagerAdapter extends FragmentPagerAdapter {
 
 
         public CustomPagerAdapter(FragmentManager fm){
@@ -351,9 +429,14 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                     return createEditAddressFragment;
                 case 2:
                     CreateEditSaleFragment createEditSaleFragment = new CreateEditSaleFragment();
+                    if (!isNewEvent) {
+                        createEditSaleFragment.setArguments(getDataBundle());
+                    }
+                    createEditSaleFragment.setFabClickListener(CreateEditEventActivity.this);
                     return createEditSaleFragment;
                 case 3:
                     CreateEditFinishFragment createEditFinishFragment = new CreateEditFinishFragment();
+                    createEditFinishFragment.setFabClickListener(CreateEditEventActivity.this);
                     return createEditFinishFragment;
             }
 

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Drücke den Haken um die Erstellung/Bearbeitung des Events abzuschließen"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="?attr/textColorDark"
+        android:layout_centerInParent="true"
+        android:layout_margin="30dp"/>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_controller_create_edit_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorAccent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_check_24dp"
+        android:tint="?attr/textColorLight"
+        android:layout_margin="32dp"/>
+
+</RelativeLayout>
+

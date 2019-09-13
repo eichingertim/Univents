@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -13,9 +14,12 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -39,6 +43,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,10 +65,16 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
     private ImageView ivTitlePicure;
     private TextView btnSelectPicture;
 
+    private Spinner spCategory;
+    private ArrayAdapter<CharSequence> adapter;
+
     private DatePickerDialog datePicker;
     private TimePickerDialog timePicker;
 
-    private String currentPhotoPath = "";
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+
+    private String currentPhotoPath;
 
     private static final int IMAGE_REQUEST_CODE = 111;
     private static final int PERMISSIONS_REQUEST_CODE = 201;
@@ -126,7 +138,46 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         txtEndDate.setText(dateFormat.format(event.getEventEnd().toDate()));
         txtEndTime.setText(timeFormat.format(event.getEventEnd().toDate()));
         txtDescription.setText(event.getEventDescription());
-        Picasso.get().load(event.getEventPictureUrl()).into(ivTitlePicure);
+        String[] array = getResources().getStringArray(R.array.eventCategorysCreate);
+        for (int i = 0; i< array.length; i++) {
+            if (array[i].equals(event.getEventCategory())) {
+                spCategory.setSelection(i);
+                break;
+            }
+        }
+        fillImageData();
+
+    }
+
+    private void fillImageData() {
+        if (currentPhotoPath == null) {
+            loadImage(false);
+        } else {
+            loadImage(true);
+        }
+
+    }
+    private void loadImage(final boolean isFile) {
+        ViewTreeObserver viewTreeObserver = ivTitlePicure.getViewTreeObserver();
+        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                ivTitlePicure.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = ivTitlePicure.getMeasuredHeight();
+                int finalWidth = ivTitlePicure.getMeasuredWidth();
+                if (isFile) {
+                    File file = new File(currentPhotoPath);
+                    Picasso.get().load(file)
+                            .resize(finalWidth, finalHeight).centerCrop()
+                            .into(ivTitlePicure);
+                } else {
+                    Picasso.get().load(event.getEventPictureUrl())
+                            .resize(finalWidth, finalHeight).centerCrop()
+                            .into(ivTitlePicure);
+                }
+                return true;
+            }
+        });
     }
 
     private void setClickListener() {
@@ -150,6 +201,12 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
 
         ivTitlePicure = view.findViewById(R.id.img_create_edit_event_picture);
         btnSelectPicture = view.findViewById(R.id.tv_create_edit_select_picture);
+
+        spCategory = view.findViewById(R.id.sp_create_edit_event_category);
+        adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.eventCategorysCreate, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
     }
 
     @Override
@@ -191,8 +248,11 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
         map.put(getString(R.string.KEY_FIREBASE_EVENT_BEGIN), new Timestamp(begin));
         map.put(getString(R.string.KEY_FIREBASE_EVENT_END), new Timestamp(end));
 
+        map.put(getString(R.string.KEY_FIREBASE_EVENT_CATEGORY)
+                , adapter.getItem(spCategory.getSelectedItemPosition()));
+
         map.put(getString(R.string.KEY_FIREBASE_EVENT_DESCRIPTION), txtDescription.getText().toString());
-        if (currentPhotoPath.equals("")) {
+        if (currentPhotoPath == null) {
             map.put(getString(R.string.KEY_FIREBASE_EVENT_PICTURE_URL), event.getEventPictureUrl());
         } else {
             map.put(getString(R.string.KEY_FIREBASE_EVENT_PICTURE_PATH), currentPhotoPath);
@@ -219,8 +279,12 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
             Toast.makeText(getActivity(), "Das Startdatum liegt hinter dem Endatum"
                     , Toast.LENGTH_LONG).show();
             return false;
-        } else if (currentPhotoPath.equals("") && eventId.equals("")) {
+        } else if (currentPhotoPath == null && eventId.equals("")) {
             Toast.makeText(getActivity(), "Du musst ein Titelbild auswählen"
+                    , Toast.LENGTH_LONG).show();
+            return false;
+        } else if (spCategory.getSelectedItemPosition() == 0) {
+            Toast.makeText(getActivity(), "Du musst eine Kategorie wählen"
                     , Toast.LENGTH_LONG).show();
             return false;
         }
@@ -263,7 +327,7 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
             currentPhotoPath = picturePath;
-            ivTitlePicure.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            loadImage(true);
 
         }
     }
@@ -281,7 +345,17 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         ((CreateEditEventActivity)getActivity()).checkTheme();
-                        String date = dayOfMonth + "." + (monthOfYear + 1) + "." + year;
+
+                        String dayStr = String.valueOf(dayOfMonth);
+                        String monthStr = String.valueOf(monthOfYear+1);
+                        if (dayOfMonth < 10) {
+                            dayStr = "0"+dayOfMonth;
+                        }
+                        if ((monthOfYear+1) < 10) {
+                            monthStr = "0"+(monthOfYear+1);
+                        }
+
+                        String date = dayStr + "." + monthStr + "." + year;
                         txtDate.setText(date);
                     }
                 }, year, month, day);
@@ -300,7 +374,18 @@ public class CreateEditDetailsFragment extends Fragment implements View.OnClickL
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 ((CreateEditEventActivity)getActivity()).checkTheme();
-                String time = hourOfDay + "." + minute;
+
+                String hourStr = String.valueOf(hourOfDay);
+                String minuteStr = String.valueOf(minute);
+
+                if (hourOfDay < 10) {
+                    hourStr = "0"+hourOfDay;
+                }
+                if (minute < 10) {
+                    minuteStr = "0"+minute;
+                }
+
+                String time = hourStr + "." + minuteStr;
                 txtTime.setText(time);
             }
         }, hour, minute, true);

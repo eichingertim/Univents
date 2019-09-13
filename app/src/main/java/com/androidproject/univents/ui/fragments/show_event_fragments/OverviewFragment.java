@@ -119,6 +119,9 @@ public class OverviewFragment extends Fragment {
         if (firebaseUser.getUid().equals(item.getEventOrganizer())) {
             tvParticipate.setVisibility(View.GONE);
             btnParticipate.setVisibility(View.GONE);
+        } else if (item.getEventParticipants() == null) {
+            tvParticipate.setVisibility(View.VISIBLE);
+            btnParticipate.setImageResource(R.drawable.ic_star_border_24dp);
         } else if (item.getEventParticipants().contains(firebaseUser.getUid())) {
             tvParticipate.setVisibility(View.GONE);
             btnParticipate.setImageResource(R.drawable.ic_star_orange_24dp);
@@ -145,6 +148,9 @@ public class OverviewFragment extends Fragment {
         btnParticipate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (item.getEventParticipants() == null) {
+                    participate();
+                }
                 if (item.getEventParticipants().contains(firebaseUser.getUid())) {
                     deleteParticipation();
                 } else {

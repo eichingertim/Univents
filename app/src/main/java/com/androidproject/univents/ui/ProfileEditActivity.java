@@ -215,7 +215,26 @@ public class ProfileEditActivity extends AppCompatActivity {
         btnEditPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail());
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
+                builder.setTitle("Passwort ändern");
+                builder.setMessage("Drücke auf \"Passwort ändern\" und dir wird eine E-Mail gesendet mit den Anweisungen");
+                builder.setPositiveButton("Passwort ändern", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail());
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Dir wurde eine E-Mail " +
+                                "mit Anweisungen gesendet.", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
             }
         });
     }

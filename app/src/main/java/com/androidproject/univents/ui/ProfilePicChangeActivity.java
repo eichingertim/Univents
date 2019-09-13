@@ -1,7 +1,10 @@
 package com.androidproject.univents.ui;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -251,7 +254,7 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
+                checkUserWantToSave();
                 break;
             case R.id.profile_edit_save:
                 saveNewProfilePic();
@@ -259,6 +262,26 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void checkUserWantToSave() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfilePicChangeActivity.this);
+        builder.setTitle("Änderungen speichern");
+        builder.setMessage("Willst du deine Änderungen speichern?");
+        builder.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveNewProfilePic();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onBackPressed();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 
     private void saveNewProfilePic() {
