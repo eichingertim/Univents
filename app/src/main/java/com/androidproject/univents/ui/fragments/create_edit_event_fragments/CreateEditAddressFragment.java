@@ -32,7 +32,7 @@ import java.util.Map;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Fragment where the address things are handled from the create/edit event process
+ * Fragment where the address features are handled from the create/edit event process
  */
 public class CreateEditAddressFragment extends Fragment {
 

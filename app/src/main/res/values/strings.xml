@@ -170,7 +170,6 @@
     <string name="KEY_INTENT_SALE_CATEGORY">sales_category</string>
     <string name="date_format_normal">dd.MM.yyyy - HH.mm</string>
     <string name="dynamic_link_text">Hi, schau dir das Event %s an.</string>
-    <string name="fill_all_fields">Du musst alle Felder ausfüllen</string>
     <string name="startdate_after_enddate">Das Startdatum liegt hinter dem Endatum</string>
     <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
     <string name="select_category">Du musst eine Kategorie wählen</string>
@@ -179,6 +178,7 @@
     <string name="describe_your_location">Du musst deine Location noch genauer beschreiben</string>
     <string name="KEY_LATITUDE">latitude</string>
     <string name="KEY_LONGITUDE">longitude</string>
+    <string name="cannot_edit_this_list">Du kannst diese Liste noch nicht bearbeiten. Erst nach der Veröffentlichung!</string>
 
 
     <!--Categories for events-->

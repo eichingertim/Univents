@@ -19,7 +19,6 @@ import com.androidproject.univents.R;
 import com.androidproject.univents.controller.EventSaleExpandableListAdapter;
 import com.androidproject.univents.models.EventSale;
 import com.androidproject.univents.models.FabClickListener;
-import com.androidproject.univents.ui.CreateEditEventActivity;
 import com.androidproject.univents.ui.CreateEditSaleListsActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,6 +35,9 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Fragment where the sale features are handled from the create/edit event process
+ */
 public class CreateEditSaleFragment extends Fragment implements View.OnClickListener {
 
     private static final int REQUEST_CODE_NEW_LIST = 876;
@@ -82,12 +84,71 @@ public class CreateEditSaleFragment extends Fragment implements View.OnClickList
 
     }
 
+    /**
+     * initializes necessary Firebase-Tools;
+     */
     private void initFirebase() {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
     }
 
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to this fragment
+     */
+    private void initViews(View view) {
+        fabContinue = view.findViewById(R.id.fab_controller_create_edit_event);
+
+        btnNewList = view.findViewById(R.id.btn_add_new_list);
+        expandableListView = view.findViewById(R.id.expand_list_view_sale);
+        expandableListView.setChildDivider(new ColorDrawable(Color.TRANSPARENT));
+        adapter = new EventSaleExpandableListAdapter(getActivity(), items);
+        expandableListView.setAdapter(adapter);
+    }
+
+    /**
+     * sets the onClickListener to the 2 necessary views
+     * and the onGroupClickListener to the expandableListView
+     */
+    private void setClickListeners() {
+        fabContinue.setOnClickListener(this);
+        btnNewList.setOnClickListener(this);
+        expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(final ExpandableListView parent, View v, final int groupPosition, long id) {
+
+                //If the list is a new created list, the parent.getItemAtPosition(groupPosition)
+                //is a string. So this can be used for deciding between created and edited.
+                try {
+                    String string = (String) parent.getItemAtPosition(groupPosition);
+                    Toast.makeText(getActivity(), getString(R.string.cannot_edit_this_list), Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    editSelectedSaleListCategory(groupPosition);
+                }
+
+                return true;
+            }
+        });
+    }
+
+    /**
+     * starts the CreateEditSaleListsActivity, to edit the selected sale-list-category
+     * @param groupPosition
+     */
+    private void editSelectedSaleListCategory(int groupPosition) {
+
+        Intent intent = new Intent(getActivity(), CreateEditSaleListsActivity.class);
+        intent.putExtra(getActivity().getString(R.string.KEY_INTENT_SALE_CATEGORY)
+                , ((EventSale)adapter.getGroup(groupPosition)).getCategory());
+        intent.putExtra(getActivity().getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
+        startActivityForResult(intent, REQUEST_CODE_EDITED_LIST);
+    }
+
+    /**
+     * retrieves all event-sale-items from FireBase and saves one object in an EventSale-Object
+     * and all the created objects are saved in an ArrayList of EventSale-Items
+     */
     private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_SALE)).get()
@@ -104,31 +165,7 @@ public class CreateEditSaleFragment extends Fragment implements View.OnClickList
                 });
     }
 
-    private void setClickListeners() {
-        fabContinue.setOnClickListener(this);
-        btnNewList.setOnClickListener(this);
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Intent intent = new Intent(getActivity(), CreateEditSaleListsActivity.class);
-                intent.putExtra(getActivity().getString(R.string.KEY_INTENT_SALE_CATEGORY)
-                        , ((EventSale)adapter.getGroup(groupPosition)).getCategory());
-                intent.putExtra(getActivity().getString(R.string.KEY_FIREBASE_EVENT_ID), eventId);
-                startActivityForResult(intent, REQUEST_CODE_EDITED_LIST);
-                return true;
-            }
-        });
-    }
 
-    private void initViews(View view) {
-        fabContinue = view.findViewById(R.id.fab_controller_create_edit_event);
-
-        btnNewList = view.findViewById(R.id.btn_add_new_list);
-        expandableListView = view.findViewById(R.id.expand_list_view_sale);
-        expandableListView.setChildDivider(new ColorDrawable(Color.TRANSPARENT));
-        adapter = new EventSaleExpandableListAdapter(getActivity(), items, eventId);
-        expandableListView.setAdapter(adapter);
-    }
 
     @Override
     public void onClick(View v) {
@@ -181,6 +218,11 @@ public class CreateEditSaleFragment extends Fragment implements View.OnClickList
         }
     }
 
+    /**
+     * Creates a key-value-map with all data that the user has entered/selected.
+     * The keys of the map matches with the firebase keys
+     * @return returns a map with the data
+     */
     private Map<String, Object> getMapData() {
         Map<String, Object> map = new HashMap<>();
 

@@ -245,7 +245,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
             DocumentReference refEventSale = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
                     .document(editedEvent.get(getString(R.string.KEY_FIREBASE_EVENT_ID)).toString())
                     .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_SALE)).document(entry.getKey());
-            batch.update(refEventSale, (Map<String, Object>) entry.getValue());
+            batch.set(refEventSale, (Map<String, Object>) entry.getValue());
         }
 
         batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -261,7 +261,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), "Ein Fehler ist aufgetreten"
+                Toast.makeText(getApplicationContext(), e.getMessage()
                         , Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }

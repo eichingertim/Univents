@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
@@ -76,6 +77,9 @@ public class EventSaleExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tvCategory = view.findViewById(R.id.tv_expand_list_category);
         EventSale eventSale = (EventSale) getGroup(groupPosition);
         tvCategory.setText(eventSale.getCategory());
+
+        ExpandableListView mExpandableListView = (ExpandableListView) parent;
+        mExpandableListView.expandGroup(groupPosition);
 
         return view;
     }
