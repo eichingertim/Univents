@@ -15,6 +15,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.HashMap;
 
+/**
+ * Fragment for finishing the create-edit-process
+ */
 public class CreateEditFinishFragment extends Fragment {
 
     private FabClickListener listener;
@@ -39,6 +42,18 @@ public class CreateEditFinishFragment extends Fragment {
 
     }
 
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to this fragment
+     */
+    private void initViews(View view) {
+        fabFinish = view.findViewById(R.id.fab_controller_create_edit_event);
+        fabDeleteEvent = view.findViewById(R.id.fab_delete_event);
+    }
+
+    /**
+     * sets the onClickListener to the 2 necessary views
+     */
     private void setClickListener() {
         fabFinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,10 +67,5 @@ public class CreateEditFinishFragment extends Fragment {
                 listener.onFabClick(new HashMap<String, Object>(), 3);
             }
         });
-    }
-
-    private void initViews(View view) {
-        fabFinish = view.findViewById(R.id.fab_controller_create_edit_event);
-        fabDeleteEvent = view.findViewById(R.id.fab_delete_event);
     }
 }
