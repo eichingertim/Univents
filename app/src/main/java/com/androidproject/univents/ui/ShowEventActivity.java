@@ -29,6 +29,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * This Activity handles the complete show-event action, where an event is displayed
+ * in 4 fragments to the user.
+ */
 public class ShowEventActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -53,6 +57,32 @@ public class ShowEventActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFireBase() {
+        db = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * reads the intent extra (UserID) and gets the data of the event from
+     * Firebase.
+     */
+    private void readIntentCreateItem() {
+        eventid = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID));
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventid)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                eventItem = documentSnapshot.toObject(EventItem.class);
+                initToolbar();
+            }
+        });
+    }
+
+    /**
+     * initializes the viewPager and the tab-layout with its adapter
+     */
     private void initViews() {
         pager = findViewById(R.id.pager_show_event);
         tabs = findViewById(R.id.tabs);
@@ -63,6 +93,9 @@ public class ShowEventActivity extends AppCompatActivity {
         pager.setAdapter(tabsAdapter);
     }
 
+    /**
+     * sets the onPageChange and onTabSelectedListener
+     */
     private void setTabChangeListeners() {
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs));
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -83,32 +116,15 @@ public class ShowEventActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * initializes the toolabr as an actionbar and sets the backIcon available
+     */
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(eventItem.getEventTitle());
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void initFireBase() {
-        db = FirebaseFirestore.getInstance();
-    }
-
-    /**
-     * reads the intent extra (UserID) and gets the data of the event from
-     * Firebase.
-     */
-    private void readIntentCreateItem() {
-        eventid = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID));
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventid)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                eventItem = documentSnapshot.toObject(EventItem.class);
-                initToolbar();
-            }
-        });
     }
 
     @Override
@@ -136,6 +152,10 @@ public class ShowEventActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    /**
+     * Adapter for the viewpager and tablayout
+     */
     public class TabsAdapter extends FragmentStatePagerAdapter {
 
         private int mNumOfTabs;

@@ -46,6 +46,10 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
+/**
+ * This activity the 4 main fragments are initialized and the bottom-nav-view and
+ * navigation drawer are handled.
+ */
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener
         , BottomNavigationView.OnNavigationItemSelectedListener {
 

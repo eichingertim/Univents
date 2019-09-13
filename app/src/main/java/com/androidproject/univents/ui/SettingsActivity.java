@@ -13,6 +13,10 @@ import android.view.MenuItem;
 import com.androidproject.univents.R;
 import com.androidproject.univents.ui.fragments.SettingsFragment;
 
+/**
+ * Classic SettingsActivity that basically adds the SettingsFragment to the layout
+ * container
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

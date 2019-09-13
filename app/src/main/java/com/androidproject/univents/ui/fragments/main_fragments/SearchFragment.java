@@ -140,11 +140,11 @@ public class SearchFragment extends Fragment {
             city = txtCity.getText().toString();
         }
         Intent searchIntent = new Intent(getActivity(), SearchQueryActivity.class);
-        searchIntent.putExtra("searchDateFrom", dateFrom);
-        searchIntent.putExtra("searchDateTo", dateTo);
-        searchIntent.putExtra("searchCategory", categorySelected);
-        searchIntent.putExtra("searchCity", city);
-        searchIntent.putExtra("isSearchForTitle", false);
+        searchIntent.putExtra(getString(R.string.KEY_INTENT_SEARCH_DATE_FROM), dateFrom);
+        searchIntent.putExtra(getString(R.string.KEY_INTENT_SEARCH_DATE_TO), dateTo);
+        searchIntent.putExtra(getString(R.string.KEY_INTENT_SEARCH_CATEGORY), categorySelected);
+        searchIntent.putExtra(getString(R.string.KEY_INTENT_SEARCH_CITY), city);
+        searchIntent.putExtra(getString(R.string.KEY_INTENT_IS_SEARCH_TITLE), false);
         startActivity(searchIntent);
     }
 
@@ -210,7 +210,7 @@ public class SearchFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_menu_search:
                 Intent intent = new Intent(getActivity(), SearchQueryActivity.class);
-                intent.putExtra("isSearchForTitle", true);
+                intent.putExtra(getString(R.string.KEY_INTENT_IS_SEARCH_TITLE), true);
                 startActivity(intent);
                 break;
         }

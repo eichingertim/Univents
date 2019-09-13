@@ -47,6 +47,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This Activity handles the registration-process for the application. Either
+ * for organisation or a private person
+ */
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Constants for viewpager positions

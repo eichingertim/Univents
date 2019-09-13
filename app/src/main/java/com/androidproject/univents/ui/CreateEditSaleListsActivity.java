@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * In this activity an organizer can create a new category-list for the sale-page
+ */
 public class CreateEditSaleListsActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
@@ -51,8 +54,8 @@ public class CreateEditSaleListsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_sale_lists);
 
-        getIntents();
         initFirebase();
+        getIntents();
         initToolbar();
         initViews();
         setClickListener();
@@ -62,6 +65,30 @@ public class CreateEditSaleListsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFirebase() {
+        db = FirebaseFirestore.getInstance();
+    }
+
+    /**
+     * checks whether the intent is available. if yes, the eventId is initialized with
+     * the data from the intent and the isNewList boolean is set correspondingly.
+     */
+    private void getIntents() {
+        if (getIntent().getStringExtra(getString(R.string.KEY_INTENT_SALE_CATEGORY)) != null) {
+            saleCategoryFromIntent = getIntent().getStringExtra(getString(R.string.KEY_INTENT_SALE_CATEGORY));
+            eventId = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID));
+            isNewList = false;
+        } else {
+            isNewList = true;
+        }
+    }
+
+    /**
+     * initializes the toolbar as actionbar and sets the back icon
+     */
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,6 +96,24 @@ public class CreateEditSaleListsActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * initializes the views from the layout
+     */
+    private void initViews() {
+        txtSaleCategory = findViewById(R.id.txt_create_edit_event_sale_category);
+        txtSaleIdentifier = findViewById(R.id.txt_create_edit_event_sale_piece);
+        txtSalePrice = findViewById(R.id.txt_create_edit_event_sale_price);
+
+        btnAddToList = findViewById(R.id.btn_add_new_list_item);
+
+        listViewSaleList = findViewById(R.id.list_view_new_list);
+        adapter = new EventSaleAddListAdapter(this, identifier, prices);
+        listViewSaleList.setAdapter(adapter);
+    }
+
+    /**
+     * sets the clickListener to the button for adding a new sale-list-item
+     */
     private void setClickListener() {
         btnAddToList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,10 +130,9 @@ public class CreateEditSaleListsActivity extends AppCompatActivity {
         });
     }
 
-    private void initFirebase() {
-        db = FirebaseFirestore.getInstance();
-    }
-
+    /**
+     * retrieves data from firebase and saves the data in a map
+     */
     private void getData() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_SALE))
@@ -106,28 +150,6 @@ public class CreateEditSaleListsActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
-    }
-
-    private void getIntents() {
-        if (getIntent().getStringExtra(getString(R.string.KEY_INTENT_SALE_CATEGORY)) != null) {
-            saleCategoryFromIntent = getIntent().getStringExtra(getString(R.string.KEY_INTENT_SALE_CATEGORY));
-            eventId = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID));
-            isNewList = false;
-        } else {
-            isNewList = true;
-        }
-    }
-
-    private void initViews() {
-        txtSaleCategory = findViewById(R.id.txt_create_edit_event_sale_category);
-        txtSaleIdentifier = findViewById(R.id.txt_create_edit_event_sale_piece);
-        txtSalePrice = findViewById(R.id.txt_create_edit_event_sale_price);
-
-        btnAddToList = findViewById(R.id.btn_add_new_list_item);
-
-        listViewSaleList = findViewById(R.id.list_view_new_list);
-        adapter = new EventSaleAddListAdapter(this, identifier, prices);
-        listViewSaleList.setAdapter(adapter);
     }
 
     @Override

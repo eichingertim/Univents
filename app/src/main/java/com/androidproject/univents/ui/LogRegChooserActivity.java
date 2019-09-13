@@ -45,6 +45,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This activity handles the login-process, facebook-login/register process and the
+ * decision between creating an private or organisation account.
+ */
 public class LogRegChooserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REGISTER_REQUEST_CODE = 201;
@@ -84,21 +88,14 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    /**
+     * initializes the progress dialog
+     */
     private void initProgressDialog() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage(getString(R.string.you_to_be_logged_in));
         progressDialog.setCancelable(false);
-    }
-
-    private void checkTheme() {
-        if (isDarkTheme()) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            setTheme(R.style.DarkTheme);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            setTheme(R.style.AppTheme);
-        }
     }
 
     /**
@@ -307,11 +304,14 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    /**
+     * Creates and shows dialog for sending a new email-confirmation
+     */
     private void showDialogSendEmailAgain() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Email bestätigen");
-        builder.setMessage("Sollen wie dir nochmal eine Bestätigungs-Emal senden?");
-        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.confirm_email));
+        builder.setMessage(getString(R.string.should_sned_new_confirm_email));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 auth.getCurrentUser().sendEmailVerification();
@@ -320,7 +320,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                 auth.signOut();
             }
         });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -380,7 +380,7 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
-        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -408,6 +408,16 @@ public class LogRegChooserActivity extends AppCompatActivity implements View.OnC
                 PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPreferences
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
+    }
+
+    private void checkTheme() {
+        if (isDarkTheme()) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            setTheme(R.style.DarkTheme);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            setTheme(R.style.AppTheme);
+        }
     }
 
 }

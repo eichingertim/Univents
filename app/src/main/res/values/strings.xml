@@ -21,6 +21,10 @@
 
     <!--Toolbar titles-->
     <string name="first_name">Vorname</string>
+    <string name="step_one_details">Schritt 1 - Details</string>
+    <string name="step_two_location">Schritt 2 - Location</string>
+    <string name="step_three_sale">Schritt 3 - Verkauf</string>
+    <string name="step_four_confirm">Schritt 4 - Bestätigung</string>
 
     <!--EditText hints-->
     <string name="last_name">Nachname</string>
@@ -61,15 +65,43 @@
     <string name="user_not_receive_emails">Der Nutzer will keine E-Mails bekommen.</string>
     <string name="user_not_receive_calls">Der Nutzer will keine Anrufe bekommen.</string>
     <string name="user_has_no_phone_number">Der Nutzer hat keine Telefonnummer.</string>
+    <string name="updated_deleted">Beitrag erfolgreich gelöscht</string>
+    <string name="you_like_this_update">Dir gefällt dieser Beitrag</string>
+    <string name="event_deleted">Event erfolgreich gelöscht</string>
+    <string name="event_updated">Event erfolgreich aktualisiert</string>
+    <string name="new_event_created">Neues Event erfolgreich erstellt</string>
+    <string name="error_ocurred">Ein Fehler ist aufgetreten</string>
+    <string name="update_posted">Beitrag wurde gepostet</string>
+    <string name="receive_no_more_notifications_for_the_event">Teilnahme erfolgreich entfernt. Du erhälst auch keine Benachrichtigungen mehr.</string>
+    <string name="account_deleted">Konto erfolgreich gelöscht</string>
+
 
     <!--Dialog titles and messages-->
     <string name="check_inbox">Überprüfe deinen Posteingang und bestätige deine Mail-Adresse</string>
     <string name="go_on_with_facebook">weiter mit Facebook</string>
+    <string name="delete_title">%s löschen?</string>
+    <string name="want_to_delete_update">Willst du diesen Beitrag löschen?</string>
+    <string name="delete_event_title">Event löschen?</string>
+    <string name="want_to_delete_event">Willst du dieses Event wirklich löschen?</string>
+    <string name="excited_of_title">Gefällt dir %s ?</string>
+    <string name="mark_update_with_like">Diesen Beitrag mit gefällt mir markieren!</string>
+    <string name="confirm_email">Email bestätigen</string>
+    <string name="should_sned_new_confirm_email">Sollen wie dir nochmal eine Bestätigungs-Emal senden?</string>
+    <string name="delete_account">Konto löschen</string>
+    <string name="want_to_delete_account">Willst du dein Konto wirklich löschen? Es werden alle deine Daten und alle deine Events gelöscht.</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="change_password">Passwort ändern</string>
+    <string name="press_change_password">Drücke auf \"Passwort ändern\" und dir wird eine E-Mail gesendet mit den Anweisungen</string>
+    <string name="save">Speichern</string>
+    <string name="want_to_save_changes">Willst du deine Änderungen speichern?</string>
+
 
     <!--ProgressDialog Messages-->
     <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
     <string name="uploading">Hochladen....</string>
     <string name="you_to_be_registered">Du wirst registriert....</string>
+    <string name="event_is_created">Event wird erstellt und veröffentlicht</string>
+    <string name="event_is_updated">Event wird geupdated</string>
 
     <!--Menu Item titles-->
     <string name="account">Konto</string>
@@ -185,18 +217,24 @@
             <p><br /><strong>7. Erstellung</strong><br />Diese Datenschutz-Verordnung wurde am 11.09 erstellt und gilt ebenso ab dem gleichen Datum.</p>
 
         ]]></string>
-    <string name="update_posted">Beitrag wurde gepostet</string>
     <string name="you_participate">Du nimmst teil</string>
     <string name="participate">Teilnehmen</string>
-    <string name="receive_no_more_notifications_for_the_event">Teilnahme erfolgreich entfernt. Du erhälst auch keine Benachrichtigungen mehr.</string>
-    <string name="excited_of_title">Gefällt dir %s ?</string>
-    <string name="mark_update_with_like">Diesen Beitrag mit gefällt mir markieren!</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="you_like_this_update">Dir gefällt dieser Beitrag</string>
-    <string name="delete_title">%s löschen?</string>
-    <string name="want_to_delete_update">Willst du diesen Beitrag löschen?</string>
-    <string name="updated_deleted">Beitrag erfolgreich gelöscht</string>
+    <string name="okay">Okay</string>
+
+    <string name="a_email_was_sent">Dir wurde eine E-Mail mit Anweisungen gesendet.</string>
+    <string name="data_saved">Daten gespeichert</string>
+    <string name="save_changes">Änderungen speichern</string>
+    <string name="KEY_INTENT_SEARCH_FOR_TITLE">isSearchForTitle</string>
+    <string name="KEY_INTENT_SEARCH_DATE_FROM">searchDateFrom</string>
+    <string name="KEY_INTENT_SEARCH_DATE_TO">searchDateTo</string>
+    <string name="KEY_INTENT_SEARCH_CATEGORY">searchCategory</string>
+    <string name="KEY_INTENT_SEARCH_CITY">searchCity</string>
+    <string name="KEY_INTENT_IS_SEARCH_TITLE">isSearchForTitle</string>
+    <string name="map_box_id">pk.eyJ1IjoidHRqYXBwcHJvamVjdCIsImEiOiJjano1c2NnOGIwNXU3M2RuMGZ3ZXJ0cWJvIn0.dSrsfqwzCei9HvcRDZxwiA</string>
+    <string name="no_city_to_this_coordinates">Diesen Koordinaten konnte kein Ort zugewiesen werden</string>
+
 
     <!--Array Univents creator-->
     <string-array name="app_creator_members">

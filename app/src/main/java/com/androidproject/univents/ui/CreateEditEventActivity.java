@@ -50,6 +50,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This Activity handles the creat- or edit-process of an entire event.
+ */
 public class CreateEditEventActivity extends AppCompatActivity implements FabClickListener {
 
     private FirebaseAuth auth;
@@ -77,24 +80,28 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_event);
 
+        initFirebase();
         getEventIdFromIntent();
         initProgressDialog();
-        initFirebase();
         initToolbar();
         initViewPager();
 
     }
 
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        if (isNewEvent) {
-            progressDialog.setMessage("Event wird erstellt und veröffentlicht");
-        } else {
-            progressDialog.setMessage("Event wird geupdated");
-        }
-        progressDialog.setCancelable(false);
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFirebase() {
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
     }
 
+    /**
+     * checks whether the intent is available. if yes, the eventId is initialized with
+     * the data from the intent and the isNewEvent boolean is set correspondingly.
+     */
     private void getEventIdFromIntent() {
         if (getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID)) != null) {
             eventId = getIntent().getStringExtra(getString(R.string.KEY_FIREBASE_EVENT_ID));
@@ -105,6 +112,75 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
 
     }
 
+    /**
+     * initializes the progressDialog
+     */
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        if (isNewEvent) {
+            progressDialog.setMessage(getString(R.string.event_is_created));
+        } else {
+            progressDialog.setMessage(getString(R.string.event_is_updated));
+        }
+        progressDialog.setCancelable(false);
+    }
+
+    /**
+     * initializes the toolbar as a actionBar
+     */
+    private void initToolbar() {
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+    }
+
+    /**
+     * initializes the viewpager and its adapter
+     */
+    private void initViewPager() {
+        pager = findViewById(R.id.pager_create_edit_event);
+        pager.setAdapter(new CustomPagerAdapter(getSupportFragmentManager()));
+        actionBar.setTitle("Schritt 1 - Details");
+        addOnPageListener();
+    }
+
+    /**
+     * sets the onPageChangeListener to the viewpager
+     * and updates toolbar correspondingly to the current page
+     */
+    private void addOnPageListener() {
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset
+                    , int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        updateToolbar(getString(R.string.step_one_details), false);
+                        break;
+                    case 1:
+                        updateToolbar(getString(R.string.step_two_location), true);
+                        break;
+                    case 2:
+                        updateToolbar(getString(R.string.step_three_sale), true);
+                        break;
+                    case 3:
+                        updateToolbar(getString(R.string.step_four_confirm), true);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+    }
+
+    /**
+     * creates a map with all key-value-pairs that are necessary for a firebase
+     * event-document.
+     */
     private void finishCreateEdit() {
         Map<String, Object> newOrEditedEvent = new HashMap<>();
 
@@ -112,7 +188,6 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                 , firebaseUser.getUid());
         newOrEditedEvent.put(getString(R.string.KEY_FIREBASE_EVENT_PARTICIPANTS),
                 new ArrayList<String>());
-
         if (isNewEvent) {
             newOrEditedEvent.put(getString(R.string.KEY_FIREBASE_EVENT_ID), generateEventId());
         } else {
@@ -131,11 +206,13 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
             addOrUpdateToFirebase(newOrEditedEvent
                     , mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_PICTURE_PATH)).toString());
         }
-
-
-
     }
 
+    /**
+     * Configures a map out of the map mapDetails. Especially checking if
+     * a new eventTitlePicture was set
+     * @return
+     */
     private Map<? extends String,?> getConfiguredDetailsMap() {
         Map<String, Object> map = new HashMap<>();
         map.put(getString(R.string.KEY_FIREBASE_EVENT_TITLE)
@@ -155,6 +232,12 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         return map;
     }
 
+    /**
+     * checks whether its a new Event or an existing event, where the title-picture
+     * of the event was changed.
+     * @param newOrEditedEvent map with necessary firebase key-value-pairs
+     * @param path photo-path (can be null or with existing path)
+     */
     private void addOrUpdateToFirebase(Map<String, Object> newOrEditedEvent, String path) {
         if (isNewEvent) {
             uploadTitlePicture(newOrEditedEvent, path);
@@ -165,6 +248,12 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         }
     }
 
+    /**
+     * uploads the new title picture to firebase firestore and retrieves the downloadURL
+     * and puts it to the existing hash-map
+     * @param newOrEditedEvent key-value firebase hashmap
+     * @param path photo-path
+     */
     private void uploadTitlePicture(final Map<String, Object> newOrEditedEvent, String path) {
         Uri file = Uri.fromFile(new File(path));
         final StorageReference ref = storage.getReference().child("event_title_pictures/"
@@ -198,6 +287,10 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         });
     }
 
+    /**
+     * adds a new event-document to firebase cloud
+     * @param newEvent key-value-pair-map with necessary firebase event data
+     */
     private void addNewFirebaseEventDocument(Map<String, Object> newEvent) {
 
         WriteBatch batch = db.batch();
@@ -216,7 +309,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Neues Event erfolgreich erstellt"
+                Toast.makeText(getApplicationContext(), getString(R.string.new_event_created)
                         , Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 Intent intent = new Intent(CreateEditEventActivity.this, MainActivity.class);
@@ -227,14 +320,17 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
             @Override
             public void onFailure(@NonNull Exception e) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Ein Fehler ist aufgetreten"
+                Toast.makeText(getApplicationContext(), getString(R.string.error_ocurred)
                         , Toast.LENGTH_LONG).show();
             }
         });
     }
 
+    /**
+     * updates a event-document on firebase cloud
+     * @param editedEvent key-value-pair-map with necessary firebase event data
+     */
     private void updateFirebaseEventDocument(Map<String, Object> editedEvent) {
-
         WriteBatch batch = db.batch();
 
         DocumentReference refEvent = db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
@@ -251,7 +347,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         batch.commit().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Event erfolgreich aktualisiert"
+                Toast.makeText(getApplicationContext(), getString(R.string.event_updated)
                         , Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(CreateEditEventActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -261,59 +357,11 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getApplicationContext(), e.getMessage()
+                Toast.makeText(getApplicationContext(), getString(R.string.error_ocurred)
                         , Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
             }
         });
-    }
-
-    private void initToolbar() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        actionBar = getSupportActionBar();
-    }
-
-    private void initViewPager() {
-        pager = findViewById(R.id.pager_create_edit_event);
-        pager.setAdapter(new CustomPagerAdapter(getSupportFragmentManager()));
-        actionBar.setTitle("Schritt 1 - Details");
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        updateToolbar("Schritt 1 - Details", false);
-                        break;
-                    case 1:
-                        updateToolbar("Schritt 2 - Location", true);
-                        break;
-                    case 2:
-                        updateToolbar("Schritt 3 - Verkauf", true);
-                        break;
-                    case 3:
-                        updateToolbar("Schritt 4 - Bestätigung", true);
-                        break;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-    }
-
-    private void initFirebase() {
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
     }
 
     @Override
@@ -337,6 +385,11 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * updates the toolbar title
+     * @param toolbarTitle string with the title that should be displayed
+     * @param backIconEnabled checks if backIcon should be enabled
+     */
     private void updateToolbar(String toolbarTitle, boolean backIconEnabled) {
         actionBar.setTitle(toolbarTitle);
         actionBar.setDisplayHomeAsUpEnabled(backIconEnabled);
@@ -368,11 +421,14 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         }
     }
 
+    /**
+     * creates and shows a dialog to delete the event
+     */
     private void showDeleteEventDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(CreateEditEventActivity.this);
-        builder.setTitle("Event löschen?");
-        builder.setMessage("Willst du dieses Event wirklich löschen?");
-        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.delete_event_title));
+        builder.setMessage(getString(R.string.want_to_delete_event));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 progressDialog.show();
@@ -380,7 +436,7 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                 dialog.dismiss();
             }
         });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -390,6 +446,10 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         dialog.show();
     }
 
+    /**
+     * checks whether its a new event. if yes, the create-process stops and if not
+     * the event is deleted in the firebase cloud.
+     */
     private void deleteEvent() {
         if (isNewEvent) {
             finish();
@@ -399,13 +459,17 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                 @Override
                 public void onSuccess(Void aVoid) {
                     progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Event erfolgreich gelöscht"
+                    Toast.makeText(getApplicationContext(), getString(R.string.event_deleted)
                             , Toast.LENGTH_SHORT).show();
                 }
             });
         }
     }
 
+    /**
+     * generates a random 20 char string
+     * @return a string
+     */
     private String generateEventId() {
         String availableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"

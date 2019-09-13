@@ -31,6 +31,10 @@ import com.mapbox.mapboxsdk.maps.Style;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * In this Activity the user can selected a location by putting the marker
+ * to any spot.
+ */
 public class SelectLocationActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener {
 
     private MapView mapView;
@@ -42,7 +46,7 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Mapbox.getInstance(this, "pk.eyJ1IjoidHRqYXBwcHJvamVjdCIsImEiOiJjano1c2NnOGIwNXU3M2RuMGZ3ZXJ0cWJvIn0.dSrsfqwzCei9HvcRDZxwiA");
+        Mapbox.getInstance(this, getString(R.string.map_box_id));
         setContentView(R.layout.activity_select_location);
 
         mapView = findViewById(R.id.mapView);
@@ -75,6 +79,10 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
         });
     }
 
+    /**
+     * gets the location where the user has put the marker to.
+     * and returns it as latitude and longitude to the CreateEditAddressFragment
+     */
     private void checkAndGetLocation() {
         LatLng mapTargetLatLng = mapboxMap.getCameraPosition().target;
         Geocoder geocoder = new Geocoder(this);
@@ -82,14 +90,14 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
             geocoder.getFromLocation(mapTargetLatLng.getLatitude(), mapTargetLatLng.getLongitude(), 1);
             Intent intent = new Intent(SelectLocationActivity.this
                     , CreateEditEventActivity.class);
-            intent.putExtra("latitude", mapTargetLatLng.getLatitude());
-            intent.putExtra("longitude", mapTargetLatLng.getLongitude());
+            intent.putExtra(getString(R.string.KEY_LATITUDE), mapTargetLatLng.getLatitude());
+            intent.putExtra(getString(R.string.KEY_LONGITUDE), mapTargetLatLng.getLongitude());
             setResult(RESULT_OK, intent);
             finish();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "Diesen Koordinaten konnte " +
-                    "kein Ort zugewiesen werden", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.no_city_to_this_coordinates)
+                    , Toast.LENGTH_LONG).show();
         }
     }
 
@@ -154,7 +162,6 @@ public class SelectLocationActivity extends AppCompatActivity implements OnMapRe
                 enableLocationPlugin(style);
             }
         } else {
-            Toast.makeText(this, "Location not granted", Toast.LENGTH_LONG).show();
             finish();
         }
     }

@@ -40,6 +40,9 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+/**
+ * In this activity the user can edit his account and delete his account.
+ */
 public class ProfileEditActivity extends AppCompatActivity {
 
 
@@ -67,9 +70,12 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         initToolbar();
         initUI();
-        initCurrentUser();
+        initFirebaseAndCurrentUser();
     }
 
+    /**
+     * initialize toolbar as actionbar and sets the back icon visible
+     */
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,34 +83,10 @@ public class ProfileEditActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void initCurrentUser() {
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
-                .document(auth.getCurrentUser().getUid()).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        user = documentSnapshot.toObject(User.class);
-                        fillDataToFields();
-                    }
-                });
-    }
-
-    private void fillDataToFields() {
-        editFirstName.setText(user.getFirstName());
-        editLastname.setText(user.getLastName());
-        editEmail.setText(user.getEmail());
-        editPhone.setText(user.getPhoneNumber());
-        editDescription.setText(user.getDescription());
-        if (user.getOrga()) {
-            containerOrga.setVisibility(View.VISIBLE);
-            editOrga.setText(user.getOrgaName());
-        }
-    }
-
+    /**
+     * initializes the views from the layout
+     */
     private void initUI(){
-
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
         setDeleteClickListener();
 
@@ -131,25 +113,59 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         if (sharedPreferences.getBoolean("phone", true))phone.setChecked(true);
         else phone.setChecked(false);
-
-
     }
 
+    /**
+     * initializes necessary firebase-tools and retrieves data from firebase
+     * and saves it in an user object.
+     */
+    private void initFirebaseAndCurrentUser() {
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
+                .document(auth.getCurrentUser().getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        user = documentSnapshot.toObject(User.class);
+                        fillDataToFields();
+                    }
+                });
+    }
+
+    /**
+     * fill data from the user to the corresponding fields
+     */
+    private void fillDataToFields() {
+        editFirstName.setText(user.getFirstName());
+        editLastname.setText(user.getLastName());
+        editEmail.setText(user.getEmail());
+        editPhone.setText(user.getPhoneNumber());
+        editDescription.setText(user.getDescription());
+        if (user.getOrga()) {
+            containerOrga.setVisibility(View.VISIBLE);
+            editOrga.setText(user.getOrgaName());
+        }
+    }
+
+    /**
+     * sets the onClickListener to the delete button
+     * and creates and shows a dialog to delete an user-account.
+     */
     private void setDeleteClickListener() {
         btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
-                builder.setTitle("Konto löschen");
-                builder.setMessage("Willst du dein Konto wirklich löschen? Es werden alle " +
-                        "deine Daten und alle deine Events gelöscht.");
-                builder.setPositiveButton("Konto löschen", new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.delete_account));
+                builder.setMessage(getString(R.string.want_to_delete_account));
+                builder.setPositiveButton(getString(R.string.delete_account), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteUserDatabaseData(dialog);
                     }
                 });
-                builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -161,6 +177,10 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * deletes the user database-data
+     * @param dialog want-delete-dialog
+     */
     private void deleteUserDatabaseData(final DialogInterface dialog) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_USERS))
                 .document(auth.getCurrentUser().getUid()).delete()
@@ -172,6 +192,10 @@ public class ProfileEditActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * deletes all event documents, where the deleted user was organizer.
+     * @param dialog want-delete-dialog
+     */
     private void deleteEventDatabaseData(final DialogInterface dialog) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
                 .whereEqualTo(getString(R.string.KEY_FIREBASE_EVENT_ORGANIZER), auth.getCurrentUser().getUid())
@@ -192,6 +216,10 @@ public class ProfileEditActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * deletes the account of the user
+     * @param dialog want-delete-dialog
+     */
     private void deleteAccount(final DialogInterface dialog) {
         FirebaseUser user = auth.getCurrentUser();
         user.delete()
@@ -202,8 +230,8 @@ public class ProfileEditActivity extends AppCompatActivity {
                             Intent intent = new Intent(ProfileEditActivity.this
                                     , LogRegChooserActivity.class);
                             startActivity(intent);
-                            Toast.makeText(getApplicationContext(), "Konto erfolgreich" +
-                                    " gelöscht", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.account_deleted)
+                                    , Toast.LENGTH_LONG).show();
                             dialog.dismiss();
                             finish();
                         }
@@ -211,23 +239,25 @@ public class ProfileEditActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * creates and shows a dialog for sending an email to reset a user's password.
+     */
     private void setEditPasswordClickListener() {
         btnEditPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
-                builder.setTitle("Passwort ändern");
-                builder.setMessage("Drücke auf \"Passwort ändern\" und dir wird eine E-Mail gesendet mit den Anweisungen");
-                builder.setPositiveButton("Passwort ändern", new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.change_password));
+                builder.setMessage(getString(R.string.press_change_password));
+                builder.setPositiveButton(getString(R.string.change_password), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         auth.sendPasswordResetEmail(auth.getCurrentUser().getEmail());
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Dir wurde eine E-Mail " +
-                                "mit Anweisungen gesendet.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.a_email_was_sent), Toast.LENGTH_LONG).show();
                     }
                 });
-                builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
@@ -269,18 +299,21 @@ public class ProfileEditActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * creates and shows dialog for saving all edited profile data
+     */
     private void showShouldSaveDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileEditActivity.this);
-        builder.setTitle("Speichern");
-        builder.setMessage("Willst du deine Änderungen speichern?");
+        builder.setTitle(getString(R.string.save));
+        builder.setMessage(getString(R.string.want_to_save_changes));
         builder.setCancelable(false);
-        builder.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 saveProfileInfos();
             }
         });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 onBackPressed();
@@ -290,8 +323,11 @@ public class ProfileEditActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * saves the profile information on the firebase cloud and special
+     * information in shared-preferences;
+     */
     private void saveProfileInfos() {
-
         SharedPreferences sharedPreferences = this.getSharedPreferences(getString(R.string.PREF_KEY_EMAIL_PHONE)
                 , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -306,7 +342,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getApplicationContext(), "Daten gespeichert", Toast.LENGTH_LONG)
+                Toast.makeText(getApplicationContext(), getString(R.string.data_saved), Toast.LENGTH_LONG)
                         .show();
                 saved = true;
             }

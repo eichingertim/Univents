@@ -54,6 +54,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This activity handles the process of changing the profile picture
+ */
 public class ProfilePicChangeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth auth;
@@ -91,24 +94,9 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
     }
 
-    private void initProgressDialog() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(getString(R.string.uploading));
-        progressDialog.setCancelable(false);
-    }
-
-    private void checkStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
-                    ,Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CODE);
-        } else {
-            disableTvEnableButtons();
-        }
-    }
-
+    /**
+     * initializes toolbar as an actionBar and sets the back icon available
+     */
     private void initToolbar() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -116,6 +104,28 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
+    private void initFireBase() {
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        storage = FirebaseStorage.getInstance();
+    }
+
+    /**
+     * initializes progress-dialog
+     */
+    private void initProgressDialog() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.uploading));
+        progressDialog.setCancelable(false);
+    }
+
+    /**
+     * initializes all views from the layout
+     */
     private void initUI() {
         btnFromCamera = findViewById(R.id.btn_select_from_camera);
         btnFromCamera.setEnabled(false);
@@ -131,6 +141,9 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         tvGrantPermission.setOnClickListener(this);
     }
 
+    /**
+     * retrieves the url of the users profile-pic and shows it with PICASSO
+     */
     private void showCurrentProfilePic() {
         Uri photoUrl = firebaseUser.getPhotoUrl();
         if (photoUrl != null) {
@@ -140,6 +153,24 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         }
     }
 
+    /**
+     * checks permission to access storage of device
+     */
+    private void checkStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ,Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CODE);
+        } else {
+            disableTvEnableButtons();
+        }
+    }
+
+    /**
+     * sends an intent to camera, to take a picture and saves the picture in a new file
+     */
     private void selectImageFromCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -165,15 +196,12 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         loadFromGallery();
     }
 
-    private void initFireBase() {
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
-        storage = FirebaseStorage.getInstance();
-    }
-
+    /**
+     * creates a new imageFile
+     * @return a new file that contains the captured image
+     * @throws IOException exception if file not found
+     */
     private File createImageFile () throws IOException {
-
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date());
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -186,6 +214,10 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         return image;
     }
 
+    /**
+     * saves an image to gallery
+     * @param bitmap image selected
+     */
     private void saveImageToGallery(Bitmap bitmap) {
         String savedImageURL = MediaStore.Images.Media.insertImage(
                 getContentResolver(),
@@ -200,6 +232,9 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
     }
 
 
+    /**
+     * sends an intent to select an image from the gallery
+     */
     private void loadFromGallery() {
         Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(i, RESULT_LOAD_IMAGE);
@@ -251,7 +286,6 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case android.R.id.home:
                 if (currentPhotoPath != null) {
@@ -266,15 +300,17 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                 }
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * creates and shows dialog if the user wants to save his profile picture
+     */
     private void checkUserWantToSave() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfilePicChangeActivity.this);
-        builder.setTitle("Änderungen speichern");
-        builder.setMessage("Willst du deine Änderungen speichern?");
-        builder.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
+        builder.setTitle(getString(R.string.save_changes));
+        builder.setMessage(getString(R.string.want_to_save_changes));
+        builder.setPositiveButton(getString(R.string.save), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (currentPhotoPath != null) {
@@ -282,7 +318,7 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                 }
             }
         });
-        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 onBackPressed();
@@ -292,6 +328,9 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         dialog.show();
     }
 
+    /**
+     * create a storage reference to the firebase storage and put a file to it
+     */
     private void saveNewProfilePic() {
         Uri file = Uri.fromFile(new File(currentPhotoPath));
         StorageReference ref = storage.getReference().child("user_profile_pictures/"
@@ -300,6 +339,11 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         upload(uploadTask, ref);
     }
 
+    /**
+     * uploads the selected image to firebase storage.
+     * @param uploadTask started upload task for uploading the image
+     * @param ref storage reference
+     */
     private void upload(UploadTask uploadTask, final StorageReference ref) {
         progressDialog.show();
         Task<Uri> urlTask = (uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -324,10 +368,12 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         });
     }
 
+    /**
+     * updates the reference to the new profile picture(firebaseUser and cloud-document)
+     * @param downloadUri download URL
+     */
     private void updateUserProfileUri(Uri downloadUri) {
-
         final Uri oldDownloadUri = firebaseUser.getPhotoUrl();
-
         final UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setPhotoUri(downloadUri)
                 .build();
@@ -345,7 +391,6 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    Log.d("FIREASE_USER", "User profile updated.");
                                     deleteOldProfilePic(oldDownloadUri);
                                 } else {
                                     progressDialog.dismiss();
@@ -354,10 +399,12 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                         });
             }
         });
-
-
     }
 
+    /**
+     * deletes the old user-profile-picture when the user selected a new one
+     * @param oldDownloadUri download URL of old picture
+     */
     private void deleteOldProfilePic(Uri oldDownloadUri) {
         try {
             StorageReference refOld = storage.getReferenceFromUrl(oldDownloadUri.toString());
@@ -365,7 +412,6 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                 @Override
                 public void onSuccess(Void aVoid) {
                     progressDialog.dismiss();
-                    Log.d("FIREASE_USER_PIC", "Old profilepic deleted");
                     Toast.makeText(getApplicationContext(), getString(R.string.profile_picture_was_changed)
                             , Toast.LENGTH_LONG).show();
                     onBackPressed();

@@ -32,6 +32,9 @@ import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * This activity displays and handles a users profile page
+ */
 public class ProfilePageActivity extends AppCompatActivity {
 
     private ImageButton phoneNumberButton;
