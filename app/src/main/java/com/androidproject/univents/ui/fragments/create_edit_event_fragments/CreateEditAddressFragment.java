@@ -31,6 +31,9 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * Fragment where the address things are handled from the create/edit event process
+ */
 public class CreateEditAddressFragment extends Fragment {
 
     private FirebaseFirestore db;
@@ -62,6 +65,9 @@ public class CreateEditAddressFragment extends Fragment {
         initFirebase();
         initViews(view);
         setClickListener();
+
+        //when the arguments are not null, it means there is already an event
+        //that wants to be edited.
         if (getArguments() != null) {
             eventId = getArguments().getString(getString(R.string.KEY_FIREBASE_EVENT_ID));
             getData();
@@ -69,25 +75,31 @@ public class CreateEditAddressFragment extends Fragment {
 
     }
 
-    private void getData() {
-        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
-                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                event = documentSnapshot.toObject(EventItem.class);
-                fillDataToViews();
-            }
-        });
+    /**
+     * initializes necessary Firebase-Tools;
+     */
+    private void initFirebase() {
+        db = FirebaseFirestore.getInstance();
     }
 
-    private void fillDataToViews() {
-        String exactLocation = event.getEventExactLocation().getLatitude() + ","
-                + event.getEventExactLocation().getLongitude();
-        txtExactLocation.setText(exactLocation);
-        txtCity.setText(event.getEventCity());
-        txtLocationDetails.setText(event.getEventDetailLocation());
+    /**
+     * initializes all views from the layout
+     * @param view layout belonging to this fragment
+     */
+    private void initViews(View view) {
+        fabContinue = view.findViewById(R.id.fab_controller_create_edit_event);
+
+        txtExactLocation = view.findViewById(R.id.txt_create_edit_event_coordinates);
+        txtCity = view.findViewById(R.id.txt_create_edit_event_city);
+        txtLocationDetails = view.findViewById(R.id.txt_create_edit_event_location_details);
+
+        btnSelectLocation = view.findViewById(R.id.btnSelectLocation);
+
     }
 
+    /**
+     * sets the onClickListener to the 2 necessary views
+     */
     private void setClickListener() {
         btnSelectLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +117,36 @@ public class CreateEditAddressFragment extends Fragment {
         });
     }
 
+    /**
+     * retrieves the event data from FireBase and saves the data in an EventItem-Object
+     */
+    private void getData() {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
+                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                event = documentSnapshot.toObject(EventItem.class);
+                fillDataToViews();
+            }
+        });
+    }
+
+    /**
+     * fills the data into the initialized views
+     */
+    private void fillDataToViews() {
+        String exactLocation = event.getEventExactLocation().getLatitude() + ","
+                + event.getEventExactLocation().getLongitude();
+        txtExactLocation.setText(exactLocation);
+        txtCity.setText(event.getEventCity());
+        txtLocationDetails.setText(event.getEventDetailLocation());
+    }
+
+    /**
+     * Creates a key-value-map with all data that the user has entered/selected.
+     * The keys of the map matches with the firebase keys
+     * @return returns a map with the data
+     */
     private Map<String, Object> getDataMap() {
 
         Map<String, Object> map = new HashMap<>();
@@ -124,39 +166,31 @@ public class CreateEditAddressFragment extends Fragment {
 
     }
 
+    /**
+     * checks if all inputs are valid and if not toasts with error-messages are displayed
+     * @return if all is valid or not
+     */
     private boolean checkValidInput() {
 
         if (txtCity.getText().toString().equals("")
                 || txtExactLocation.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Du musst eine Location auswählen"
+            Toast.makeText(getActivity(), getString(R.string.please_select_location)
                     , Toast.LENGTH_LONG).show();
             return false;
         } else if (txtLocationDetails.getText().toString().equals("")) {
-            Toast.makeText(getActivity(), "Du musst deine Location noch genauer beschreiben"
+            Toast.makeText(getActivity(), getString(R.string.describe_your_location)
                     , Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
     }
 
-    private void initViews(View view) {
-        fabContinue = view.findViewById(R.id.fab_controller_create_edit_event);
-
-        txtExactLocation = view.findViewById(R.id.txt_create_edit_event_coordinates);
-        txtCity = view.findViewById(R.id.txt_create_edit_event_city);
-        txtLocationDetails = view.findViewById(R.id.txt_create_edit_event_location_details);
-
-        btnSelectLocation = view.findViewById(R.id.btnSelectLocation);
-
-    }
-
+    /**
+     * starts the SelectLocationActivity, to select a location for the event
+     */
     private void selectLocation() {
         Intent intent = new Intent(getActivity(), SelectLocationActivity.class);
         startActivityForResult(intent, 901);
-    }
-
-    private void initFirebase() {
-        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -164,8 +198,8 @@ public class CreateEditAddressFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 901 && resultCode == RESULT_OK && data != null) {
-            double latitude = (double) data.getExtras().get("latitude");
-            double longitude = (double) data.getExtras().get("longitude");
+            double latitude = (double) data.getExtras().get(getString(R.string.KEY_LATITUDE));
+            double longitude = (double) data.getExtras().get(getString(R.string.KEY_LONGITUDE));
             String coordinates = latitude + "," + longitude;
 
             Geocoder geocoder = new Geocoder(getActivity());

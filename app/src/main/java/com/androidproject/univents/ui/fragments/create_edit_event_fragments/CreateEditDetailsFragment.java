@@ -51,6 +51,9 @@ import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
+/**
+ * This Fragment handles the details in the create/edit-event process
+ */
 public class CreateEditDetailsFragment extends Fragment implements View.OnClickListener {
 
     private static final int IMAGE_REQUEST_CODE = 111;

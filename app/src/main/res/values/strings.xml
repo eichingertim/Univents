@@ -175,6 +175,10 @@
     <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
     <string name="select_category">Du musst eine Kategorie wählen</string>
     <string name="date_pattern_for_saving">dd.MM.yyyyHH.mm</string>
+    <string name="please_select_location">Du musst eine Location auswählen</string>
+    <string name="describe_your_location">Du musst deine Location noch genauer beschreiben</string>
+    <string name="KEY_LATITUDE">latitude</string>
+    <string name="KEY_LONGITUDE">longitude</string>
 
 
     <!--Categories for events-->
