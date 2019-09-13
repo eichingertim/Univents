@@ -68,43 +68,6 @@ public class SearchFragment extends Fragment {
     }
 
     /**
-     * initializes the action button where the filtered search is executed and
-     * sets an onClickListener
-     * @param view current fragment-layout
-     */
-    private void initFloatingSearchButton(View view) {
-        btnSearch = view.findViewById(R.id.btn_search);
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                search();
-            }
-        });
-    }
-
-    /**
-     * initializes the editText where the user can enter a city to
-     * filter the search.
-     * @param view current fragment-layout
-     */
-    private void initCityEditText(View view) {
-        txtCity = view.findViewById(R.id.txt_city);
-    }
-
-    /**
-     * initializes the Spinner and its adapter where the user can select a category
-     * for the search.
-     * @param view current fragment-layout
-     */
-    private void initCategorySpinner(View view) {
-        spCategory = view.findViewById(R.id.sp_category);
-        adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.eventCategorys, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spCategory.setAdapter(adapter);
-    }
-
-    /**
      * initializes the two date fields where the user can select specific dates and
      * sets onClickListeners.
      * @param view current fragment-layout
@@ -122,6 +85,44 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getAndSetDate(tvDateTo);
+            }
+        });
+    }
+
+    /**
+     * initializes the Spinner and its adapter where the user can select a category
+     * for the search.
+     * @param view current fragment-layout
+     */
+    private void initCategorySpinner(View view) {
+        spCategory = view.findViewById(R.id.sp_category);
+        adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.eventCategorys, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCategory.setAdapter(adapter);
+    }
+
+    /**
+     * initializes the editText where the user can enter a city to
+     * filter the search.
+     * @param view current fragment-layout
+     */
+    private void initCityEditText(View view) {
+        txtCity = view.findViewById(R.id.txt_city);
+    }
+
+
+    /**
+     * initializes the action button where the filtered search is executed and
+     * sets an onClickListener
+     * @param view current fragment-layout
+     */
+    private void initFloatingSearchButton(View view) {
+        btnSearch = view.findViewById(R.id.btn_search);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search();
             }
         });
     }

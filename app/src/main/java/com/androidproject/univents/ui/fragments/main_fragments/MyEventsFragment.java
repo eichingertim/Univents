@@ -25,6 +25,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * Fragment where events are separately displayed as
+ * items where the current user is part of or has it created.
+ */
 public class MyEventsFragment extends Fragment {
 
     private FirebaseFirestore db;
@@ -62,11 +66,18 @@ public class MyEventsFragment extends Fragment {
 
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
     private void initFireBase() {
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }
 
+    /**
+     * initializes the recyclerView for the events the user has created
+     * @param view layout belonging to the fragment
+     */
     private void initRvOrgaAndAdapter(View view) {
         rvEventsOrga = view.findViewById(R.id.rv_my_events_orga);
         tvEmptyRvOrga = view.findViewById(R.id.tv_empty_rv_orga);
@@ -84,6 +95,10 @@ public class MyEventsFragment extends Fragment {
         rvEventsOrga.setAdapter(adapterOrga);
     }
 
+    /**
+     * initializes the recyclerView for the events the user participate
+     * @param view layout belonging to the fragment
+     */
     private void initRvPartAndAdapter(View view) {
         rvEventsPart = view.findViewById(R.id.rv_my_events_participate);
         tvEmptyRvPart = view.findViewById(R.id.tv_empty_rv_part);
@@ -101,12 +116,20 @@ public class MyEventsFragment extends Fragment {
         rvEventsPart.setAdapter(adapterPart);
     }
 
+    /**
+     * starts the ShowEventActivity and hands over the eventid of the selected eventitem
+     * @param item selected EventItem
+     */
     private void startShowEventActivity(EventItem item) {
         Intent intent = new Intent(getActivity(), ShowEventActivity.class);
         intent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), item.getEventId());
         startActivity(intent);
     }
 
+    /**
+     * retrieves the data from firebase and fills it to the list
+     * where the user created events are stored
+     */
     private void getDataOrga() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
                 .whereEqualTo(getString(R.string.KEY_FIREBASE_EVENT_ORGANIZER)
@@ -126,6 +149,10 @@ public class MyEventsFragment extends Fragment {
 
     }
 
+    /**
+     * retrieves the data from firebase and fills it to the list
+     * where the user participate events are stored
+     */
     private void getDataPart() {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -144,6 +171,12 @@ public class MyEventsFragment extends Fragment {
         });
     }
 
+    /**
+     * handles the visibility of the recyclerView and its emptyView
+     * @param items List of eventItems
+     * @param recyclerView current recyclerView
+     * @param emptyView recyclerView's emptyView
+     */
     private void setVisibility(ArrayList<EventItem> items, RecyclerView recyclerView
             , TextView emptyView) {
 

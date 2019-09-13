@@ -42,18 +42,18 @@ import com.mapbox.mapboxsdk.maps.Style;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxMap.OnInfoWindowClickListener {
+/**
+ * Fragment where the map is displayed and the events are shown as map-marker
+ */
+public class MapFragment extends Fragment
+        implements OnMapReadyCallback, MapboxMap.OnInfoWindowClickListener {
 
-    private static final String MARKER_SOURCE = "markers-source";
-    private static final String MARKER_STYLE_LAYER = "markers-style-layer";
-    private static final String MARKER_IMAGE = "custom-marker";
+    private FirebaseFirestore db;
 
     private MapView mapView;
     private MapboxMap map;
     private LocationComponent locationComponent;
     private Style mapStyle;
-
-    private FirebaseFirestore db;
 
     private List<EventItem> allEvents = new ArrayList<>();
 
@@ -79,6 +79,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
         
     }
 
+    /**
+     * initializes necessary firebase-tools
+     */
     private void initFireBase() {
         db = FirebaseFirestore.getInstance();
     }
@@ -106,6 +109,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
         });
     }
 
+    /**
+     * retreives the event data from firebase and creates for every event-item
+     * a marker on for the map
+     * @param mapboxMap created map
+     */
     private void getDataAndAddMarkers(final MapboxMap mapboxMap) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS))
                 .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -151,6 +159,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, MapboxM
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * displays a drawable as current device-location
+     */
     private void showLocation() {
         if (checkLocationPermission()) {
             LocationComponentOptions customLocationComponentOptions = LocationComponentOptions.builder(getActivity())

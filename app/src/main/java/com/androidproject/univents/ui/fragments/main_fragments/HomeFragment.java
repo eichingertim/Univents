@@ -49,6 +49,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Fragment for the Home-Page of the app, where events of the selected city are displayed
+ */
 public class HomeFragment extends Fragment {
 
     private static final int PERMISSIONS_REQUEST_LOCATION = 122;
@@ -92,17 +95,121 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * initializes the preferences and the editor
+     * initializes FireBase tools
+     */
+    private void initFireBase() {
+        db = FirebaseFirestore.getInstance();
+    }
+
+    private void initFlProviderClient() {
+        flProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+    }
+
+    /**
+     * initializes the shared-preferences and the editor
      */
     private void initPreferences() {
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
         editor = sharedPref.edit();
     }
 
+    /**
+     * Initializes all views from the layout
+     * @param view includes the layout from the fragment.
+     */
+    private void initViews(View view) {
+        initLocationEditText(view);
+        initGridView(view);
+        initGetLocationButton(view);
+        initSwipeRefresh(view);
+        scrollView = view.findViewById(R.id.scroll_view);
+        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == 0) {
+                    ((MainActivity)getActivity()).setToolbarElevation(0.0f);
+                } else {
+                    ((MainActivity)getActivity()).setToolbarElevation(7.0f);
+                }
+            }
+        });
+    }
+
+    /**
+     * initializes the editText where the current location is displayed and sets
+     * a listener for detecting when the user presses ENTER or DONE on the keyboard.
+     * @param view current fragment-layout
+     */
+    private void initLocationEditText(View view) {
+        txtCurrentLocation = view.findViewById(R.id.txt_current_location);
+        txtCurrentLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
+                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                    editor.putString("currentLocation", txtCurrentLocation.getText().toString());
+                    editor.commit();
+                    getData();
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * initializes the grid-view and its adapter and sets specific configurations
+     * and an onItemClickListener.
+     * @param view current fragment-layout
+     */
+    private void initGridView(View view) {
+        gridViewHomeEvents = view.findViewById(R.id.grid_view_home_events);
+        adapter = new EventItemGridAdapter(getActivity(),  items);
+        gridViewHomeEvents.setAdapter(adapter);
+        gridViewHomeEvents.setSelector(android.R.color.transparent);
+        gridViewHomeEvents.setEmptyView(view.findViewById(R.id.tv_empty_list_view));
+        gridViewHomeEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                EventItem item = (EventItem) parent.getItemAtPosition(position);
+                goToShowEventActivity(item);
+            }
+        });
+    }
+
+    /**
+     * initializes the getLocation-button and sets an onclickListener
+     * @param view current fragment-layout
+     */
+    private void initGetLocationButton(View view) {
+        btnSearchLocation = view.findViewById(R.id.btn_edit_location);
+        btnSearchLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                receiveLocation();
+            }
+        });
+    }
+
+    /**
+     * initializes the swipe refresh layout and sets a refresh listener
+     * @param view current fragment-layout
+     */
+    private void initSwipeRefresh(View view) {
+        swipeRefreshLayout = view.findViewById(R.id.home_swipe_refresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getData();
+            }
+        });
+    }
+
+    /**
+     * gets all necessary permissions
+     */
     private void getPermissions() {
         if (!checkLocationPermission()) {
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
                             , Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_LOCATION);
         }
@@ -150,117 +257,17 @@ public class HomeFragment extends Fragment {
                                 showToast(getString(R.string.cannot_encode_address));
                             }
                             getData();
+                        } else {
+                            showToast("Es konnte kein Standort abgerufen werden .Gib deinen Standort manuell ein.");
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        showToast("Es konnte kein Standort abgerufen werden");
+                        showToast("Es konnte kein Standort abgerufen werden .Gib deinen Standort manuell ein.");
                     }
                 });
-    }
-
-    private void initFlProviderClient() {
-        flProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-    }
-
-    /**
-     * initializes fireBase tools
-     */
-    private void initFireBase() {
-        db = FirebaseFirestore.getInstance();
-    }
-
-    /**
-     * Initializes all views from the layout
-     * @param view includes the layout from the fragment.
-     */
-    private void initViews(View view) {
-        initLocationEditText(view);
-        initGridView(view);
-        initGetLocationButton(view);
-        initSwipeRefresh(view);
-        scrollView = view.findViewById(R.id.scroll_view);
-        scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY == 0) {
-                    ((MainActivity)getActivity()).setToolbarElevation(0.0f);
-                } else {
-                    ((MainActivity)getActivity()).setToolbarElevation(7.0f);
-                }
-            }
-        });
-    }
-
-    /**
-     * initializes the editText where the current location is displayed and sets
-     * a listener for detecting when the user presses ENTER or DONE on the keyboard.
-     * @param view current fragment-layout
-     */
-    private void initLocationEditText(View view) {
-        txtCurrentLocation = view.findViewById(R.id.txt_current_location);
-        txtCurrentLocation.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER))
-                        || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    editor.putString("currentLocation", txtCurrentLocation.getText().toString());
-                    editor.commit();
-                    getData();
-                }
-                return false;
-            }
-        });
-    }
-
-    /**
-     * initializes the getLocation-button and sets an onclickListener
-     * @param view current fragment-layout
-     */
-    private void initGetLocationButton(View view) {
-        btnSearchLocation = view.findViewById(R.id.btn_edit_location);
-        btnSearchLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                receiveLocation();
-            }
-        });
-    }
-
-    /**
-     * initializes the grid-view and its adapter and sets specific configurations
-     * and an onItemClickListener.
-     * @param view current fragment-layout
-     */
-    private void initGridView(View view) {
-        gridViewHomeEvents = view.findViewById(R.id.grid_view_home_events);
-        adapter = new EventItemGridAdapter(getActivity(),  items);
-        gridViewHomeEvents.setAdapter(adapter);
-        gridViewHomeEvents.setSelector(android.R.color.transparent);
-        gridViewHomeEvents.setEmptyView(view.findViewById(R.id.tv_empty_list_view));
-        gridViewHomeEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventItem item = (EventItem) parent.getItemAtPosition(position);
-                goToShowEventActivity(item);
-            }
-        });
-    }
-
-    /**
-     * initializes the swipe refresh layout and sets a refresh listener
-     * @param view current fragment-layout
-     */
-    private void initSwipeRefresh(View view) {
-        swipeRefreshLayout = view.findViewById(R.id.home_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getData();
-            }
-        });
     }
 
     /**
@@ -283,11 +290,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-    private void showToast(String s) {
-        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
-    }
-
     /**
      * opens the ShowEventActivity with the event-item as intent-extra
      * @param item selected event
@@ -296,11 +298,6 @@ public class HomeFragment extends Fragment {
         Intent showEventIntent = new Intent(getActivity(), ShowEventActivity.class);
         showEventIntent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), item.getEventId());
         startActivity(showEventIntent);
-    }
-
-    //TODO: Add Intent to Activity
-    private void goToNewEventActivity() {
-
     }
 
     /**
@@ -316,13 +313,18 @@ public class HomeFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showToast("Berechtigung erteilt");
+                showToast(getString(R.string.permssion_granted));
                 receiveLocation();
             } else {
-                showToast("Berechtigung nicht erteilt");
+                showToast(getString(R.string.permssion_granted));
             }
         }
     }
+
+    private void showToast(String s) {
+        Toast.makeText(getActivity(), s, Toast.LENGTH_LONG).show();
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
