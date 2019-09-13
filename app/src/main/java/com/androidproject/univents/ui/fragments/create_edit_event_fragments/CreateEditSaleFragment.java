@@ -179,11 +179,6 @@ public class CreateEditSaleFragment extends Fragment implements View.OnClickList
             adapter.notifyDataSetChanged();
 
         }
-
-        Toast.makeText(getActivity(), requestCode+""+requestCode, Toast.LENGTH_LONG).show();
-        Toast.makeText(getActivity(), String.valueOf(map.size()), Toast.LENGTH_LONG).show();
-
-
     }
 
     private Map<String, Object> getMapData() {

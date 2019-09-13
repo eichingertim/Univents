@@ -22,11 +22,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Adapter for the ListView which is displayed in the SearchQueryActivity
+ */
 public class EventItemListAdapter extends BaseAdapter implements Filterable {
 
+    Context context;
+
+    //The list "itemsFull" contains all Events and the list "items" contains the queried
+    //items
     List<EventItem> items;
     List<EventItem> itemsFull;
-    Context context;
 
     public EventItemListAdapter(Context context, List<EventItem> items) {
         this.items = items;
@@ -58,35 +64,52 @@ public class EventItemListAdapter extends BaseAdapter implements Filterable {
             view = inflater.inflate(R.layout.layout_event_list_item, null);
         }
 
-        final ImageView imgEventPicture = view.findViewById(R.id.img_list_item_picture);
+        final ImageView ivEventPicture = view.findViewById(R.id.img_list_item_picture);
         TextView tvEventTitle = view.findViewById(R.id.tv_list_item_title);
         TextView tvEventDate = view.findViewById(R.id.tv_list_item_date);
         TextView tvEventCity = view.findViewById(R.id.tv_list_item_city);
 
+        fillViewsWithData(ivEventPicture, tvEventTitle, tvEventDate, tvEventCity, position);
+
+        return view;
+    }
+
+    /**
+     * Fills all given views with the data they belong to
+     * @param ivEventPicture imageView for the event-title-picture
+     * @param tvEventTitle textView for the event-title
+     * @param tvEventDate textView for the event-date
+     * @param tvEventCity textView for the event-city
+     * @param position position of the current eventItem
+     */
+    private void fillViewsWithData(final ImageView ivEventPicture, TextView tvEventTitle, TextView tvEventDate, TextView tvEventCity, int position) {
+
         final EventItem item = items.get(position);
+
+        //Calender which formats its date to the given pattern-string
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(item.getEventBegin().toDate());
-        String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
+        String date = DateFormat.format(context.getString(R.string.date_format_normal), calendar).toString() + " "
                 + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
 
-        ViewTreeObserver viewTreeObserver = imgEventPicture.getViewTreeObserver();
+        //With this ViewTreeObserver, we can check the height and width of the
+        //given imageView and can set the picture to this size with PICASSO.
+        ViewTreeObserver viewTreeObserver = ivEventPicture.getViewTreeObserver();
         viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
-                imgEventPicture.getViewTreeObserver().removeOnPreDrawListener(this);
-                int finalHeight = imgEventPicture.getMeasuredHeight();
-                int finalWidth = imgEventPicture.getMeasuredWidth();
+                ivEventPicture.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = ivEventPicture.getMeasuredHeight();
+                int finalWidth = ivEventPicture.getMeasuredWidth();
                 Picasso.get().load(item.getEventPictureUrl())
                         .resize(finalWidth, finalHeight).centerCrop()
-                        .into(imgEventPicture);
+                        .into(ivEventPicture);
                 return true;
             }
         });
         tvEventTitle.setText(item.getEventTitle());
         tvEventDate.setText(date);
         tvEventCity.setText(item.getEventCity());
-
-        return view;
     }
 
     @Override
@@ -94,6 +117,10 @@ public class EventItemListAdapter extends BaseAdapter implements Filterable {
         return searchFilter;
     }
 
+    /**
+     * This filter filters the events on matching characters
+     * and returns the resulted events
+     */
     private Filter searchFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {

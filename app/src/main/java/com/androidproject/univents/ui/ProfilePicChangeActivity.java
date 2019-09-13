@@ -1,7 +1,6 @@
 package com.androidproject.univents.ui;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -15,6 +14,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -254,10 +254,16 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
 
         switch (item.getItemId()) {
             case android.R.id.home:
-                checkUserWantToSave();
+                if (currentPhotoPath != null) {
+                    checkUserWantToSave();
+                } else {
+                    onBackPressed();
+                }
                 break;
             case R.id.profile_edit_save:
-                saveNewProfilePic();
+                if (currentPhotoPath != null) {
+                    saveNewProfilePic();
+                }
                 break;
         }
 
@@ -271,7 +277,9 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
         builder.setPositiveButton("Speichern", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                saveNewProfilePic();
+                if (currentPhotoPath != null) {
+                    saveNewProfilePic();
+                }
             }
         });
         builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {

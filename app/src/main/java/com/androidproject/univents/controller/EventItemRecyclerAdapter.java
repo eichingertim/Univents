@@ -12,6 +12,9 @@ import com.androidproject.univents.models.EventItem;
 
 import java.util.List;
 
+/**
+ * Adapter for the RecyclerView which is displayed in the MyEventsFragment
+ */
 public class EventItemRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerViewHolder> {
 
     public interface OnItemClickListener {
@@ -21,8 +24,6 @@ public class EventItemRecyclerAdapter extends RecyclerView.Adapter<EventRecycler
     List<EventItem> items;
     Context context;
     private final OnItemClickListener listener;
-
-
 
     public EventItemRecyclerAdapter(Context context, List<EventItem> items
             , OnItemClickListener listener) {
@@ -37,7 +38,7 @@ public class EventItemRecyclerAdapter extends RecyclerView.Adapter<EventRecycler
     public EventRecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.layout_event_recycler_card, viewGroup, false);
-        EventRecyclerViewHolder holder = new EventRecyclerViewHolder(view);
+        EventRecyclerViewHolder holder = new EventRecyclerViewHolder(context, view);
         return holder;
     }
 

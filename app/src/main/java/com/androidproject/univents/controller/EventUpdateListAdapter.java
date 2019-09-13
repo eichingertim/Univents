@@ -12,6 +12,9 @@ import com.androidproject.univents.models.EventUpdate;
 
 import java.util.List;
 
+/**
+ * Adapter for the ListView which is displayed in the UpdatesFragment
+ */
 public class EventUpdateListAdapter extends BaseAdapter {
 
     List<EventUpdate> updates;
@@ -50,12 +53,24 @@ public class EventUpdateListAdapter extends BaseAdapter {
         TextView tvEventUpdateDescription = view.findViewById(R.id.tv_event_update_description);
         TextView tvEventUpdateLikes = view.findViewById(R.id.tv_event_update_likes);
 
+        fillViewsWithData(tvEventUpdateTitle, tvEventUpdateDescription
+                , tvEventUpdateLikes, position);
+
+        return view;
+    }
+
+    /**
+     * Fill all given views with their belonging data
+     * @param tvEventUpdateTitle textView for the update title
+     * @param tvEventUpdateDescription textView for the update description
+     * @param tvEventUpdateLikes textView for the update likes
+     * @param position postion of the selected update-item
+     */
+    private void fillViewsWithData(TextView tvEventUpdateTitle, TextView tvEventUpdateDescription, TextView tvEventUpdateLikes, int position) {
         EventUpdate eventUpdate = updates.get(position);
 
         tvEventUpdateTitle.setText(eventUpdate.getEventUpdateTitle());
         tvEventUpdateDescription.setText(eventUpdate.getEventUpdateDescription());
         tvEventUpdateLikes.setText(String.valueOf(eventUpdate.getEventUpdateLikes()));
-
-        return view;
     }
 }

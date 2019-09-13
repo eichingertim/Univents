@@ -1,14 +1,20 @@
 package com.androidproject.univents.ui.fragments.show_event_fragments;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
@@ -22,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -64,6 +71,84 @@ public class UpdatesFragment extends Fragment {
 
     }
 
+    private void setClickListener() {
+        listViewUpdates.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (event.getEventOrganizer().equals(firebaseUser.getUid())) {
+                    showDeleteDialog((EventUpdate) parent.getItemAtPosition(position));
+                } else {
+                    showLikeDialog((EventUpdate) parent.getItemAtPosition(position));
+                }
+            }
+        });
+    }
+
+    private void showLikeDialog(final EventUpdate itemAtPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Gefällt dir " + itemAtPosition.getEventUpdateTitle() +"?");
+        builder.setMessage("Diesen Beitrag mit gefällt mir markieren!");
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                likeUpdate(itemAtPosition.getEventUpdateId());
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void likeUpdate(String eventUpdateId) {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
+                .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES))
+                .document(eventUpdateId).update(getString(R.string.KEY_FIRBASE_EVENT_UPDATE_LIKES)
+                , FieldValue.increment(1)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getActivity(), "Dir gefällt dieser Beitrag"
+                        , Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showDeleteDialog(final EventUpdate itemAtPosition) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(itemAtPosition.getEventUpdateTitle() + " löschen?");
+        builder.setMessage("Willst du diesen Beitrag löschen?");
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                deleteUpdate(itemAtPosition.getEventUpdateId());
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteUpdate(String eventUpdateId) {
+        db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
+                .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES))
+                .document(eventUpdateId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getActivity(), "Beitrag erfolgreich gelöscht"
+                        , Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void getEventData(final View view) {
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -71,6 +156,7 @@ public class UpdatesFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 event = documentSnapshot.toObject(EventItem.class);
                 initFab(view);
+                setClickListener();
             }
         });
     }

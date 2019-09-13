@@ -1,19 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:text="Drücke den Haken um die Erstellung/Bearbeitung des Events abzuschließen"
+        android:textColor="?attr/textColorDark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/guidelineHorizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:text="Drücke den Papierkorb um das Event zu löschen"
+        android:textColor="?attr/textColorDark"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guidelineHorizontal" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_delete_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Drücke den Haken um die Erstellung/Bearbeitung des Events abzuschließen"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textColor="?attr/textColorDark"
-        android:layout_centerInParent="true"
-        android:layout_margin="30dp"/>
+        android:backgroundTint="#C44F3E"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_delete_black_24dp"
+        android:tint="?attr/textColorLight"
+        android:layout_margin="32dp"/>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,12 +51,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="?attr/colorAccent"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:borderWidth="0dp"
         android:src="@drawable/ic_check_24dp"
         android:tint="?attr/textColorLight"
         android:layout_margin="32dp"/>
 
-</RelativeLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

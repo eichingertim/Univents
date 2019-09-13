@@ -15,6 +15,9 @@ import com.androidproject.univents.models.ExpandedGridView;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Adapter for the ListView which is displayed in the SaleFragment
+ */
 public class EventSaleListAdapter extends BaseAdapter {
 
     private ArrayList<EventSale> sales;
@@ -53,6 +56,19 @@ public class EventSaleListAdapter extends BaseAdapter {
         TextView tvEventSaleTitle = view.findViewById(R.id.tv_event_sale_title);
         ExpandedGridView lvEventSaleItems = view.findViewById(R.id.lv_event_sale_items);
 
+        fillViewsWithData(tvEventSaleTitle, lvEventSaleItems, position);
+
+        return view;
+    }
+
+    /**
+     * fills all given views with their belonging data
+     * @param tvEventSaleTitle textView for the category/title of one sale-list
+     * @param lvEventSaleItems listView for all the items of one sale-list
+     * @param position position of the sale-list
+     */
+    private void fillViewsWithData(TextView tvEventSaleTitle
+            , ExpandedGridView lvEventSaleItems, int position) {
         EventSale sale = sales.get(position);
         ArrayList<String> itemWithPrice = new ArrayList<>();
 
@@ -63,7 +79,5 @@ public class EventSaleListAdapter extends BaseAdapter {
         lvEventSaleItems.setAdapter(adapter);
 
         tvEventSaleTitle.setText(sale.getCategory());
-
-        return view;
     }
 }

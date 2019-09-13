@@ -1,36 +1,29 @@
 package com.androidproject.univents.controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.androidproject.univents.R;
 import com.androidproject.univents.models.EventSale;
-import com.androidproject.univents.ui.CreateEditEventActivity;
-import com.androidproject.univents.ui.CreateEditSaleListsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for the ExpandableListView which is displayed in the CreateEditSaleFragment
+ */
 public class EventSaleExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<EventSale> sales;
-    private String eventId;
 
-    public interface editClickListener {
-        
-    }
-
-    public EventSaleExpandableListAdapter(Context context, List<EventSale> sales, String eventId) {
+    public EventSaleExpandableListAdapter(Context context, List<EventSale> sales) {
         this.context = context;
         this.sales = sales;
-        this.eventId = eventId;
     }
 
     @Override
@@ -81,7 +74,6 @@ public class EventSaleExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView tvCategory = view.findViewById(R.id.tv_expand_list_category);
-
         EventSale eventSale = (EventSale) getGroup(groupPosition);
         tvCategory.setText(eventSale.getCategory());
 
@@ -98,9 +90,7 @@ public class EventSaleExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView tvItem = view.findViewById(R.id.tv_expand_list_item);
-
         String item = (String) getChild(groupPosition, childPosition);
-
         tvItem.setText(item);
 
         return view;

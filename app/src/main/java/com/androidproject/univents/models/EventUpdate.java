@@ -6,17 +6,23 @@ public class EventUpdate {
     private String eventUpdateTitle;
     private String eventUpdateDescription;
     private int eventUpdateLikes;
+    private String eventUpdateId;
 
     private EventUpdate() {
 
     }
 
     public EventUpdate(String eventTitle, String eventUpdateTitle, String eventUpdateDescription
-            , int eventUpdateLikes) {
+            , int eventUpdateLikes, String eventUpdateId) {
         this.eventTitle = eventTitle;
         this.eventUpdateTitle = eventUpdateTitle;
         this.eventUpdateDescription = eventUpdateDescription;
         this.eventUpdateLikes = eventUpdateLikes;
+        this.eventUpdateId = eventUpdateId;
+    }
+
+    public String getEventUpdateId() {
+        return eventUpdateId;
     }
 
     public String getEventTitle() {

@@ -152,6 +152,7 @@
     <string name="KEY_FIRBASE_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
     <string name="KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION">eventUpdateDescription</string>
     <string name="KEY_FIREBASE_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
+    <string name="KEY_FIREBASE_EVENT_UPDATE_ID">eventUpdateId</string>
     <string name="regensburg">Regensburg</string>
 
     <!--values-->
@@ -167,6 +168,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="KEY_INTENT_NEW_SALE_ITEM_MAP">sales_list_map</string>
     <string name="KEY_INTENT_SALE_CATEGORY">sales_category</string>
+    <string name="date_format_normal">dd.MM.yyyy - HH.mm</string>
+    <string name="dynamic_link_text">Hi, schau dir das Event %s an.</string>
 
 
     <!--Categories for events-->

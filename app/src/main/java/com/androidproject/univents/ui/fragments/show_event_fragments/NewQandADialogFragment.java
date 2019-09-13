@@ -169,13 +169,16 @@ public class NewQandADialogFragment extends DialogFragment {
     }
 
     private void fillQuestion() {
-        String document = getArguments().getString("eventQandAId");
+        final String document = getArguments().getString("eventQandAId");
         db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventID)
                 .collection(getString(R.string.KEY_FIREBASE_COLLECTION_QANDAS)).document(document)
                 .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 tvQuestion.setText(documentSnapshot.getString("question"));
+                if (documentSnapshot.getString("answer") != null) {
+                    txtAnswer.setText(documentSnapshot.getString("answer"));
+                }
             }
         });
     }

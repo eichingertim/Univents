@@ -102,19 +102,22 @@ public class NewUpdateDialogFragment extends DialogFragment {
 
     private void publishUpdate() {
         if (canBePublished()) {
+            String updateId = generateEventId();
             Map<String, Object> newUpdate = new HashMap<>();
             newUpdate.put(getString(R.string.KEY_FIRBASE_EVENT_UPDATE_TITLE)
                     , txtUpdateTitle.getText().toString());
             newUpdate.put(getString(R.string.KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION)
                     , txtUpdateDescription.getText().toString());
+            newUpdate.put(getString(R.string.KEY_FIREBASE_EVENT_UPDATE_ID), updateId);
             newUpdate.put(getString(R.string.KEY_FCM_EVENT_UPDATE_EVENT_ID), eventID);
             newUpdate.put(getString(R.string.KEY_FCM_EVENT_UPDATE_EVENT_TITLE), event.getEventTitle());
             db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventID)
-                    .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES)).add(newUpdate)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    .collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENT_UPDATES)).document(updateId).set(newUpdate)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onSuccess(DocumentReference documentReference) {
+                        public void onSuccess(Void aVoid) {
                             Toast.makeText(getActivity(), "Betrag wurde gepostet", Toast.LENGTH_LONG).show();
+                            dismiss();
                         }
                     });
         }
@@ -143,5 +146,21 @@ public class NewUpdateDialogFragment extends DialogFragment {
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
         return sharedPreferences
                 .getBoolean(getString(R.string.PREF_KEY_THEME), false);
+    }
+
+    private String generateEventId() {
+        String availableChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(20);
+
+        for (int i = 0; i < 20; i++) {
+            int index = (int)(availableChars.length()
+                    * Math.random());
+            sb.append(availableChars
+                    .charAt(index));
+        }
+        return sb.toString();
     }
 }

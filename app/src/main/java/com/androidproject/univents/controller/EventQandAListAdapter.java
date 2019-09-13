@@ -13,6 +13,9 @@ import com.androidproject.univents.models.EventQandA;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for the ListView which is displayed in the QandAFragment
+ */
 public class EventQandAListAdapter extends BaseAdapter {
 
     private ArrayList<EventQandA> qandAs;
@@ -48,25 +51,37 @@ public class EventQandAListAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.layout_event_qanda_item, null);
         }
 
-        TextView tvQuestion = view.findViewById(R.id.tv_event_qanda_question);
-        TextView tvAnswer = view.findViewById(R.id.tv_event_qanda_answer);
-        TextView tvBoolAnswered = view.findViewById(R.id.tv_event_qanda_bool_answered);
+        TextView tvQandAQuestion = view.findViewById(R.id.tv_event_qanda_question);
+        TextView tvQandAAnswer = view.findViewById(R.id.tv_event_qanda_answer);
+        TextView tvQandABoolAnswered = view.findViewById(R.id.tv_event_qanda_bool_answered);
 
-        EventQandA qandA = qandAs.get(position);
-
-        tvQuestion.setText(qandA.getQuestion());
-
-        if (qandA.getAnswer() !=  null && !qandA.getAnswer().equals("")) {
-            tvAnswer.setText(qandA.getAnswer());
-            tvAnswer.setVisibility(View.VISIBLE);
-            tvBoolAnswered.setText("Beantwortet");
-            tvBoolAnswered.setTextColor(Color.parseColor("#4caf50"));
-        } else {
-            tvAnswer.setVisibility(View.GONE);
-            tvBoolAnswered.setText("Noch nicht beantwortet");
-            tvBoolAnswered.setTextColor(Color.parseColor("#e64a19"));
-        }
+        fillViewsWithData(tvQandAQuestion, tvQandAAnswer, tvQandABoolAnswered, position);
 
         return view;
+    }
+
+    /**
+     * fills all given views with its their belonging data
+     * @param tvQandAQuestion textView for the Question
+     * @param tvQandAAnswer textView for the Answer
+     * @param tvQandABoolAnswered textView for the text if the question is answered or not.
+     * @param position position of the current qanda-item
+     */
+    private void fillViewsWithData(TextView tvQandAQuestion, TextView tvQandAAnswer
+            , TextView tvQandABoolAnswered, int position) {
+        EventQandA qandA = qandAs.get(position);
+
+        tvQandAQuestion.setText(qandA.getQuestion());
+
+        if (qandA.getAnswer() !=  null && !qandA.getAnswer().equals("")) {
+            tvQandAAnswer.setText(qandA.getAnswer());
+            tvQandAAnswer.setVisibility(View.VISIBLE);
+            tvQandABoolAnswered.setText("Beantwortet");
+            tvQandABoolAnswered.setTextColor(Color.parseColor("#4caf50"));
+        } else {
+            tvQandAAnswer.setVisibility(View.GONE);
+            tvQandABoolAnswered.setText("Noch nicht beantwortet");
+            tvQandABoolAnswered.setTextColor(Color.parseColor("#e64a19"));
+        }
     }
 }

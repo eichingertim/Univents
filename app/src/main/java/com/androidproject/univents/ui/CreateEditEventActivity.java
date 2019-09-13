@@ -2,6 +2,7 @@ package com.androidproject.univents.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -11,7 +12,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -343,12 +347,10 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
         switch (fragmentPosition) {
             case 0:
                 mapDetails = new HashMap<>(data);
-                Toast.makeText(getApplicationContext(), mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_TITLE)).toString(), Toast.LENGTH_LONG).show();
                 pager.setCurrentItem(pager.getCurrentItem()+1);
                 break;
             case 1:
                 mapAdress = new HashMap<>(data);
-                Toast.makeText(getApplicationContext(), mapDetails.get(getString(R.string.KEY_FIREBASE_EVENT_TITLE)).toString(), Toast.LENGTH_LONG).show();
                 pager.setCurrentItem(pager.getCurrentItem()+1);
                 break;
             case 2:
@@ -356,9 +358,51 @@ public class CreateEditEventActivity extends AppCompatActivity implements FabCli
                 pager.setCurrentItem(pager.getCurrentItem()+1);
                 break;
             case 3:
-                progressDialog.show();
-                finishCreateEdit();
+                if (data == null) {
+                    progressDialog.show();
+                    finishCreateEdit();
+                } else {
+                    showDeleteEventDialog();
+                }
                 break;
+        }
+    }
+
+    private void showDeleteEventDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CreateEditEventActivity.this);
+        builder.setTitle("Event löschen?");
+        builder.setMessage("Willst du dieses Event wirklich löschen?");
+        builder.setPositiveButton("Ja", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                progressDialog.show();
+                deleteEvent();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("Nein", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void deleteEvent() {
+        if (isNewEvent) {
+            finish();
+        } else {
+            db.collection(getString(R.string.KEY_FIREBASE_COLLECTION_EVENTS)).document(eventId)
+                    .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Event erfolgreich gelöscht"
+                            , Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

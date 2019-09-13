@@ -26,12 +26,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
+/**
+ * Adapter for the GridView which is displayed in the HomeFragment
+ */
 public class EventItemGridAdapter extends BaseAdapter {
 
     private Context context;
     private List<EventItem> items;
 
+    /**
+     * Small floating ActionButton, where the user can share an event, when he clicks on it.
+     */
     private ImageButton btnShareEvent;
+
 
     public EventItemGridAdapter(@NonNull Context context, List<EventItem> items) {
 
@@ -66,43 +73,61 @@ public class EventItemGridAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.layout_event_card, null);
         }
 
-        final ImageView imgPicture = view.findViewById(R.id.img_card_event_picture);
-        TextView tvTitle = view.findViewById(R.id.tv_card_event_title);
-        TextView tvDateTime = view.findViewById(R.id.tv_card_event_date_time);
-        TextView tvDescrLocation = view.findViewById(R.id.tv_card_event_descr_location);
+        ImageView ivEventPicture = view.findViewById(R.id.img_card_event_picture);
+        TextView tvEventTitle = view.findViewById(R.id.tv_card_event_title);
+        TextView tvEventDateTime = view.findViewById(R.id.tv_card_event_date_time);
+        TextView tvEventLocationDetail = view.findViewById(R.id.tv_card_event_descr_location);
         btnShareEvent = view.findViewById(R.id.card_share);
 
-        final EventItem event = items.get(position);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(event.getEventBegin().toDate());
-        String date = DateFormat.format("dd.MM.yyyy - HH.mm", calendar).toString() + " "
-                + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
-        handleOnClickShare(event);
-
-        ViewTreeObserver viewTreeObserver = imgPicture.getViewTreeObserver();
-        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                imgPicture.getViewTreeObserver().removeOnPreDrawListener(this);
-                int finalHeight = imgPicture.getMeasuredHeight();
-                int finalWidth = imgPicture.getMeasuredWidth();
-                Picasso.get().load(event.getEventPictureUrl())
-                        .resize(finalWidth, finalHeight).centerCrop()
-                        .into(imgPicture);
-                return true;
-            }
-        });
-
-        tvTitle.setText(event.getEventTitle());
-        tvDateTime.setText(date);
-        tvDescrLocation.setText(event.getEventDetailLocation());
+        fillViewsWithData(ivEventPicture, tvEventTitle, tvEventDateTime, tvEventLocationDetail, position);
 
         return view;
 
     }
 
     /**
-     * handles when the user presses the share button of an item
+     * Fills all given views with the data they belong to.
+     * @param ivEventPicture imageView for the event-title-picture
+     * @param tvEventTitle textView for the event-title
+     * @param tvEventDateTime textView for the event's date and time
+     * @param tvEventLocationDetail textView for the event-description
+     * @param position position of the current/selected event
+     */
+    private void fillViewsWithData(final ImageView ivEventPicture, TextView tvEventTitle
+            , TextView tvEventDateTime, TextView tvEventLocationDetail, int position) {
+        final EventItem event = items.get(position);
+
+        //Calender which formats its date to the given pattern-string
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(event.getEventBegin().toDate());
+        String date = DateFormat.format(context.getString(R.string.date_format_normal), calendar).toString() + " "
+                + calendar.getTimeZone().getDisplayName(false, TimeZone.SHORT, Locale.getDefault());
+        handleOnClickShare(event);
+
+        //With this ViewTreeObserver, we can check the height and width of the
+        //given imageView and can set the picture to this size with PICASSO.
+        ViewTreeObserver viewTreeObserver = ivEventPicture.getViewTreeObserver();
+        viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                ivEventPicture.getViewTreeObserver().removeOnPreDrawListener(this);
+                int finalHeight = ivEventPicture.getMeasuredHeight();
+                int finalWidth = ivEventPicture.getMeasuredWidth();
+                Picasso.get().load(event.getEventPictureUrl())
+                        .resize(finalWidth, finalHeight).centerCrop()
+                        .into(ivEventPicture);
+                return true;
+            }
+        });
+
+        tvEventTitle.setText(event.getEventTitle());
+        tvEventDateTime.setText(date);
+        tvEventLocationDetail.setText(event.getEventDetailLocation());
+    }
+
+    /**
+     * initializes strings with their belonging data
+     * and creates a message for the dynamic link to send
      * @param eventItem pressed item
      */
     private void handleOnClickShare(final EventItem eventItem) {
@@ -113,8 +138,8 @@ public class EventItemGridAdapter extends BaseAdapter {
                 String eventID = eventItem.getEventId();
                 String eventDescr = eventItem.getEventDescription();
 
-                String message = "Hi, schau dir das Event " + eventName
-                        + " an. \n" + buildDynamicLink(eventID, eventName, eventDescr);
+                String message = String.format(context.getString(R.string.dynamic_link_text), eventName)
+                        + buildDynamicLink(eventID, eventName, eventDescr);
                 shareDynamicLink(message);
             }
         });

@@ -13,10 +13,12 @@ import com.androidproject.univents.R;
 import com.androidproject.univents.models.FabClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.HashMap;
+
 public class CreateEditFinishFragment extends Fragment {
 
     private FabClickListener listener;
-    private FloatingActionButton fabFinish;
+    private FloatingActionButton fabFinish, fabDeleteEvent;
 
     public void setFabClickListener(FabClickListener listener) {
         this.listener = listener;
@@ -44,9 +46,16 @@ public class CreateEditFinishFragment extends Fragment {
                 listener.onFabClick(null, 3);
             }
         });
+        fabDeleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onFabClick(new HashMap<String, Object>(), 3);
+            }
+        });
     }
 
     private void initViews(View view) {
         fabFinish = view.findViewById(R.id.fab_controller_create_edit_event);
+        fabDeleteEvent = view.findViewById(R.id.fab_delete_event);
     }
 }

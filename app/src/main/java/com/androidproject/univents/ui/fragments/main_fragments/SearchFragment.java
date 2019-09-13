@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidproject.univents.R;
+import com.androidproject.univents.ui.CreateEditEventActivity;
 import com.androidproject.univents.ui.SearchQueryActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipDrawable;
@@ -156,6 +157,8 @@ public class SearchFragment extends Fragment {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
+        getActivity().setTheme(R.style.AppTheme);
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                 new DatePickerDialog.OnDateSetListener() {
 
@@ -163,6 +166,7 @@ public class SearchFragment extends Fragment {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
 
+                        ((CreateEditEventActivity)getActivity()).checkTheme();
                         writeDateToTextView(year, monthOfYear, dayOfMonth, tvDate);
 
                     }

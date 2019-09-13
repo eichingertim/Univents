@@ -12,6 +12,9 @@ import com.androidproject.univents.R;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for the listView which is displayd in the CreateEditSaleListsActivity
+ */
 public class EventSaleAddListAdapter extends BaseAdapter {
 
     private Context context;
@@ -55,6 +58,21 @@ public class EventSaleAddListAdapter extends BaseAdapter {
         ImageButton btnRemoveItem = view.findViewById(R.id.btn_remove_sale_list_item);
         TextView tvSaleListItem = view.findViewById(R.id.tv_sale_list_item);
 
+        fillViewsWithDataAndSetClickListener(btnRemoveItem, tvSaleListItem, position);
+        return view;
+    }
+
+    /**
+     * fills the given views with their belonging data and sets an onClickListener
+     * to the "removeButton"
+     * @param btnRemoveItem button where the user can remove a sale-list-item
+     * @param tvSaleListItem textView for the sale-list-item, where the identifier and
+     *                       price is displayed.
+     * @param position position of the sale-list-item
+     */
+    private void fillViewsWithDataAndSetClickListener(ImageButton btnRemoveItem
+            , TextView tvSaleListItem, final int position) {
+
         String item  = identifier.get(position) + ": " + price.get(position) + " €";
         tvSaleListItem.setText(item);
 
@@ -64,7 +82,6 @@ public class EventSaleAddListAdapter extends BaseAdapter {
                 removeItem(position);
             }
         });
-        return view;
     }
 
     private void removeItem(int position) {
