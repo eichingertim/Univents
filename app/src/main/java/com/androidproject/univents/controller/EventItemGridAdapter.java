@@ -138,7 +138,7 @@ public class EventItemGridAdapter extends BaseAdapter {
                 String eventID = eventItem.getEventId();
                 String eventDescr = eventItem.getEventDescription();
 
-                String message = String.format(context.getString(R.string.dynamic_link_text), eventName)
+                String message = String.format(context.getString(R.string.dynamic_link_text), eventName) + "\n\n"
                         + buildDynamicLink(eventID, eventName, eventDescr);
                 shareDynamicLink(message);
             }

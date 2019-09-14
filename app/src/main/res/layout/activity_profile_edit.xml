@@ -383,7 +383,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="?attr/textColorLight"
                 android:layout_margin="20dp"
-                android:text="Konto löchen"
+                android:text="Konto löschen"
                 android:background="@drawable/form_round_corners_orange"
                 android:backgroundTint="#C44F3E"
                 app:layout_constraintTop_toBottomOf="@id/container_profile_orga"

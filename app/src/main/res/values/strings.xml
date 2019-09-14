@@ -5,6 +5,7 @@
     <string name="fb_login_protocol_scheme">fb696143180856191</string>
     <string name="updates_notification_channel_id">UPDATE3152ID</string>
     <string name="fileprovider_path">com.androidproject.univents.fileprovider</string>
+    <string name="map_box_id">pk.eyJ1IjoidHRqYXBwcHJvamVjdCIsImEiOiJjano1c2NnOGIwNXU3M2RuMGZ3ZXJ0cWJvIn0.dSrsfqwzCei9HvcRDZxwiA</string>
 
     <!--Drawer Toggle-->
     <string name="CLOSE">close</string>
@@ -74,6 +75,8 @@
     <string name="update_posted">Beitrag wurde gepostet</string>
     <string name="receive_no_more_notifications_for_the_event">Teilnahme erfolgreich entfernt. Du erhälst auch keine Benachrichtigungen mehr.</string>
     <string name="account_deleted">Konto erfolgreich gelöscht</string>
+    <string name="a_email_was_sent">Dir wurde eine E-Mail mit Anweisungen gesendet.</string>
+    <string name="no_city_to_this_coordinates">Diesen Koordinaten konnte kein Ort zugewiesen werden</string>
 
 
     <!--Dialog titles and messages-->
@@ -145,6 +148,12 @@
     <string name="KEY_INTENT_IS_ANSWER">is_answer</string>
     <string name="KEY_LATITUDE">latitude</string>
     <string name="KEY_LONGITUDE">longitude</string>
+    <string name="KEY_INTENT_SEARCH_FOR_TITLE">isSearchForTitle</string>
+    <string name="KEY_INTENT_SEARCH_DATE_FROM">searchDateFrom</string>
+    <string name="KEY_INTENT_SEARCH_DATE_TO">searchDateTo</string>
+    <string name="KEY_INTENT_SEARCH_CATEGORY">searchCategory</string>
+    <string name="KEY_INTENT_SEARCH_CITY">searchCity</string>
+    <string name="KEY_INTENT_IS_SEARCH_TITLE">isSearchForTitle</string>
 
     <!--Firebase Cloud Messaging Keys-->
     <string name="KEY_FCM_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
@@ -213,7 +222,7 @@
             <p><br /><strong>3. Speicherdauer</strong><br />Die Daten werden gel&ouml;scht nachdem ein Konto von dem Nutzer selbst gel&ouml;scht worden ist.</p>
             <p><br /><strong>4. Zugriffsrechte</strong> <br />Einsicht auf gespeichert Daten haben nur die Entwickler. Eine Daten&uuml;bermittlung personenbezogener Daten an Dritte findet nicht statt.</p>
             <p><br /><strong>5. Nutzungsverhalten</strong><br />Das Nutzungsverhalten aller Nutzer wird nicht gespeichert oder ausgewertet.</p>
-            <p><br /><strong>6. App-Betreiber</strong><br />Univents ist ein von Tim Eichinger entwickelte App. Unterst&uuml;tzt wurde er dabei von Jonas Ernst und Timon Lorenz.</p>
+            <p><br /><strong>6. App-Betreiber</strong><br />Univents ist eine von Tim Eichinger, Jonas Ernst und Timon Lorenz entwickelte App.</p>
             <p><br /><strong>7. Erstellung</strong><br />Diese Datenschutz-Verordnung wurde am 11.09 erstellt und gilt ebenso ab dem gleichen Datum.</p>
 
         ]]></string>
@@ -222,19 +231,8 @@
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="okay">Okay</string>
-
-    <string name="a_email_was_sent">Dir wurde eine E-Mail mit Anweisungen gesendet.</string>
     <string name="data_saved">Daten gespeichert</string>
     <string name="save_changes">Änderungen speichern</string>
-    <string name="KEY_INTENT_SEARCH_FOR_TITLE">isSearchForTitle</string>
-    <string name="KEY_INTENT_SEARCH_DATE_FROM">searchDateFrom</string>
-    <string name="KEY_INTENT_SEARCH_DATE_TO">searchDateTo</string>
-    <string name="KEY_INTENT_SEARCH_CATEGORY">searchCategory</string>
-    <string name="KEY_INTENT_SEARCH_CITY">searchCity</string>
-    <string name="KEY_INTENT_IS_SEARCH_TITLE">isSearchForTitle</string>
-    <string name="map_box_id">pk.eyJ1IjoidHRqYXBwcHJvamVjdCIsImEiOiJjano1c2NnOGIwNXU3M2RuMGZ3ZXJ0cWJvIn0.dSrsfqwzCei9HvcRDZxwiA</string>
-    <string name="no_city_to_this_coordinates">Diesen Koordinaten konnte kein Ort zugewiesen werden</string>
-
 
     <!--Array Univents creator-->
     <string-array name="app_creator_members">

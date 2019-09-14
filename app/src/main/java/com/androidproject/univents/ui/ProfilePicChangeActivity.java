@@ -414,13 +414,25 @@ public class ProfilePicChangeActivity extends AppCompatActivity implements View.
                     progressDialog.dismiss();
                     Toast.makeText(getApplicationContext(), getString(R.string.profile_picture_was_changed)
                             , Toast.LENGTH_LONG).show();
-                    onBackPressed();
+                    reloadApp();
                 }
             });
         } catch (Exception e) {
             progressDialog.dismiss();
             e.printStackTrace();
         }
+    }
+
+    /**
+     * the reloads the apply the changes
+     */
+    private void reloadApp() {
+        Intent i = getBaseContext().getPackageManager().
+                getLaunchIntentForPackage(getBaseContext().getPackageName());
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finish();
     }
 
     /**
