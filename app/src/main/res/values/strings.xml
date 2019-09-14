@@ -54,7 +54,7 @@
     <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
     <string name="permssion_granted">Berechtigung erteilt</string>
     <string name="permission_denied">Berechtigung nicht erteilt</string>
-    <string name="profile_picture_was_changed">Dein Profilbild wurde geändert!</string>
+    <string name="profile_picture_was_changed">Dein Profilbild wurde geändert! Falls dir kein Profilbild angezeigt wird, schließe die App komplett und starte sie neu</string>
     <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
     <string name="select_category">Du musst eine Kategorie wählen</string>
     <string name="answer_posted">Antwort wurde gepostet</string>
