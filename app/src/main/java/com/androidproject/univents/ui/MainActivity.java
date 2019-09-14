@@ -232,22 +232,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void handleSearchClick() {
-        toolbar.setTitle("Suchen");
+        toolbar.setTitle(getString(R.string.search));
         mainViewPager.setCurrentItem(SEARCH);
     }
 
     private void handleHomeClick() {
-        toolbar.setTitle("Home");
+        toolbar.setTitle(getString(R.string.home));
         mainViewPager.setCurrentItem(HOME);
     }
 
     private void handleMapClick() {
-        toolbar.setTitle("Karte");
+        toolbar.setTitle(getString(R.string.map));
         mainViewPager.setCurrentItem(MAP);
     }
 
     private void handleMyEventsClick() {
-        toolbar.setTitle("Meine Events");
+        toolbar.setTitle(getString(R.string.my_events));
         mainViewPager.setCurrentItem(MY_EVENTS);
     }
 
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Uri deepLink = null;
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
-                            String eventID = deepLink.getPath();
+                            String eventID = deepLink.getPath().replace("/univents","");
                             Intent intent = new Intent(MainActivity.this, ShowEventActivity.class);
                             intent.putExtra(getString(R.string.KEY_FIREBASE_EVENT_ID), eventID);
                             startActivity(intent);

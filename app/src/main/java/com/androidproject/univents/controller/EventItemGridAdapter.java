@@ -154,7 +154,7 @@ public class EventItemGridAdapter extends BaseAdapter {
      */
     private Uri buildDynamicLink(String eventID, String eventTitle, String eventDescr) {
         DynamicLink dynamicLink = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://www.univents.com/"+eventID))
+                .setLink(Uri.parse("https://ttjappproject.wixsite.com/univents"+eventID))
                 .setDomainUriPrefix("https://univents.page.link")
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
                 .setIosParameters(new DynamicLink.IosParameters.Builder("com.androidproject.univents").build())
