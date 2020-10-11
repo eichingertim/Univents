@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.show_event_fragments.OverviewFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_event_picture"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/container_preview_date"
+                android:layout_width="70dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintHeight_percent="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textColor="#ff3300"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="{month}"/>
+
+                <TextView
+                    android:id="@+id/tv_day"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:textColor="?attr/textColorDark"
+                    app:layout_constraintHeight_percent="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_month"
+                    android:text="{day}"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_event_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toEndOf="@id/container_preview_date"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/container_participate_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="?attr/textColorDark"
+                android:textSize="24sp"
+                android:text="{title}"
+                android:gravity="center_vertical"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                />
+
+            <RelativeLayout
+                android:id="@+id/container_participate_button"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <ImageView
+                    android:id="@+id/btn_participate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@id/tv_participate"
+                    android:padding="7dp"
+                    android:src="@drawable/ic_star_border_24dp"
+                    android:tint="?attr/normalIconColor"/>
+
+                <TextView
+                    android:id="@+id/tv_participate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Teilnehmen"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:textSize="12sp"
+                    android:textColor="?attr/textColorDark"/>
+
+            </RelativeLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="?attr/textColorDarkDetails"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvOrganizerTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Organisator"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_margin="15dp"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_organizer_profile_pic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintTop_toBottomOf="@id/tvOrganizerTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:civ_border_width="2dp"
+                android:src="?attr/colorAccent"
+                android:layout_marginStart="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="8dp"
+                app:civ_border_color="?attr/normalIconColor"/>
+
+            <TextView
+                android:id="@+id/tvOrganizer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="{organizer}"
+                android:textSize="18sp"
+                android:layout_margin="15dp"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintTop_toBottomOf="@id/tvOrganizerTitle"
+                app:layout_constraintStart_toEndOf="@id/img_organizer_profile_pic"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="?attr/textColorDarkDetails"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="7dp"
+            android:paddingEnd="7dp"
+            android:paddingTop="7dp">
+
+            <ImageView
+                android:id="@+id/icon_time"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/ic_access_time_24dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:tint="?attr/textColorDarkDetails"/>
+
+            <TextView
+                android:id="@+id/tv_date_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="{date_time}"
+                app:layout_constraintStart_toEndOf="@id/icon_time"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="16sp"
+                android:textColor="?attr/textColorDark"
+                android:layout_margin="15dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="7dp">
+
+            <ImageView
+                android:id="@+id/icon_location"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_location_24dp"
+                app:layout_constraintTop_toTopOf="@id/tv_exact_location"
+                app:layout_constraintStart_toStartOf="parent"
+                android:tint="?attr/textColorDarkDetails"/>
+
+            <TextView
+                android:id="@+id/tv_exact_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="{exact_location}"
+                app:layout_constraintStart_toEndOf="@id/icon_location"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="16sp"
+                android:textColor="?attr/textColorDark"
+                android:layout_margin="15dp"/>
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="{city}"
+                app:layout_constraintStart_toEndOf="@id/icon_location"
+                app:layout_constraintTop_toBottomOf="@id/tv_exact_location"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="16sp"
+                android:textColor="?attr/textColorDark"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/tv_location_detail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="{location_details}"
+                app:layout_constraintStart_toEndOf="@id/icon_location"
+                app:layout_constraintTop_toBottomOf="@id/tv_city"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="16sp"
+                android:textColor="?attr/textColorDark"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8dp"
+            android:background="?attr/textColorDarkDetails"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Beschreibung"
+                android:layout_margin="15dp"
+                android:textStyle="bold"
+                android:textColor="?attr/textColorDark"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/tv_event_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="?attr/textColorDark"
+                android:text="{description}"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

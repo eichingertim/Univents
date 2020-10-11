@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSelectLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/form_round_corners_orange"
+                android:text="Location auswählen"
+                android:textColor="?attr/textColorLight"
+                android:layout_margin="16dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="5dp"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark">
+
+                <EditText
+                    android:id="@+id/txt_create_edit_event_coordinates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Genaue Koordinaten"
+                    android:focusable="false"
+                    android:textColor="?attr/textColorDark"
+                    android:textColorHint="?attr/textColorHint"
+                    android:backgroundTint="?attr/textColorDark"
+                    android:inputType="textPersonName"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="5dp"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark">
+
+                <EditText
+                    android:id="@+id/txt_create_edit_event_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="Ort"
+                    android:textColor="?attr/textColorDark"
+                    android:textColorHint="?attr/textColorHint"
+                    android:backgroundTint="?attr/textColorDark"
+                    android:inputType="textPersonName"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="0dp"
+                android:text='Individuelle Beschreibung (Beispielsweise "Fakultätsgebäude Mathematik Raum M 1.0.41"'
+                android:textColor="?attr/textColorDarkDetails" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="5dp"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark">
+
+                <EditText
+                    android:id="@+id/txt_create_edit_event_location_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Beschreibung der Location"
+                    android:textColor="?attr/textColorDark"
+                    android:textColorHint="?attr/textColorHint"
+                    android:backgroundTint="?attr/textColorDark"
+                    android:inputType="textPersonName"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_controller_create_edit_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorAccent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:borderWidth="0dp"
+        android:src="@drawable/ic_arrow_forward_24dp"
+        android:tint="?attr/textColorLight"
+        android:layout_margin="32dp"/>
+
+</RelativeLayout>
+

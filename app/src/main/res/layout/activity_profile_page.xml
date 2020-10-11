@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <ImageButton
+            android:id="@+id/btn_profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/prof_email"
+            android:background="@drawable/form_circle"
+            android:padding="20dp"
+            android:elevation="4dp"
+            android:tint="?attr/normalIconColor"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_pic_container"
+            app:layout_constraintEnd_toStartOf="@+id/profile_pic_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/profile_pic_container"
+            app:srcCompat="@drawable/ic_mail_outline_24dp" />
+
+        <ImageButton
+            android:id="@+id/btn_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prof_number"
+            android:background="@drawable/form_circle"
+            android:padding="20dp"
+            android:elevation="4dp"
+            android:tint="?attr/normalIconColor"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_pic_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/profile_pic_container"
+            app:layout_constraintTop_toTopOf="@id/profile_pic_container"
+            app:srcCompat="@drawable/ic_local_phone_24dp" />
+
+        <FrameLayout
+            android:id="@+id/profile_pic_container"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_picture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="#ffb300"
+                app:civ_border_width="2dp"
+                app:civ_border_color="?attr/normalIconColor"
+                android:layout_gravity="top|center_horizontal"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_edit_pic"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:visibility="invisible"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="25dp"
+                android:layout_marginEnd="10dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="?attr/normalIconColor"
+                android:src="@drawable/edit_small"
+                />
+
+        </FrameLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="0.7dp"
+        android:background="?attr/normalIconColor"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/profile_icon_name"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_person_outline_24dp"
+        android:tint="?attr/normalIconColor"
+        android:layout_marginStart="10dp"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profile_name"
+        app:layout_constraintBottom_toBottomOf="@id/profile_name"/>
+
+
+    <TextView
+        android:id="@+id/profile_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="5dp"
+        android:text="@string/prof_name"
+        android:textColor="?attr/textColorDark"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profile_icon_name"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <ImageView
+        android:id="@+id/profile_icon_description"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_description_24dp"
+        android:tint="?attr/normalIconColor"
+        android:layout_marginStart="10dp"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/profile_description"/>
+
+
+    <TextView
+        android:id="@+id/profile_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingBottom="5dp"
+        android:text="Beschreibung"
+        android:textColor="?attr/textColorDarkDetails"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/profile_icon_description"
+        app:layout_constraintTop_toBottomOf="@+id/profile_name" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/actionBarColor"
+        android:elevation="4dp"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/Theme.AppCompat.DayNight" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

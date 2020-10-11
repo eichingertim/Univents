@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/home_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            >
+
+            <ScrollView
+                android:id="@+id/scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_location_pick"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:padding="8dp">
+
+                        <TextView
+                            android:id="@+id/tv_univerity_events"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:text="Hochschulevents in"
+                            android:textColor="?attr/textColorDark"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:id="@+id/txt_current_location"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text=""
+                            android:inputType="textPersonName"
+                            app:layout_constraintStart_toEndOf="@id/btn_edit_location"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_univerity_events"
+                            android:textSize="36sp"
+                            android:textStyle="bold"
+                            android:textColor="?attr/textColorDark"/>
+
+                        <ImageButton
+                            android:id="@+id/btn_edit_location"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:src="@drawable/ic_location_24dp"
+                            android:background="@drawable/form_circle"
+                            android:elevation="2dp"
+                            android:tint="?attr/normalIconColor"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/txt_current_location"
+                            app:layout_constraintBottom_toBottomOf="@id/txt_current_location"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <com.androidproject.univents.models.ExpandedGridView
+                        android:id="@+id/grid_view_home_events"
+                        android:layout_margin="4dp"
+                        android:padding="4dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:numColumns="2"
+                        android:isScrollContainer="false"
+                        app:layout_constraintTop_toBottomOf="@id/cl_location_pick"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_empty_list_view"
+                        android:text="Keine Events in diesem Ort gefunden"
+                        android:textColor="?attr/textColorDark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="100dp"
+                        app:layout_constraintTop_toBottomOf="@id/cl_location_pick"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        app:layout_constraintTop_toBottomOf="@id/grid_view_home_events" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

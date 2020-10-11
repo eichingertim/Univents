@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:cardBackgroundColor="?attr/actionBarColor"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/btn_close_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_close_24dp"
+                android:tint="?attr/normalIconColor"
+                android:layout_marginStart="10dp"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/textColorDark"
+                android:fontFamily="@font/roboto_medium"
+                android:layout_toEndOf="@id/btn_close_dialog"
+                android:layout_toStartOf="@id/btn_publish"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="20sp"
+                android:text="Neue Frage"/>
+
+            <TextView
+                android:id="@+id/btn_publish"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="?attr/textColorDark"
+                android:fontFamily="@font/roboto_medium"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textSize="16sp"
+                android:text="POSTEN"/>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColorHint="?attr/textColorHint"
+        app:counterEnabled="true"
+        app:counterMaxLength="80">
+
+        <EditText
+            android:id="@+id/txt_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="30"
+            android:hint="Deine Frage o. Anmerkung"
+            android:textColor="?attr/textColorDark"
+            android:textColorHint="?attr/textColorHint"
+            android:inputType="textPersonName"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+</LinearLayout>

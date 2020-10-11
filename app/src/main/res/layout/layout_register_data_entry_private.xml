@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
+
+            <EditText
+                android:id="@+id/txt_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/first_name"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
+                android:textColor="?attr/textColorDark"
+                android:inputType="textPersonName"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
+
+            <EditText
+                android:id="@+id/txt_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/last_name"
+                android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
+                android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
+
+            <EditText
+                android:id="@+id/txt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark"
+            android:layout_margin="8dp">
+
+            <EditText
+                android:id="@+id/txt_email_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/repeat_email"
+                android:textColor="?attr/textColorDark"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Layout for live-checking email confirm-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/img_email_confirmed"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close_24dp"
+                android:layout_margin="7dp"
+                android:tint="?attr/normalIconColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="E-Mail stimmt überein"
+                android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintStart_toEndOf="@id/img_email_confirmed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/img_email_confirmed"
+                app:layout_constraintBottom_toBottomOf="@id/img_email_confirmed"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
+
+            <EditText
+                android:id="@+id/txt_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
+                android:textColor="?attr/textColorDark"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Layout for live-checking password specifications-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/img_passw_big_small_letters"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close_24dp"
+                android:tint="?attr/normalIconColor"
+                android:layout_margin="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Mind. einen Groß- und Kleinbuchstaben"
+                android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintStart_toEndOf="@id/img_passw_big_small_letters"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/img_passw_big_small_letters"
+                app:layout_constraintBottom_toBottomOf="@id/img_passw_big_small_letters"/>
+
+            <ImageView
+                android:id="@+id/img_passw_number"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close_24dp"
+                android:tint="?attr/normalIconColor"
+                android:layout_margin="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_passw_big_small_letters" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Mind. eine Ziffer"
+                android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintStart_toEndOf="@id/img_passw_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/img_passw_number"
+                app:layout_constraintBottom_toBottomOf="@id/img_passw_number"/>
+
+            <ImageView
+                android:id="@+id/img_count_chars"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close_24dp"
+                android:tint="?attr/normalIconColor"
+                android:layout_margin="7dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/img_passw_number" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Mind. 8 Zeichen"
+                android:layout_margin="7dp"
+                android:textColor="?attr/textColorDark"
+                app:layout_constraintStart_toEndOf="@id/img_count_chars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/img_count_chars"
+                app:layout_constraintBottom_toBottomOf="@id/img_count_chars"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColorHint="?attr/textColorHint"
+            android:backgroundTint="?attr/textColorDark">
+
+            <EditText
+                android:id="@+id/txt_password_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/repeat_password"
+                android:textColorHint="?attr/textColorHint"
+                android:backgroundTint="?attr/textColorDark"
+                android:textColor="?attr/textColorDark"
+                android:inputType="textPassword"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Layout for live-checking password confirm-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/img_password_confirmed"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close_24dp"
+                android:layout_margin="7dp"
+                android:tint="?attr/normalIconColor"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Passwörter stimmen überein"
+                android:textColor="?attr/textColorDark"
+                android:layout_margin="7dp"
+                app:layout_constraintStart_toEndOf="@id/img_password_confirmed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/img_password_confirmed"
+                app:layout_constraintBottom_toBottomOf="@id/img_password_confirmed"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</ScrollView>

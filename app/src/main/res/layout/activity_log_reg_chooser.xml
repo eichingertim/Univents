@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="?attr/backgroundColor"
+    tools:context=".ui.LogRegChooserActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_welcome"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:src="@drawable/app_launch_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:text="Erstelle, Organisiere und Beteilige dich an Events"
+            android:textColor="?attr/textColorDark"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_facebook_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_orange"
+            android:backgroundTint="@color/colorFacebook"
+            android:drawableTint="@color/colorLightText"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="@string/go_on_with_facebook"
+            android:drawableStart="@drawable/ic_facebook"
+            android:layout_marginBottom="17dp"
+            android:textColor="@color/colorLightText"
+            app:layout_constraintBottom_toTopOf="@id/btn_choose_log_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/facebook_login_button"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:onClick="onFbButtonClick"
+            app:layout_constraintBottom_toTopOf="@id/btn_choose_log_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <!--Button: Log in; Welcome Screen invisible, LogIn-Screen visible-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_choose_log_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_orange"
+            android:text="@string/text_btn_login"
+            android:layout_marginBottom="17dp"
+            android:textColor="?attr/textColorLight"
+            app:layout_constraintBottom_toTopOf="@id/tv_create_account"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_create_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_account"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/btn_choose_register_private"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="?attr/textColorDark"
+            android:layout_margin="8dp"
+            android:gravity="center"/>
+
+        <!--Button: Create new account; Opens RegisterActivity-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_choose_register_private"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_dark_stroke"
+            android:text="@string/t_private"
+            android:textColor="?attr/textColorDark"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.5"
+            app:layout_goneMarginEnd="10dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_choose_register_orga"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/form_round_corners_dark_stroke"
+            android:text="Organisation"
+            android:textColor="?attr/textColorDark"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_choose_register_private"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/layout_login"
+        layout="@layout/layout_login"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

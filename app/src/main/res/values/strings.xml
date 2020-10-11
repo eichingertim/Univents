@@ -1,0 +1,263 @@
+<resources>
+
+    <string name="app_name">Univents</string>
+    <string name="facebook_app_id">696143180856191</string>
+    <string name="fb_login_protocol_scheme">fb696143180856191</string>
+    <string name="updates_notification_channel_id">UPDATE3152ID</string>
+    <string name="fileprovider_path">com.androidproject.univents.fileprovider</string>
+    <string name="map_box_id">pk.eyJ1IjoidHRqYXBwcHJvamVjdCIsImEiOiJjano1c2NnOGIwNXU3M2RuMGZ3ZXJ0cWJvIn0.dSrsfqwzCei9HvcRDZxwiA</string>
+
+    <!--Drawer Toggle-->
+    <string name="CLOSE">close</string>
+    <string name="OPEN">open</string>
+
+    <!--Button Text-Values-->
+    <string name="close">Schliessen</string>
+    <string name="text_btn_login">Anmelden</string>
+    <string name="text_btn_register">Konto erstellen</string>
+    <string name="create_account">Account erstellen</string>
+    <string name="t_private">Privat</string>
+
+    <string name="toolbar_reg_steps">Schritt %d</string>
+
+    <!--Toolbar titles-->
+    <string name="first_name">Vorname</string>
+    <string name="step_one_details">Schritt 1 - Details</string>
+    <string name="step_two_location">Schritt 2 - Location</string>
+    <string name="step_three_sale">Schritt 3 - Verkauf</string>
+    <string name="step_four_confirm">Schritt 4 - Bestätigung</string>
+
+    <!--EditText hints-->
+    <string name="last_name">Nachname</string>
+    <string name="email">E-Mail</string>
+    <string name="repeat_email">E-Mail wiederholen</string>
+    <string name="password">Passwort</string>
+    <string name="repeat_password">Passwort wiederholen</string>
+    <string name="orga_name">Organisationsname</string>
+    <string name="BOOLEAN_ORGA">orga</string>
+
+    <!--Intent Keys-->
+    <string name="confirm_data_protection">Der Datenschutzerklärung muss zugestimmt werden</string>
+
+    <!--Toast Messages-->
+    <string name="fill_all_fields">Du musst alle Felder ausfüllen</string>
+    <string name="no_valid_email">Das ist keine gültige E-Mail Adresse</string>
+    <string name="emails_are_not_same">E-Mail Adressen stimmen nicht überein</string>
+    <string name="password_not_valid">Passwort entspricht nicht den Vorgaben</string>
+    <string name="passwords_not_same">Passwörter stimmen nicht überein</string>
+    <string name="email_not_yet_confirmed">E-Mail Adresse noch nicht bestätigt</string>
+    <string name="enter_log_in_data">Du musst deine Login-Daten eingeben um dich anzumelden.</string>
+    <string name="cannot_encode_address">Deinem aktuellen Standort konnte kein Ort zugewiesen werden</string>
+    <string name="no_events_city_found">Keine Events in diesem Ort gefunden</string>
+    <string name="like_this_update">Dir gefällt dieses Update</string>
+    <string name="press_back_again">Drücke ZURÜCK noch einmal um die Anwendung zu schließen</string>
+    <string name="email_verification_sent"><![CDATA[Wir haben eine Verifizierungs-Mail an <b>%s</b> geschickt]]></string>
+    <string name="permssion_granted">Berechtigung erteilt</string>
+    <string name="permission_denied">Berechtigung nicht erteilt</string>
+    <string name="profile_picture_was_changed">Dein Profilbild wurde geändert! Falls dir kein Profilbild angezeigt wird, schließe die App komplett und starte sie neu</string>
+    <string name="select_title_picture">Du musst ein Titelbild auswählen</string>
+    <string name="select_category">Du musst eine Kategorie wählen</string>
+    <string name="answer_posted">Antwort wurde gepostet</string>
+    <string name="question_posted">Frage wurde gepostet</string>
+    <string name="please_select_location">Du musst eine Location auswählen</string>
+    <string name="describe_your_location">Du musst deine Location noch genauer beschreiben</string>
+    <string name="startdate_after_enddate">Das Startdatum liegt hinter dem Endatum</string>
+    <string name="cannot_edit_this_list">Du kannst diese Liste noch nicht bearbeiten. Erst nach der Veröffentlichung!</string>
+    <string name="user_not_receive_emails">Der Nutzer will keine E-Mails bekommen.</string>
+    <string name="user_not_receive_calls">Der Nutzer will keine Anrufe bekommen.</string>
+    <string name="user_has_no_phone_number">Der Nutzer hat keine Telefonnummer.</string>
+    <string name="updated_deleted">Beitrag erfolgreich gelöscht</string>
+    <string name="you_like_this_update">Dir gefällt dieser Beitrag</string>
+    <string name="event_deleted">Event erfolgreich gelöscht</string>
+    <string name="event_updated">Event erfolgreich aktualisiert</string>
+    <string name="new_event_created">Neues Event erfolgreich erstellt</string>
+    <string name="error_ocurred">Ein Fehler ist aufgetreten</string>
+    <string name="update_posted">Beitrag wurde gepostet</string>
+    <string name="receive_no_more_notifications_for_the_event">Teilnahme erfolgreich entfernt. Du erhälst auch keine Benachrichtigungen mehr.</string>
+    <string name="account_deleted">Konto erfolgreich gelöscht</string>
+    <string name="a_email_was_sent">Dir wurde eine E-Mail mit Anweisungen gesendet.</string>
+    <string name="no_city_to_this_coordinates">Diesen Koordinaten konnte kein Ort zugewiesen werden</string>
+
+
+    <!--Dialog titles and messages-->
+    <string name="check_inbox">Überprüfe deinen Posteingang und bestätige deine Mail-Adresse</string>
+    <string name="go_on_with_facebook">weiter mit Facebook</string>
+    <string name="delete_title">%s löschen?</string>
+    <string name="want_to_delete_update">Willst du diesen Beitrag löschen?</string>
+    <string name="delete_event_title">Event löschen?</string>
+    <string name="want_to_delete_event">Willst du dieses Event wirklich löschen?</string>
+    <string name="excited_of_title">Gefällt dir %s ?</string>
+    <string name="mark_update_with_like">Diesen Beitrag mit gefällt mir markieren!</string>
+    <string name="confirm_email">Email bestätigen</string>
+    <string name="should_sned_new_confirm_email">Sollen wie dir nochmal eine Bestätigungs-Emal senden?</string>
+    <string name="delete_account">Konto löschen</string>
+    <string name="want_to_delete_account">Willst du dein Konto wirklich löschen? Es werden alle deine Daten und alle deine Events gelöscht.</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="change_password">Passwort ändern</string>
+    <string name="press_change_password">Drücke auf \"Passwort ändern\" und dir wird eine E-Mail gesendet mit den Anweisungen</string>
+    <string name="save">Speichern</string>
+    <string name="want_to_save_changes">Willst du deine Änderungen speichern?</string>
+
+
+    <!--ProgressDialog Messages-->
+    <string name="you_to_be_logged_in">Du wirst eingeloggt....</string>
+    <string name="uploading">Hochladen....</string>
+    <string name="you_to_be_registered">Du wirst registriert....</string>
+    <string name="event_is_created">Event wird erstellt und veröffentlicht</string>
+    <string name="event_is_updated">Event wird geupdated</string>
+
+    <!--Menu Item titles-->
+    <string name="account">Konto</string>
+    <string name="profile">Profil</string>
+    <string name="signout">Abmelden</string>
+    <string name="settings">Einstellungen</string>
+    <string name="home">Home</string>
+    <string name="search">Suche</string>
+    <string name="map">Karte</string>
+    <string name="my_events">Meine</string>
+
+    <!--Keys for settings preferences-->
+    <string name="PREF_KEY_NOTIFICATIONS">notification_pref</string>
+    <string name="PREF_KEY_THEME">theme_pref</string>
+    <string name="PREF_KEY_EMAIL_PHONE">email_phone_preference</string>
+
+    <!--Settings titles and descriptions-->
+    <string name="enable_dark_theme">Dark Theme für die ganze App verwenden</string>
+    <string name="prof_name">Name</string>
+    <string name="dark_theme">Dark Theme</string>
+
+    <!--Profile Strings-->
+    <string name="prof_email">Email</string>
+    <string name="prof_number">Telefonnummer</string>
+    <string name="prof_edit_email_switch">Email Adresse öffentlich anzeigen</string>
+    <string name="prof_edit_phone_switch">Telefonnummer öffentlich anzeigen</string>
+    <string name="prof_edit_header">Profileinstellungen</string>
+    <string name="switch_email_true">email true</string>
+    <string name="switch_email_false">email false</string>
+    <string name="switch_phone_true">phone true</string>
+    <string name="switch_phone_false">phone false</string>
+    <string name="update_suffix">Update:</string>
+
+    <!--Notification text values-->
+    <string name="like_it">Gefällt mir</string>
+    <string name="notification_channel_name">Channel for Event Updates</string>
+
+    <!--special keys for intents-->
+    <string name="KEY_INTENT_NEW_SALE_ITEM_MAP">sales_list_map</string>
+    <string name="KEY_INTENT_SALE_CATEGORY">sales_category</string>
+    <string name="KEY_INTENT_IS_ANSWER">is_answer</string>
+    <string name="KEY_LATITUDE">latitude</string>
+    <string name="KEY_LONGITUDE">longitude</string>
+    <string name="KEY_INTENT_SEARCH_FOR_TITLE">isSearchForTitle</string>
+    <string name="KEY_INTENT_SEARCH_DATE_FROM">searchDateFrom</string>
+    <string name="KEY_INTENT_SEARCH_DATE_TO">searchDateTo</string>
+    <string name="KEY_INTENT_SEARCH_CATEGORY">searchCategory</string>
+    <string name="KEY_INTENT_SEARCH_CITY">searchCity</string>
+    <string name="KEY_INTENT_IS_SEARCH_TITLE">isSearchForTitle</string>
+
+    <!--Firebase Cloud Messaging Keys-->
+    <string name="KEY_FCM_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
+    <string name="KEY_FCM_EVENT_UPDATE_MESSAGE">eventUpdateMessage</string>
+    <string name="KEY_FCM_EVENT_UPDATE_EVENT_ID">eventId</string>
+    <string name="KEY_FCM_EVENT_UPDATE_ID">eventUpdateId</string>
+    <string name="KEY_FCM_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
+
+    <!--Keys for Firebase-->
+    <string name="KEY_FIREBASE_COLLECTION_USERS">users</string>
+    <string name="KEY_FIREBASE_COLLECTION_EVENTS">events</string>
+    <string name="KEY_FIREBASE_COLLECTION_EVENT_UPDATES">updates</string>
+    <string name="KEY_FIREBASE_COLLECTION_EVENT_SALE">sale</string>
+    <string name="KEY_FIREBASE_COLLECTION_QANDAS">qanda</string>
+
+    <string name="KEY_FIREBASE_USER_ID">userId</string>
+    <string name="KEY_FIREBASE_USER_FIRSTNAME">firstName</string>
+    <string name="KEY_FIREBASE_USER_LASTNAME">lastName</string>
+    <string name="KEY_FIREBASE_USER_EMAIL">email</string>
+    <string name="KEY_FIREBASE_USER_IS_ORGA">orga</string>
+    <string name="KEY_FIREBASE_USER_ORGA_NAME">orgaName</string>
+    <string name="KEY_FIREBASE_USER_PICTURE_URL">pictureURL</string>
+    <string name="KEY_FIREBASE_USER_DESCRIPTION">description</string>
+    <string name="KEY_FIREBASE_USER_PHONE_NUMBER">phoneNumber</string>
+
+    <string name="KEY_FIREBASE_EVENT_ID">eventId</string>
+    <string name="KEY_FIREBASE_EVENT_TITLE">eventTitle</string>
+    <string name="KEY_FIREBASE_EVENT_DESCRIPTION">eventDescription</string>
+    <string name="KEY_FIREBASE_EVENT_ORGANIZER">eventOrganizer</string>
+    <string name="KEY_FIREBASE_EVENT_EXACT_LOCATION">eventExactLocation</string>
+    <string name="KEY_FIREBASE_EVENT_DETAIL_LOCATION">eventDetailLocation</string>
+    <string name="KEY_FIREBASE_EVENT_PARTICIPANTS">eventParticipants</string>
+    <string name="KEY_FIREBASE_EVENT_CITY">eventCity</string>
+    <string name="KEY_FIREBASE_EVENT_BEGIN">eventBegin</string>
+    <string name="KEY_FIREBASE_EVENT_END">eventEnd</string>
+    <string name="KEY_FIREBASE_EVENT_PICTURE_URL">eventPictureUrl</string>
+    <string name="KEY_FIREBASE_EVENT_CATEGORY">eventCategory</string>
+
+    <string name="KEY_FIREBASE_EVENT_PICTURE_PATH">eventPicturePath</string>
+
+    <string name="KEY_FIRBASE_EVENT_UPDATE_LIKES">eventUpdateLikes</string>
+    <string name="KEY_FIRBASE_EVENT_UPDATE_TITLE">eventUpdateTitle</string>
+    <string name="KEY_FIRBASE_EVENT_UPDATE_DESCRIPTION">eventUpdateDescription</string>
+    <string name="KEY_FIREBASE_EVENT_UPDATE_EVENT_TITLE">eventTitle</string>
+    <string name="KEY_FIREBASE_EVENT_UPDATE_ID">eventUpdateId</string>
+
+    <string name="KEY_FIREBASE_EVENT_QANDA_ANSWER">answer</string>
+    <string name="KEY_FIREBASE_EVENT_QANDA_QUESTION">question</string>
+
+    <string name="regensburg">Regensburg</string>
+
+    <!--Dynamic links-->
+    <string name="dynamic_link_text">Hi, schau dir das Event %s an.</string>
+
+    <!--Date and time patterns-->
+    <string name="date_format_normal">dd.MM.yyyy - HH.mm</string>
+    <string name="date_pattern_for_saving">dd.MM.yyyyHH.mm</string>
+
+    <!--Data-Protection-->
+    <string name="accept_data_protection">Datenschutzerklärung zustimmen</string>
+    <string name="data_protection"><![CDATA[
+
+            <h2><strong>DATENSCHUTZERKL&Auml;RUNG</strong></h2>
+            <p><strong>1. Erhobene Daten</strong><br />F&uuml;r eine voll funktionsf&auml;hig Applikation, werden personenbezogene Daten auf der Datenbank Firebase gespeichert. Zur Authentifizierung werden Nutzername, Passwort und eine zugeh&ouml;rige E-Mail-Adresse gespeichert. Um Titel und Profilbilder zu bearbeiten muss der Nutzer den Zugriff auf Fotos und Kamera erlaubt werden.</p>
+            <p><br /><strong>2. Zweck der Datenspeicherung</strong><br />Wie schon oben genannt werden die personenbezogenen Daten zur Erkennung und Erstellung von Nutzerkonten ben&ouml;tigt.<br />Zur Personalisierung k&ouml;nnen Bilder aufgenommen oder ausgew&auml;hlt werden, diese werden in Firebase gespeichert.</p>
+            <p><br /><strong>3. Speicherdauer</strong><br />Die Daten werden gel&ouml;scht nachdem ein Konto von dem Nutzer selbst gel&ouml;scht worden ist.</p>
+            <p><br /><strong>4. Zugriffsrechte</strong> <br />Einsicht auf gespeichert Daten haben nur die Entwickler. Eine Daten&uuml;bermittlung personenbezogener Daten an Dritte findet nicht statt.</p>
+            <p><br /><strong>5. Nutzungsverhalten</strong><br />Das Nutzungsverhalten aller Nutzer wird nicht gespeichert oder ausgewertet.</p>
+            <p><br /><strong>6. App-Betreiber</strong><br />Univents ist eine von Tim Eichinger, Jonas Ernst und Timon Lorenz entwickelte App.</p>
+            <p><br /><strong>7. Erstellung</strong><br />Diese Datenschutz-Verordnung wurde am 11.09 erstellt und gilt ebenso ab dem gleichen Datum.</p>
+
+        ]]></string>
+    <string name="you_participate">Du nimmst teil</string>
+    <string name="participate">Teilnehmen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="okay">Okay</string>
+    <string name="data_saved">Daten gespeichert</string>
+    <string name="save_changes">Änderungen speichern</string>
+
+    <!--Array Univents creator-->
+    <string-array name="app_creator_members">
+        <item>Jonas Ernst(2089197)</item>
+        <item>Tim Eichinger(2089449)</item>
+        <item>Timon Lorenz</item>
+    </string-array>
+
+    <!--Categories for events-->
+    <string-array name="eventCategorys">
+        <item>Alle</item>
+        <item>Sommerfest</item>
+        <item>Weihnachtsfeier</item>
+        <item>Glühweinverkauf</item>
+        <item>Demonstration</item>
+        <item>Sonstiges</item>
+    </string-array>
+
+    <string-array name="eventCategorysCreate">
+        <item>Kategorie auswählen</item>
+        <item>Sommerfest</item>
+        <item>Weihnachtsfeier</item>
+        <item>Glühweinverkauf</item>
+        <item>Demonstration</item>
+        <item>Sonstiges</item>
+    </string-array>
+
+</resources>

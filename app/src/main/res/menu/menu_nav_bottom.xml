@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_action_home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_home_24dp"/>
+
+    <item
+        android:id="@+id/bottom_action_search"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search_24dp"/>
+
+    <item android:id="@+id/bottom_action_add"
+        android:checkable="false"
+        android:enabled="false"
+        android:title="" />
+
+    <item
+        android:id="@+id/bottom_action_map"
+        android:title="@string/map"
+        android:icon="@drawable/ic_map_24dp"/>
+
+    <item
+        android:id="@+id/bottom_action_my_events"
+        android:title="@string/my_events"
+        android:icon="@drawable/ic_event_24dp"/>
+
+
+</menu>
