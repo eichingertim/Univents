@@ -1,4 +1,7 @@
 # Univents
+
+> **INFO**: Firebase Project does not exist anymore. Place your own `google-service.json` in the `./app` folder to use the app properly
+
 ## project members
 * Tim Eichinger (tim1.eichinger@stud.uni-regensburg.de)
 * Timon Lorenz (timon.lorenz@stud.uni-regensburg.de)
